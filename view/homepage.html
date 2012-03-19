@@ -1,0 +1,18 @@
+{% block doctype %}{% include "common/doctype.html" %}{% endblock %}
+<html lang="{{ html.lang }}">
+<head>
+  {% block head %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="/css/{{ html.css }}.css" />
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+  {% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+	{% if html.js != "" %}
+	<script type="text/javascript" src="/js/{{ html.js }}"></script>
+	{% endif %}
+</body>
+</html>
