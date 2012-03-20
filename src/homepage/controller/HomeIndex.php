@@ -2,6 +2,7 @@
 
 namespace homepage\controller;
 //use \xframe\request\Controller;
+use \DBManager;
 
 class HomeIndex extends \homepage\HomeController {
 
@@ -51,14 +52,27 @@ class HomeIndex extends \homepage\HomeController {
     }
     
     /**
+     * @Request("movies")
+     * @Template("homepage/movies")
+     */
+    public function movies() {
+        $this->view->page = "movies";
+        $js = array("/js/movies", "/js/jquery.flot.min");
+        if (!$sock = @fsockopen("www.google.com", 80, $num, $error, 5)) {
+            $js[] = "/js/jquery-1.7.1.min";
+        } else {
+            $js[] = "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min";
+        }
+        $this->view->js = array_reverse($js);
+        
+        //die(var_dump($this->dic->em->find("homepage\model\hMovies", 1)));
+    }
+    
+    /**
      * @Request("links")
      * @Template("homepage/links")
      */
     public function links() {
         $this->view->page = "links";
-        try {
-            //@$simple = new SimpleXMLElement("http://www.die2nite.com/xml/?k=02ebc76bebd7daf01051b9b4c17c46ab", 0, true);
-            //$this->view->simple = $simple;
-        } catch(Exception $e) {}
     }
 }

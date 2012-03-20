@@ -23,11 +23,14 @@
         </div>
         <div class="clear"></div>
     </div>
-    {% if html.js != "" %}
-    <script type="text/javascript" src="/js/{{ html.js }}"></script>
-    {% endif %}
     {% if showGA == 1 %}
     {% include "common/ga.html" %}
     {% endif %}
+    {% if js is defined %}
+    {% for j in js %}
+    <script type="text/javascript" src="{{ j }}.js"></script>
+    {% endfor %}
+    {% endif %}
+    {% block script %}{% endblock %}
 </body>
 </html>

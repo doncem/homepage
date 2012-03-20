@@ -1,0 +1,74 @@
+{% extends "homepage.html" %}
+
+{% block meta_description %}Out from memory and recent views I register viewed movies, TV shows. Here is the brief representation of it{% endblock %}
+
+{% block title %}Movies{% endblock %}
+
+{% block page_title %}Movies and TV shows{% endblock %}
+
+{% block content %}
+<p>Some basic statistic from my watched list of movies and TV shows. List is made out of memory and free will</p>
+<div id="main_stats">
+    <table>
+        <tr>
+            <td>Movies:</td>
+            <td><?php echo $sum_movies; ?></td>
+        </tr>
+        <tr>
+            <td>TV shows:</td>
+            <td><?php echo $sum_series; ?></td>
+        </tr>
+        <tr>
+            <td>Genres per movie:</td>
+            <td><?php echo round($sum_genres / $sum_movies, 5); ?></td>
+        </tr>
+        <tr>
+            <td>Genres per TV show:</td>
+            <td><?php echo round($sum_genres_series / $sum_series, 5); ?></td>
+        </tr>
+        <tr>
+            <td>Countries per movie:</td>
+            <td><?php echo round($sum_countries / $sum_movies, 5); ?></td>
+        </tr>
+        <tr>
+            <td>Directors:</td>
+            <td><?php echo $sum_directors; ?></td>
+        </tr>
+        <tr>
+            <td>Mean growth:</td>
+            <td id="meanval"></td>
+        </tr>
+        <tr>
+            <td>Next standard diff<br />(squared):</td>
+            <td id="stdval"></td>
+        </tr>
+        <tr>
+            <td id="time" colspan="2" class="centre"></td>
+        </tr>
+    </table>
+</div>
+<div id="p_year" class="placeholder"></div>
+<div id="p_decade" class="placeholder"></div>
+<div id="p_genre" class="placeholder"></div>
+<div id="p_directed" class="placeholder"></div>
+<div id="countries">
+    <table>
+        <tr>
+            <th></th>
+            <th>#movies</th>
+        </tr>
+        <?php
+        foreach ($countries as $country => $movie) {
+        ?>
+        <tr>
+            <td><?php echo $country; ?></td>
+            <td><?php echo $movie; ?></td>
+        </tr>
+        <?php
+        }
+        ?>
+    </table>
+</div>
+{% endblock %}
+{% block script %}
+{% endblock %}

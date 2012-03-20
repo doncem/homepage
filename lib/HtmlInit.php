@@ -27,11 +27,6 @@ class HtmlInit {
     private $css;
     
     /**
-     * @var string Filename
-     */
-    private $js;
-
-    /**
      * Set default html elements from Registry
      * @param Registry $registry 
      */
@@ -40,7 +35,6 @@ class HtmlInit {
         $this->lang = $registry->get("HTML_LANG");
         $this->title = $registry->get("HTML_TITLE");
         $this->css = $registry->get("HTML_CSS");
-        $this->js = $registry->get("HTML_JS");
     }
 
     /**
@@ -50,18 +44,15 @@ class HtmlInit {
      * @param string $lang [optional] html tag attribute
      * @param string $title [optional]
      * @param string $css [optional] Filename
-     * @param string $js [optional] Filename
      * @return array
      */
     public function getDefaults($doctype = null,
                                 $lang = null,
                                 $title = null,
-                                $css = null,
-                                $js = null) {
+                                $css = null) {
         return array("doctype" => $doctype ? $doctype : $this->doctype,
                      "lang" => $lang ? $lang : $this->lang,
                      "title" => $title ? $title : $this->title,
-                     "css" => $css ? $css : $this->css,
-                     "js" => $js ? $js : $this->js);
+                     "css" => $css ? $css : $this->css);
     }
 }
