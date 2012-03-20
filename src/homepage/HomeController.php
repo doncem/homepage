@@ -7,7 +7,7 @@ use \HtmlInit;
 class HomeController extends Controller {
 
     public function init() {
-		$html = new \HtmlInit($this->dic->registry);
-		$this->view->html = $html->getDefaults();
+        $html = new \HtmlInit($this->dic->registry);
+        $this->view->html = $html->getDefaults();
     }
 }

@@ -1,0 +1,87 @@
+{% extends "homepage.html" %}
+
+{% block title %}Links{% endblock %}
+
+{% block page_title %}Links about me or related{% endblock %}
+
+{% block content %}
+<h2>Games</h2>
+<p>Played some time ago. Way ago</p>
+<a href="http://www.alphabounce.com?ref=doncem" title="AlphaBounce" target="_blank"><h3>AlphaBounce</h3></a><br />
+<iframe src="http://www.alphabounce.com/user/489249" width="473" height="417"></iframe>
+<a href="http://www.die2nite.com?ref=doncem" title="Die2Nite" target="_blank"><h3>Die2Nite</h3></a><br />
+{% if simple is defined %}
+<table class="centre">
+    <tr>
+        <td class="centre">Game profile:</td>
+    </tr>
+    <tr>
+        <td>
+            {% if simple.data.city["city"] %}
+            <table>
+                <tr>
+                    <td>Town{% if simple.data.city["chaos"] == 1 %} (Chaos Mode!){% endif %}:</td>
+                    <td>{{ simple.data.city["city"] }}</td>
+                </tr>
+                <tr>
+                    <td>Day of survival:</td>
+                    <td>{{ simple.headers.game["days"] }}</td>
+                </tr>
+                <tr>
+                    <td>Buildings raised:</td>
+                    <td>{{ simple.data.city.building|length }}</td>
+                </tr>
+                <tr>
+                    <td>Total Defence:</td>
+                    <td>{{ simple.data.city.defense["total"] }}</td>
+                </tr>
+                <tr>
+                    <td>Estimation of attack:</td>
+                    <td>{% for estimation in simple.data.estimations.e %}
+                        {% if estimation["day"] == simple.headers.game["days"] %}
+                        Today: {% else %}
+                        Tomorrow: {% endif %}
+                        {{ estimation["min"] }} - {{ estimation["max"] }}<br />
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Items in bank:</td>
+                    <td>{% set sum = 0 %}{% for item in simple.data.bank.item %}{% set sum = (sum + item["count"]) %}{% endfor %}{{ sum }}</td>
+                </tr>
+                <tr>
+                    <td>Citizens:</td>
+                    <td>{{ simple.data.citizens.citizen|length }}/40</td>
+                </tr>
+            </table>
+            {% else %}
+            We are under attack or I am simply dead
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+<h2>Google</h2>
+<p>
+    <a href="http://www.google.com/maps/user?uid=202826101663829518560&hl=en" title="GoogleMaps" target="_blank">My Maps</a><br />
+    <a href="https://profiles.google.com/donatasmart" title="Google Profile" target="_blank">My profile</a><br />
+    <a href="https://picasaweb.google.com/donatasmart" title="Picasa Web" target="_blank">My picasa web album</a>
+</p>
+<h2>Opera</h2>
+<p>
+    <a href="http://my.opera.com/doncem/about/" title="My Opera" target="_blank">My profile</a><br />
+    <a href="http://my.opera.com/community/download.pl?ref=doncem&amp;p=opera_desktop" title="Get Opera" target="_blank">Don't have Opera? Get it</a>
+</p>
+<h2>Music</h2>
+<p>
+    <a href="http://www.hell-music.lt/" title="HellMusic" target="_blank">www.hell-music.lt</a><br />
+    <a href="http://www.ferrum.lt/" title="Ferrum" target="_blank">www.ferrum.lt</a><br />
+    <a href="http://www.metal-archives.com/" title="Encyclopeadia Mettalium" target="_blank">Encyclopaedia Metallum</a>
+</p>
+<h2>Others</h2>
+<p>
+    <a href="http://lt.linkedin.com/in/donatasmart" title="LinkedIn" target="_blank">LinkedIn</a><br />
+    <a href="https://www.paypal.com/lt/mrb/pal=97NKR4CBNR2GG" title="PayPal" target="_blank">Get Paypal yourself</a><br />
+    <a href="http://stackoverflow.com/users/403208/donatas-m" title="Stack Overflow" target="_blank">www.stackoverflow.com</a>
+</p>
+{% endblock %}

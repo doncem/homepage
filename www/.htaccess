@@ -1,6 +1,20 @@
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+Options -Indexes
+Options +FollowSymLinks
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
+
+Redirect 302 /rebank http://www.rebank.lt
+Redirect 302 /mtt http://www.mytrainticket.co.uk
+Redirect 302 /nth http://tickets.northernrail.org
+Redirect 302 /tsm http://www.travelsupermarket.com/c/train-tickets/
+Redirect 302 /quidco http://www.quidco.com/

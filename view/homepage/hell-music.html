@@ -1,0 +1,26 @@
+{% extends "homepage.html" %}
+
+{% block title %}Hell-Music{% endblock %}
+
+{% block page_title %}Works for Hell-Music{% endblock %}
+
+{% block content %}
+<h2>News</h2>
+<ol>
+    {% for key, news in links.news %}
+    <li><a href="{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
+    {% endfor %}
+</ol>
+<h2>Reviews</h2>
+<ol>
+    {% for key, review in links.reviews %}
+    <li><a href="{{ review[0] }}{{ key }}">{{ review[1] }}</a></li>
+    {% endfor %}
+</ol>
+<h2>Reportings</h2>
+<ol>
+    {% for key, report in links.reportings %}
+    <li><a href="{{ report[0] }}{{ key }}">{{ report[1] }}</a></li>
+    {% endfor %}
+</ol>
+{% endblock %}
