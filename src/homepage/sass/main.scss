@@ -1,0 +1,55 @@
+$mainColour:#dddddd;
+$linkColour:#4183c4;
+$pageSize:1000px;
+$contentPad:10;
+
+body {
+    margin: 30px auto;
+    padding: 0px;
+    width: $pageSize;
+    background-color: $mainColour;
+    font-family: helvetica,arial;
+    font-size: 1.0em;
+    line-height: 1.4em;
+}
+
+a {
+    color: $linkColour;
+    text-decoration: none;
+}
+
+#menu {
+    float: left;
+    text-align: right;
+    width: ($pageSize/100*15);
+    ul {
+        margin: 0px;
+        list-style: none;
+        padding: 0px;
+    }
+    li {
+        margin: 22px 0px;
+        list-style: none;
+        a {
+            border: thin solid darken($mainColour, 3%);
+            padding: 8px 10px;
+            &:hover {
+                background-color: lighten($mainColour, 3%);
+            }
+            &.active {
+                color: darken($linkColour, 15%);
+            }
+        }
+    }
+}
+
+#content {
+    float: right;
+    border-left: thin solid darken($mainColour, 7%);
+    padding: 0px #{$contentPad}px;
+    width: ($pageSize/100*(84.9-$contentPad/10*2));
+}
+
+.clear {
+    clear: both;
+}
