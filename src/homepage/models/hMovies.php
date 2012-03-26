@@ -1,5 +1,5 @@
 <?php
-namespace homepage\model;
+namespace homepage\models;
 /**
  * @Entity
  * @Table(name="h_movies")

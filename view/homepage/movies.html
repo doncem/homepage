@@ -12,27 +12,27 @@
     <table>
         <tr>
             <td>Movies:</td>
-            <td><?php echo $sum_movies; ?></td>
+            <td>{{ sums.movies }}</td>
         </tr>
         <tr>
             <td>TV shows:</td>
-            <td><?php echo $sum_series; ?></td>
+            <td>{{ sums.series }}</td>
         </tr>
         <tr>
             <td>Genres per movie:</td>
-            <td><?php echo round($sum_genres / $sum_movies, 5); ?></td>
+            <td>{{ (sums.genres / sums.movies)|number_format(5) }}</td>
         </tr>
         <tr>
             <td>Genres per TV show:</td>
-            <td><?php echo round($sum_genres_series / $sum_series, 5); ?></td>
+            <td>{{ (sums.genres_series / sums.series)|number_format(5) }}</td>
         </tr>
         <tr>
             <td>Countries per movie:</td>
-            <td><?php echo round($sum_countries / $sum_movies, 5); ?></td>
+            <td>{{ (sums.countries / sums.movies)|number_format(5) }}</td>
         </tr>
         <tr>
             <td>Directors:</td>
-            <td><?php echo $sum_directors; ?></td>
+            <td>{{ sums.directors }}</td>
         </tr>
         <tr>
             <td>Mean growth:</td>
@@ -57,18 +57,23 @@
             <th></th>
             <th>#movies</th>
         </tr>
-        <?php
-        foreach ($countries as $country => $movie) {
-        ?>
+        {% for country,movie in data.countries %}
         <tr>
-            <td><?php echo $country; ?></td>
-            <td><?php echo $movie; ?></td>
+            <td>{{ country }}</td>
+            <td>{{ movie }}</td>
         </tr>
-        <?php
-        }
-        ?>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
 {% block script %}
+<script type="text/javascript">
+    {% autoescape false %}
+    {{ dataScript }}
+    {% endautoescape %}
+    $(function() {
+        $("#meanval").html(meanval);
+        $("#stdval").html(stdval);
+    });
+</script>
 {% endblock %}

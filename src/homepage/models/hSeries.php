@@ -1,5 +1,5 @@
 <?php
-namespace homepage\model;
+namespace homepage\models;
 /**
  * @Entity
  * @Table(name="h_series")
@@ -42,4 +42,21 @@ class hSeries {
      * @Column(length=36)
      */
     protected $link;
+    
+    /**
+     * @ManyToMany(targetEntity="hGenres")
+     * @JoinTable(name="h_series_genres",
+     *            joinColumns={@JoinColumn(name="serie", referencedColumnName="id")},
+     *            inverseJoinColumns={@JoinColumn(name="genre", referencedColumnName="id")}
+     * )
+     */
+    private $genres;
+    
+    public function __construct() {
+        $this->genres = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function getGenres() {
+        return $this->genres->getValues();
+    }
 }

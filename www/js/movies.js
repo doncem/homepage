@@ -48,11 +48,11 @@ $(function() {
         $("#time").html($("#time").html().substr(0, 8) + " loaded in: " + ((end - start) / 1000) + "s");
     }
     
-    var h;
+    /*var h;
     $(".placeholder").each(function(index) {
         h = $(window).height() - $(this).height();
         $(this).css({"margin-top":h/2,"margin-bottom":h/2});
-    });
+    });*/
     
     g = {
         "p_year" : {"graphs" : [{"data":d_y,"label":"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")","bars":true,"lines":false,"y":1},{"data":d_y_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_y_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":d_y_x,"y":{"align":null,"position":"left"}},
@@ -81,10 +81,10 @@ $(function() {
         }
     });
 
-    $("#main_stats").hover(function() {
+    /*$("#main_stats").hover(function() {
         timeout = setTimeout(function() {$("#main_stats").animate({opacity:0.9}, "slow");}, 500);
     }, function() {
         clearTimeout(timeout);
         $(this).animate({opacity:0.3}, "fast");
-    });
+    });*/
 });
