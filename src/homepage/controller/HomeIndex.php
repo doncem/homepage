@@ -1,7 +1,6 @@
 <?php
 
 namespace homepage\controller;
-//use \xframe\request\Controller;
 
 class HomeIndex extends \homepage\HomeController {
 
@@ -56,13 +55,7 @@ class HomeIndex extends \homepage\HomeController {
      */
     public function movies() {
         $this->view->page = "movies";
-        $js = array("/js/movies", "/js/jquery.flot.min");
-        if (!$sock = @fsockopen("www.google.com", 80, $num, $error, 5)) {
-            $js[] = "/js/jquery-1.7.1.min";
-        } else {
-            $js[] = "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min";
-        }
-        $this->view->js = array_reverse($js);
+        $this->view->js = array("/js/jquery.flot.min", "/js/homepage/movies");
 
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
         $data = $helper->getMovies();

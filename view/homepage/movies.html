@@ -42,9 +42,6 @@
             <td>Next standard diff<br />(squared):</td>
             <td id="stdval"></td>
         </tr>
-        <tr>
-            <td id="time" colspan="2" class="centre"></td>
-        </tr>
     </table>
 </div>
 <div id="p_year" class="placeholder"></div>
@@ -67,7 +64,6 @@
 </div>
 {% endblock %}
 {% block script %}
-<script type="text/javascript">
     {% autoescape false %}
     {{ dataScript }}
     {% endautoescape %}
@@ -75,5 +71,4 @@
         $("#meanval").html(meanval);
         $("#stdval").html(stdval);
     });
-</script>
 {% endblock %}

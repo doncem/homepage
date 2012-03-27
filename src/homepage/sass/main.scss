@@ -1,12 +1,12 @@
 $mainColour:#dddddd;
 $linkColour:#4183c4;
+$errorColour:red;
 $pageSize:1000px;
 $contentPad:10;
 
 body {
-    margin: 30px auto;
+    margin: 0px;
     padding: 0px;
-    width: $pageSize;
     background-color: $mainColour;
     font-family: helvetica,arial;
     font-size: 1.0em;
@@ -16,6 +16,24 @@ body {
 a {
     color: $linkColour;
     text-decoration: none;
+}
+
+#ie-sucks {
+    width:100%;
+    height:20px;
+    padding:8px 0px;
+    position:absolute;
+    top:0px;
+    text-align:center;
+    background-color:darken($errorColour, 20%);
+    color:lighten($mainColour, 80%);
+    font-weight:bold;
+    display:none;
+}
+
+#page {
+    margin: 30px auto;
+    width: $pageSize;
 }
 
 #menu {
@@ -32,8 +50,8 @@ a {
         list-style: none;
         a {
             border: thin solid darken($mainColour, 3%);
-            border-radius: 2px 0px 0px 2px;
-            padding: 8px 10px;
+            border-radius: 15px 0px 0px 3px;
+            padding: 10px 10px 8px 15px;
             &:hover {
                 background-color: lighten($mainColour, 3%);
             }

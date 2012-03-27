@@ -7,11 +7,6 @@ use xframe\registry\Registry;
 class HtmlInit {
     
     /**
-     * @var string
-     */
-    private $doctype;
-    
-    /**
      * @var string html tag attribute
      */
     private $lang;
@@ -31,7 +26,6 @@ class HtmlInit {
      * @param Registry $registry 
      */
     public function __construct(Registry $registry) {
-        $this->doctype = $registry->get("HTML_DOCTYPE");
         $this->lang = $registry->get("HTML_LANG");
         $this->title = $registry->get("HTML_TITLE");
         $this->css = $registry->get("HTML_CSS");
@@ -46,13 +40,17 @@ class HtmlInit {
      * @param string $css [optional] Filename
      * @return array
      */
-    public function getDefaults($doctype = null,
-                                $lang = null,
+    public function getDefaults($lang = null,
                                 $title = null,
                                 $css = null) {
-        return array("doctype" => $doctype ? $doctype : $this->doctype,
-                     "lang" => $lang ? $lang : $this->lang,
+        if (!$sock = @fsockopen("www.google.com", 80, $num, $error, 5)) {
+            $js = "/js/jquery-1.7.1.min";
+        } else {
+            $js = "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min";
+        }
+        return array("lang" => $lang ? $lang : $this->lang,
                      "title" => $title ? $title : $this->title,
-                     "css" => $css ? $css : $this->css);
+                     "css" => $css ? $css : $this->css,
+                     "js" => $js);
     }
 }

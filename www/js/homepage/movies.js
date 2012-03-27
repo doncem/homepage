@@ -6,14 +6,6 @@ function zeroPad(num, count) {
     return numZeropad;
 }
 
-if (navigator.appName != "Microsoft Internet Explorer") {
-    var start = new Date();
-    document.getElementById("time").innerHTML = "" + zeroPad(start.getHours(), 2) +
-                                                ":" + zeroPad(start.getMinutes(), 2) +
-                                                ":" + zeroPad(start.getSeconds(), 2) +
-                                                " loading...";
-}
-
 var colours = [3, 2, 4];
 
 function drawPlot(p, d) {
@@ -43,11 +35,6 @@ function showTooltip(x, y, contents, c, showFixed) {
 }
 
 $(function() {
-    if (!($.browser.msie)) {
-        var end = new Date();
-        $("#time").html($("#time").html().substr(0, 8) + " loaded in: " + ((end - start) / 1000) + "s");
-    }
-    
     /*var h;
     $(".placeholder").each(function(index) {
         h = $(window).height() - $(this).height();
