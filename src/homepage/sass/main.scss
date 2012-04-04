@@ -71,6 +71,7 @@ a {
 /* movies */
 .placeholder {
     height: 500px;
+    margin: 10px 0px;
 }
 
 .sub {
@@ -116,4 +117,7 @@ a {
 /* end movies */
 .clear {
     clear: both;
+}
+.error {
+    color: $errorColour;
 }

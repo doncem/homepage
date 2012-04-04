@@ -8,6 +8,10 @@
 
 {% block content %}
 <p>Some basic statistic from my watched list of movies and TV shows. List is made out of memory and free will</p>
+{% if error is defined %}
+{% include "common/error.html" %}
+{% endif %}
+{% if sums is defined %}
 <div id="main_stats">
     <table>
         <tr>
@@ -44,6 +48,8 @@
         </tr>
     </table>
 </div>
+{% endif %}
+{% if data is defined %}
 <div id="p_year" class="placeholder"></div>
 <div id="p_decade" class="placeholder"></div>
 <div id="p_genre" class="placeholder"></div>
@@ -62,8 +68,10 @@
         {% endfor %}
     </table>
 </div>
+{% endif %}
 {% endblock %}
 {% block script %}
+{% if data is defined %}
     {% autoescape false %}
     {{ dataScript }}
     {% endautoescape %}
@@ -71,4 +79,5 @@
         $("#meanval").html(meanval);
         $("#stdval").html(stdval);
     });
+{% endif %}
 {% endblock %}

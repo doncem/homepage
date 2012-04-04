@@ -57,23 +57,27 @@ class HomeIndex extends \homepage\HomeController {
         $this->view->page = "movies";
         $this->view->js = array("/js/jquery.flot.min", "/js/homepage/movies");
 
-        $helper = new \homepage\helpers\MoviesData($this->dic->em);
-        $data = $helper->getMovies();
-        
-        $this->view->sums = array("movies" => array_sum($data["by_decades"]),
-                                  "series" => $data["sum_series"],
-                                  "genres" => array_sum($data["by_genres"]),
-                                  "genres_series" => array_sum($data["by_genres_series"]),
-                                  "countries" => array_sum($data["by_countries"]),
-                                  "directors" => $data["sum_directors"]);
-        $this->view->data = array("years" => $data["by_years"],
-                                  "decades" => $data["by_decades"],
-                                  "genres" => $data["by_genres"],
-                                  "genres_series" => $data["by_genres_series"],
-                                  "countries" => $data["by_countries"],
-                                  "directed" => $data["by_directed"]);
-        
-        $this->view->dataScript = $this->getMoviesJavascript($data, "1969");
+        try {
+            $helper = new \homepage\helpers\MoviesData($this->dic->em);
+            $data = $helper->getMovies();
+
+            $this->view->sums = array("movies" => array_sum($data["by_decades"]),
+                                    "series" => $data["sum_series"],
+                                    "genres" => array_sum($data["by_genres"]),
+                                    "genres_series" => array_sum($data["by_genres_series"]),
+                                    "countries" => array_sum($data["by_countries"]),
+                                    "directors" => $data["sum_directors"]);
+            $this->view->data = array("years" => $data["by_years"],
+                                    "decades" => $data["by_decades"],
+                                    "genres" => $data["by_genres"],
+                                    "genres_series" => $data["by_genres_series"],
+                                    "countries" => $data["by_countries"],
+                                    "directed" => $data["by_directed"]);
+
+            $this->view->dataScript = $this->getMoviesJavascript($data, "1969");
+        } catch (Exception $e) {
+            $this->view->error = $e->getMessage();
+        }
     }
     
     /**
@@ -153,7 +157,7 @@ class HomeIndex extends \homepage\HomeController {
                 $i++;
             }
         }
-        $return .= ",[" . $i . "," . $mean . "]];
+        $return .= "[" . $i . "," . $mean . "]];
             var d_y_s = [";
         $i = 0;
         foreach ($data["by_years"] as $year => $value) {
@@ -162,11 +166,11 @@ class HomeIndex extends \homepage\HomeController {
                 $i++;
             }
         }
-        $return .= ",[" . $i . "," . $st ."]];
+        $return .= "[" . $i . "," . $st ."]];
             var d_yd_x = [";
         $i = 0;
         foreach ($data["by_decades"] as $decade => $value) {
-            $return .= "[" . $i . ",'" . $decade . "0&minus;" . $decade . "9']" . (($decade == substr(date("Y"), 0, 3)) ? "" : ",");
+            $return .= "[" . $i . ",'" . $decade . "0&minus;9']" . (($decade == substr(date("Y"), 0, 3)) ? "" : ",");
             $i++;
         }
         $return .= "];
