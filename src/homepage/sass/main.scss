@@ -1,21 +1,31 @@
 $mainColour:#dddddd;
 $linkColour:#4183c4;
 $errorColour:red;
-$pageSize:1000px;
+$pageSize:1000;
 $contentPad:10;
+@mixin transformed($degree) {
+    -o-transform:rotate(#{$degree}deg);
+    -moz-transform:rotate(#{$degree}deg);
+    -webkit-transform:rotate(#{$degree}deg);
+    transform:rotate(#{$degree}deg);
+}
+@mixin b-radius($topLeft, $topRight, $bottomRight, $bottomLeft) {
+    border-radius:#{$topLeft}px #{$topRight}px #{$bottomRight}px #{$bottomLeft}px;
+}
 
 body {
-    margin: 0px;
-    padding: 0px;
-    background-color: $mainColour;
-    font-family: helvetica,arial;
-    font-size: 1.0em;
-    line-height: 1.4em;
+    margin:0px;
+    padding:0px;
+    background-color:$mainColour;
+    font-family:/*"HelveticaNeue-Light", "Helvetica Neue Light", */"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size:1.0em;
+    font-weight:normal;
+    line-height:1.4em;
 }
 
 a {
-    color: $linkColour;
-    text-decoration: none;
+    color:$linkColour;
+    text-decoration:none;
 }
 
 #ie-sucks {
@@ -32,92 +42,89 @@ a {
 }
 
 #page {
-    margin: 30px auto;
-    width: $pageSize;
+    margin:30px auto;
+    width:#{$pageSize}px;
 }
 
 #menu {
-    float: left;
-    text-align: right;
-    width: ($pageSize/100*15);
+    float:left;
+    text-align:right;
+    width:#{$pageSize / 100 * 15}px;
     ul {
-        margin: 0px;
-        list-style: none;
-        padding: 0px;
+        margin:0px;
+        list-style:none;
+        padding:0px;
     }
     li {
-        margin: 22px 0px;
-        list-style: none;
+        margin:22px 0px;
+        list-style:none;
         a {
-            border: thin solid darken($mainColour, 3%);
-            border-radius: 15px 0px 0px 3px;
-            padding: 10px 10px 8px 15px;
+            border:thin solid darken($mainColour, 3%);
+            @include b-radius(15, 0, 0, 3);
+            padding:10px 10px 8px 15px;
             &:hover {
-                background-color: lighten($mainColour, 3%);
+                background-color:lighten($mainColour, 3%);
             }
             &.active {
-                color: darken($linkColour, 15%);
+                color:darken($linkColour, 15%);
             }
         }
     }
 }
 
 #content {
-    float: right;
-    border-left: thin solid darken($mainColour, 7%);
-    padding: 0px #{$contentPad}px;
-    width: ($pageSize/100*(84.9-$contentPad/10*2));
+    float:right;
+    border-left:thin solid darken($mainColour, 7%);
+    padding:0px #{$contentPad}px;
+    width:($pageSize / 100 * (($pageSize / 100 * 85 - 1) / 10 - $contentPad / 10 * 2))#{px};
 }
 /* movies */
 .placeholder {
-    height: 500px;
-    margin: 10px 0px;
+    height:500px;
+    margin:10px 0px;
 }
 
 .sub {
-    font-size: 80%;
-    vertical-align: sub;
+    font-size:80%;
+    vertical-align:sub;
 }
 .legend div {
-    background-color: #cdcdcd !important;
+    background-color:darken($mainColour, 7%) !important;
 }
 #p_year .xAxis .tickLabel, #p_genre .xAxis .tickLabel {
-    -o-transform:rotate(270deg);
-    -moz-transform:rotate(270deg);
-    -webkit-transform:rotate(270deg);
-    transform:rotate(270deg);
+    @include transformed(270);
 }
 #p_year .xAxis .tickLabel {
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left:10px;
+    margin-top:10px;
 }
 #p_decade .xAxis .tickLabel {
-    margin-left: 34px;
+    margin-left:34px;
 }
 #p_genre .xAxis .tickLabel {
-    width: 72px !important;
-    text-align: right !important;
-    margin-top: 24px;
+    width:72px !important;
+    text-align:right !important;
+    margin-top:24px;
 }
 #p_directed {
-    margin-top: 30px;
+    margin-top:30px;
 }
 #p_directed .xAxis .tickLabel {
-    margin-left: 34px;
+    margin-left:34px;
 }
 #tooltip {
-    position: absolute;
-    display: none;
-    border-width: thin;
-    border-style: solid;
-    border-radius: 5px;
-    padding: 2px 3px;
-    opacity: 0.7;
+    position:absolute;
+    display:none;
+    border-width:thin;
+    border-style:solid;
+    @include b-radius(5, 5, 5, 5);
+    padding:2px 3px;
+    opacity:0.7;
 }
 /* end movies */
 .clear {
-    clear: both;
+    clear:both;
 }
 .error {
-    color: $errorColour;
+    color:$errorColour;
 }
