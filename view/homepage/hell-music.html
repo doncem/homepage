@@ -8,11 +8,42 @@
 
 {% block content %}
 <h2>News</h2>
-<ol>
-    {% for key, news in links.news %}
-    <li><a href="{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
+{% set l = links.news|length %}
+<table id="news">
+{% set i = 0 %}
+{% for key, news in links.news %}
+    {% if loop.index % (columns * amount) == 1 %}
+    <tr>
+    {% endif %}
+        {% if loop.index % amount == 1 %}
+        {% set i = i + 1 %}
+        <td>
+            <ol start="{{ ((loop.index // amount) * amount) + 1 }}">
+            {% endif %}
+                <li><a href="{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
+            {% if loop.index is divisibleby(amount) %}
+            </ol>
+        </td>
+        {% endif %}
+    {% if loop.index is divisibleby(columns * amount) %}
+    </tr>
+    {% endif %}
+{% endfor %}
+{% if (links.news is divisibleby(amount)) and (i is divisibleby(columns)) %}
+    </tr>
+{% elseif (i is divisibleby(columns)) %}
+            </ol>
+        </td>
+    </tr>
+{% else %}
+            </ol>
+        </td>
+    {% set i = i + 1 %}
+    {% for j in range(i, cells) %}
+        <td></td>
     {% endfor %}
-</ol>
+{% endif %}
+</table>
 <h2>Reviews</h2>
 <ol>
     {% for key, review in links.reviews %}

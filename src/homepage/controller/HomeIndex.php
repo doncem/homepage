@@ -46,6 +46,9 @@ class HomeIndex extends \homepage\HomeController {
             $links[$key] = $arr;
         }
         
+        $this->view->columns = 4;
+        $this->view->amount = 11;
+        $this->view->cells = (ceil(count($links["news"]) / $this->view->amount) % $this->view->columns) * $this->view->columns;
         $this->view->links = $links;
     }
     
@@ -74,7 +77,7 @@ class HomeIndex extends \homepage\HomeController {
                                     "countries" => $data["by_countries"],
                                     "directed" => $data["by_directed"]);
 
-            $this->view->dataScript = $this->getMoviesJavascript($data, "1969");
+            $this->view->dataScript = $this->getMoviesJavascript($data, "1961");
         } catch (Exception $e) {
             $this->view->error = $e->getMessage();
         }

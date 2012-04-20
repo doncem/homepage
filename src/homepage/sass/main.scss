@@ -26,6 +26,9 @@ body {
 a {
     color:$linkColour;
     text-decoration:none;
+    &:hover {
+        color:darken($linkColour, 5%);
+    }
 }
 
 #ie-sucks {
@@ -77,6 +80,10 @@ a {
     border-left:thin solid darken($mainColour, 7%);
     padding:0px #{$contentPad}px;
     width:($pageSize / 100 * (($pageSize / 100 * 85 - 1) / 10 - $contentPad / 10 * 2))#{px};
+}
+/* hell-music */
+#news td {
+    vertical-align:top;
 }
 /* movies */
 .placeholder {
