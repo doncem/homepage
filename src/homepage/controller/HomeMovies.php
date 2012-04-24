@@ -5,7 +5,7 @@ namespace homepage\controller;
 /**
  * Separate controller for movies - in order to minify controllers
  */
-class HomeMovies extends \HomeController {
+class HomeMovies extends \homepage\HomeController {
 
     /**
      * @Request("movies")

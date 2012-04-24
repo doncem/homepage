@@ -11,14 +11,8 @@ namespace homepage\controller;
  * <li>links</li>
  * </ul>
  */
-class HomeIndex extends \HomeController {
+class HomeIndex extends \homepage\HomeController {
 
-    public function init() {
-        parent::init();
-        $html = new \HtmlInit($this->dic->registry);
-        $this->view->html = $html->getDefaults();
-    }
-    
     /**
      * @Request("index")
      * @Template("homepage/index")

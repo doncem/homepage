@@ -4,7 +4,7 @@ namespace homepage\helpers;
 use Doctrine\ORM\EntityManager;
 
 /**
- * @IgnoreAnnotation("Annotation") 
+ * @IgnoreAnnotation("Annotation")
  */
 class MoviesData {
     
