@@ -12,6 +12,23 @@ $contentPad:10;
 @mixin b-radius($topLeft, $topRight, $bottomRight, $bottomLeft) {
     border-radius:#{$topLeft}px #{$topRight}px #{$bottomRight}px #{$bottomLeft}px;
 }
+@mixin l-gradient($dir, $mainC, $fadingC, $startFader1, $endFader1, $startFader2, $endFader2) {
+    /* i don't give a damn about old browsers, so optin it out of the list */
+    background:$mainC;/* Old browsers */
+    background:-moz-linear-gradient($dir, $fadingC $startFader1, $mainC $endFader1, $mainC $startFader2, $fadingC $endFader2);/* FF3.6+ */
+    /*background:-webkit-gradient(linear, $dir top, right top, color-stop($startFader1,$fadingC), color-stop($endFader1,$mainC), color-stop($startFader2,$mainC), color-stop($endFader2,$fadingC));/* Chrome,Safari4+ */
+    background:-webkit-linear-gradient($dir, $fadingC $startFader1, $mainC $endFader1, $mainC $startFader2, $fadingC $endFader2);/* Chrome10+,Safari5.1+ */
+    background:-o-linear-gradient($dir, $fadingC $startFader1, $mainC $endFader1, $mainC $startFader2, $fadingC $endFader2);/* Opera 11.10+ */
+    background:-ms-linear-gradient($dir, $fadingC $startFader1, $mainC $endFader1, $mainC $startFader2, $fadingC $endFader2);/* IE10+ */
+    background:linear-gradient($dir, $fadingC $startFader1, $mainC $endFader1, $mainC $startFader2, $fadingC $endFader2);/* W3C */
+    /*filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$fadingC}', endColorstr='#{$fadingC}',GradientType=1 );/* IE6-9 */
+}
+/* here sass conversion did not work - change it manually */
+@media (min-width:1100px) {
+    body {
+        @include l-gradient(left, $mainColour, lighten($linkColour, 30%), -10%, 10%, 90%, 110%);
+    }
+}
 
 body {
     margin:0px;
