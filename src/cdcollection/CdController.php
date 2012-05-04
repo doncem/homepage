@@ -1,23 +1,23 @@
 <?php
 
 namespace cdcollection;
-use \xframe\request\Controller;
 
 /**
  * Initializing controller
  */
-class CdController extends Controller {
+class CdController extends \ControllerInit {
 
     /**
      * <ul><li>Setting default html values</li><li>Show google scripts?</li></ul>
      */
     public function init() {
+        parent::init();
+
         $html = new \HtmlInit($this->dic->registry);
         $this->view->html = $html->getDefaults(null,
                                                "CD Collection",
                                                null,
                                                array("subtitle" => $this->getSubtitle()));
-        $this->view->showGA = CONFIG == "live" ? 1 : 0;
     }
     
     private function getSubtitle() {

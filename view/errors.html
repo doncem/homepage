@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="{{ html.lang }}">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    {% if showGA == 1 %}
+    <meta name="google-site-verification" content="gND_iyudJzru_kmf-YSstX8_FFr7vXAFV8ajx-KbuaM" />
+    {% endif %}
+    <meta name="description" content="{% block meta_description %}Error occured{% endblock %}"/>
+    {#<meta name="author" content="Donatas Martinkus"/>#}
+    <link rel="stylesheet" type="text/css" href="/css/errors/{{ html.css }}.css" />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <title>{{ html.title }} - {% block title %}Oh Dear...{% endblock %}</title>
+</head>
+<body>
+    <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>
+    <div id="page">
+        {% block content %}
+        <h1>You've received an error...</h1>
+        <img src="/img/feels_bad_man.jpg" alt="Feels bad man" /><br />
+        <p>{{ errorMessage }}</p>
+        <p>Trace:</p>
+        <pre>{{ errorStack }}</pre>
+        {% endblock %}
+    </div>
+    {% if showGA == 1 %}
+    {% include "common/ga.html" %}
+    {% endif %}
+    <script type="text/javascript" src="{{ html.js }}.js"></script>
+    {% if js is defined %}
+    {% for j in js %}
+    <script type="text/javascript" src="{{ j }}.js"></script>
+    {% endfor %}
+    {% endif %}
+    <script type="text/javascript">
+        if ($.browser.msie) {
+            $("#ie-sucks").slideDown("slow");
+        }
+        {% block script %}{% endblock %}
+    </script>
+</body>
+</html>
