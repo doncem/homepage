@@ -68,10 +68,9 @@ $(function() {
         }
     });
 
-    /*$("#main_stats").hover(function() {
-        timeout = setTimeout(function() {$("#main_stats").animate({opacity:0.9}, "slow");}, 500);
-    }, function() {
-        clearTimeout(timeout);
-        $(this).animate({opacity:0.3}, "fast");
-    });*/
+    $("#add-movie").click(function() {
+        $("#add-movie-form").toggle("slow", function() {
+            $("#add-movie").html($("#add-movie-form").is(":visible") ? "Cancel" : "Add");
+        });
+    });
 });

@@ -2,7 +2,7 @@
 <html lang="{{ html.lang }}">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    {% if showGA == 1 %}
+    {% if isLive == 1 %}
     <meta name="google-site-verification" content="gND_iyudJzru_kmf-YSstX8_FFr7vXAFV8ajx-KbuaM" />
     {% endif %}
     <meta name="description" content="{% block meta_description %}Error occured{% endblock %}"/>
@@ -22,7 +22,7 @@
         <pre>{{ errorStack }}</pre>
         {% endblock %}
     </div>
-    {% if showGA == 1 %}
+    {% if isLive == 1 %}
     {% include "common/ga.html" %}
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>

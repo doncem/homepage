@@ -8,8 +8,8 @@
 
 {% block content %}
 <p>Some basic statistic from my watched list of movies and TV shows. List is made out of memory and free will</p>
-{% if error is defined %}
-{% include "common/error.html" %}
+{% if isLive != 1 %}
+{% include "homepage/add-movies.html" %}
 {% endif %}
 {% if sums is defined %}
 <div id="main_stats">

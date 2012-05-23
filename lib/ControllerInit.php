@@ -16,6 +16,6 @@ class ControllerInit extends Controller {
         }
         
         $this->dic->exceptionHandler->attach(new ExHandling());
-        $this->view->showGA = CONFIG == "live" ? 1 : 0;
+        $this->view->isLive = CONFIG == "live" ? 1 : 0;
     }
 }
