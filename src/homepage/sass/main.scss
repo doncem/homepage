@@ -48,6 +48,35 @@
 #add-movie-form {
     display:none;
 }
+#form-content {
+    div {
+        float:left;
+        .row {
+            float:none;
+            width:225px;
+        }
+        .form-content-header {
+            width:63px;
+        }
+        .form-content-data {
+            width:150px;
+            padding-left:5px;
+            text-align:left;
+        }
+    }
+    #source .row {
+        width:350px;
+        .form-content-header {
+            width:91px;
+        }
+        .form-content-data {
+            width:250px;
+            input {
+                width:240px;
+            }
+        }
+    }
+}
 .placeholder {
     height:500px;
     margin:10px 0px;

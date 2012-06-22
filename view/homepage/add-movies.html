@@ -1,4 +1,85 @@
 <button type="button" id="add-movie">Add</button>
-<form method="post" name="add-movie-form" id="add-movie-form" action="#add">
-    <pre>here goes some brilliancy</pre>
+<form method="post" name="add-movie-form" id="add-movie-form" action="#add" onsubmit="return false;">
+    <div class="row">
+        <label for="its-movie">Movie:</label>
+        <input type="radio" id="its-movie" name="source" value="movie" checked="checked" />
+        <label for="its-series">Series:</label>
+        <input type="radio" id="its-series" name="source" value="series" />
+    </div>
+    <div id="form-content">
+        <div id="source">
+            <div class="row">
+                <div class="form-content-header">Original title:</div>
+                <div class="form-content-data">
+                    <input type="text" name="original-title" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">English title:</div>
+                <div class="form-content-data">
+                    <input type="text" name="english-title" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">Year:</div>
+                <div class="form-content-data">
+                    <input type="text" name="year-start" />
+                </div>
+            </div>
+            <div class="row hidden">
+                <div class="form-content-header">Year ended:</div>
+                <div class="form-content-data">
+                    <input type="text" name="year-end" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">IMDb:</div>
+                <div class="form-content-data">
+                    <input type="text" name="imdb" />
+                </div>
+            </div>
+        </div>
+        <div id="genres-countries">
+            <div class="row">
+                <div class="form-content-header">Genre:</div>
+                <div class="form-content-data">
+                    <input type="text" name="genres[]" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">&nbsp;</div>
+                <div class="form-content-data">
+                    <button type="button" class="add-more" value="genres">More</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">Country:</div>
+                <div class="form-content-data">
+                    <input type="text" name="countries[]" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">&nbsp;</div>
+                <div class="form-content-data">
+                    <button type="button" class="add-more" value="countries">More</button>
+                </div>
+            </div>
+        </div>
+        <div id="people">
+            <div class="row">
+                <div class="form-content-header">Director:</div>
+                <div class="form-content-data">
+                    <input type="text" name="people[]" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-content-header">&nbsp;</div>
+                <div class="form-content-data">
+                    <button type="button" class="add-more" value="people">More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <button type="button" id="form-submit">Submit</button>
 </form>

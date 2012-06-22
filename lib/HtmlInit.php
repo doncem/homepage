@@ -45,9 +45,9 @@ class HtmlInit {
                                 $css = null,
                                 array $params = array()) {
         if (!$sock = @fsockopen("www.google.com", 80, $num, $error, 5)) {
-            $js = "/js/jquery-1.7.1.min";
+            $js = "/js/jquery-1.7.2.min";
         } else {
-            $js = "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min";
+            $js = "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min";
         }
         return array_merge(array("lang" => $lang ? $lang : $this->lang,
                                  "title" => $title ? $title : $this->title,
