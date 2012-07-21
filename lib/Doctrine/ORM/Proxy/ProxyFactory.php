@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -93,10 +93,6 @@ class ProxyFactory
             require $fileName;
         }
 
-        if ( ! $this->_em->getMetadataFactory()->hasMetadataFor($fqn)) {
-            $this->_em->getMetadataFactory()->setMetadataFor($fqn, $this->_em->getClassMetadata($className));
-        }
-
         $entityPersister = $this->_em->getUnitOfWork()->getEntityPersister($className);
 
         return new $fqn($entityPersister, $identifier);
@@ -125,22 +121,27 @@ class ProxyFactory
      * @param string $toDir The target directory of the proxy classes. If not specified, the
      *                      directory configured on the Configuration of the EntityManager used
      *                      by this factory is used.
+     * @return int Number of generated proxies.
      */
     public function generateProxyClasses(array $classes, $toDir = null)
     {
         $proxyDir = $toDir ?: $this->_proxyDir;
         $proxyDir = rtrim($proxyDir, DIRECTORY_SEPARATOR);
+        $num = 0;
 
         foreach ($classes as $class) {
             /* @var $class ClassMetadata */
-            if ($class->isMappedSuperclass) {
+            if ($class->isMappedSuperclass || $class->reflClass->isAbstract()) {
                 continue;
             }
 
             $proxyFileName = $this->getProxyFileName($class->name, $proxyDir);
 
             $this->_generateProxyClass($class, $proxyFileName, self::$_proxyClassTemplate);
+            $num++;
         }
+
+        return $num;
     }
 
     /**
@@ -189,7 +190,9 @@ class ProxyFactory
             throw ProxyException::proxyDirectoryNotWritable();
         }
 
-        file_put_contents($fileName, $file, LOCK_EX);
+        $tmpFileName = $fileName . '.' . uniqid("", true);
+        file_put_contents($tmpFileName, $file);
+        rename($tmpFileName, $fileName);
     }
 
     /**
@@ -397,7 +400,7 @@ class <proxyClassName> extends \<className> implements \Doctrine\ORM\Proxy\Proxy
             if ($original === null) {
                 throw new \Doctrine\ORM\EntityNotFoundException();
             }
-            foreach ($class->reflFields AS $field => $reflProperty) {
+            foreach ($class->reflFields as $field => $reflProperty) {
                 $reflProperty->setValue($this, $reflProperty->getValue($original));
             }
             unset($this->_entityPersister, $this->_identifier);

@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -33,8 +33,8 @@ class SQLSrvException extends \Doctrine\DBAL\DBALException
         foreach ($errors as $error) {
             $message .= "SQLSTATE [".$error['SQLSTATE'].", ".$error['code']."]: ". $error['message']."\n";
         }
-        if (!$message) {
-            $message = "SQL Server error occured but no error message was retrieved from driver.";
+        if ( ! $message) {
+            $message = "SQL Server error occurred but no error message was retrieved from driver.";
         }
 
         return new self(rtrim($message));

@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -255,7 +255,7 @@ class UnitOfWork implements PropertyChangedListener
      * 4) All collection updates
      * 5) All entity deletions
      *
-     * @param object $entity
+     * @param null|object|array $entity
      * @return void
      */
     public function commit($entity = null)
@@ -268,8 +268,12 @@ class UnitOfWork implements PropertyChangedListener
         // Compute changes done since last commit.
         if ($entity === null) {
             $this->computeChangeSets();
-        } else {
+        } elseif (is_object($entity)) {
             $this->computeSingleEntityChangeSet($entity);
+        } elseif (is_array($entity)) {
+            foreach ($entity as $object) {
+                $this->computeSingleEntityChangeSet($object);
+            }
         }
 
         if ( ! ($this->entityInsertions ||
@@ -882,7 +886,7 @@ class UnitOfWork implements PropertyChangedListener
         $hasListeners          = $this->evm->hasListeners(Events::postPersist);
 
         foreach ($this->entityInsertions as $oid => $entity) {
-            if (get_class($entity) !== $className) {
+            if ($this->em->getClassMetadata(get_class($entity))->name !== $className) {
                 continue;
             }
 
@@ -941,7 +945,7 @@ class UnitOfWork implements PropertyChangedListener
         $hasPostUpdateListeners          = $this->evm->hasListeners(Events::postUpdate);
 
         foreach ($this->entityUpdates as $oid => $entity) {
-            if ( ! (get_class($entity) === $className || $entity instanceof Proxy && get_parent_class($entity) === $className)) {
+            if ($this->em->getClassMetadata(get_class($entity))->name !== $className) {
                 continue;
             }
 
@@ -988,7 +992,7 @@ class UnitOfWork implements PropertyChangedListener
         $hasListeners = $this->evm->hasListeners(Events::postRemove);
 
         foreach ($this->entityDeletions as $oid => $entity) {
-            if ( ! (get_class($entity) == $className || $entity instanceof Proxy && get_parent_class($entity) == $className)) {
+            if ($this->em->getClassMetadata(get_class($entity))->name !== $className) {
                 continue;
             }
 
@@ -1039,7 +1043,7 @@ class UnitOfWork implements PropertyChangedListener
         $newNodes = array();
 
         foreach ($entityChangeSet as $entity) {
-            $className = get_class($entity);
+            $className = $this->em->getClassMetadata(get_class($entity))->name;
 
             if ($calc->hasClass($className)) {
                 continue;
@@ -1119,6 +1123,10 @@ class UnitOfWork implements PropertyChangedListener
 
         if (isset($this->entityIdentifiers[$oid])) {
             $this->addToIdentityMap($entity);
+        }
+
+        if ($entity instanceof NotifyPropertyChanged) {
+            $entity->addPropertyChangedListener($this);
         }
     }
 
@@ -1298,10 +1306,6 @@ class UnitOfWork implements PropertyChangedListener
 
         $this->identityMap[$className][$idHash] = $entity;
 
-        if ($entity instanceof NotifyPropertyChanged) {
-            $entity->addPropertyChangedListener($this);
-        }
-
         return true;
     }
 
@@ -1353,7 +1357,7 @@ class UnitOfWork implements PropertyChangedListener
                 }
 
                 // db lookup
-                if ($this->getEntityPersister(get_class($entity))->exists($entity)) {
+                if ($this->getEntityPersister($class->name)->exists($entity)) {
                     return self::STATE_DETACHED;
                 }
 
@@ -1370,7 +1374,7 @@ class UnitOfWork implements PropertyChangedListener
                 }
 
                 // db lookup
-                if ($this->getEntityPersister(get_class($entity))->exists($entity)) {
+                if ($this->getEntityPersister($class->name)->exists($entity)) {
                     return self::STATE_DETACHED;
                 }
 
@@ -1651,7 +1655,7 @@ class UnitOfWork implements PropertyChangedListener
         $oid = spl_object_hash($entity);
 
         if (isset($visited[$oid])) {
-            return; // Prevent infinite recursion
+            return $visited[$oid]; // Prevent infinite recursion
         }
 
         $visited[$oid] = $entity; // mark visited
@@ -2147,13 +2151,12 @@ class UnitOfWork implements PropertyChangedListener
             throw ORMInvalidArgumentException::entityNotManaged($entity);
         }
 
-        $entityName = get_class($entity);
-        $class = $this->em->getClassMetadata($entityName);
+        $class = $this->em->getClassMetadata(get_class($entity));
 
         switch ($lockMode) {
             case \Doctrine\DBAL\LockMode::OPTIMISTIC;
                 if ( ! $class->isVersioned) {
-                    throw OptimisticLockException::notVersioned($entityName);
+                    throw OptimisticLockException::notVersioned($class->name);
                 }
 
                 if ($lockVersion === null) {
@@ -2361,11 +2364,12 @@ class UnitOfWork implements PropertyChangedListener
             }
         } else {
             $entity = $this->newInstance($class);
-            $oid = spl_object_hash($entity);
+            $oid    = spl_object_hash($entity);
 
-            $this->entityIdentifiers[$oid] = $id;
-            $this->entityStates[$oid] = self::STATE_MANAGED;
+            $this->entityIdentifiers[$oid]  = $id;
+            $this->entityStates[$oid]       = self::STATE_MANAGED;
             $this->originalEntityData[$oid] = $data;
+
             $this->identityMap[$class->rootEntityName][$idHash] = $entity;
 
             if ($entity instanceof NotifyPropertyChanged) {
@@ -2797,6 +2801,10 @@ class UnitOfWork implements PropertyChangedListener
         $this->originalEntityData[$oid] = $data;
 
         $this->addToIdentityMap($entity);
+
+        if ($entity instanceof NotifyPropertyChanged) {
+            $entity->addPropertyChangedListener($this);
+        }
     }
 
     /**

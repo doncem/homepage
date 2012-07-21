@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -23,10 +23,14 @@ use Doctrine\Common\Cache\Cache,
     Doctrine\Common\Cache\ArrayCache,
     Doctrine\Common\Annotations\AnnotationRegistry,
     Doctrine\Common\Annotations\AnnotationReader,
-    Doctrine\ORM\Mapping\Driver\Driver,
+    Doctrine\Common\Persistence\Mapping\Driver\MappingDriver,
     Doctrine\ORM\Mapping\Driver\AnnotationDriver,
+    Doctrine\ORM\Mapping\QuoteStrategy,
+    Doctrine\ORM\Mapping\DefaultQuoteStrategy,
     Doctrine\ORM\Mapping\NamingStrategy,
-    Doctrine\ORM\Mapping\DefaultNamingStrategy;
+    Doctrine\ORM\Mapping\DefaultNamingStrategy,
+    Doctrine\Common\Annotations\SimpleAnnotationReader,
+    Doctrine\Common\Annotations\CachedReader;
 
 /**
  * Configuration container for all configuration options of Doctrine.
@@ -112,55 +116,40 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Sets the cache driver implementation that is used for metadata caching.
      *
-     * @param Driver $driverImpl
+     * @param MappingDriver $driverImpl
      * @todo Force parameter to be a Closure to ensure lazy evaluation
      *       (as soon as a metadata cache is in effect, the driver never needs to initialize).
      */
-    public function setMetadataDriverImpl(Driver $driverImpl)
+    public function setMetadataDriverImpl(MappingDriver $driverImpl)
     {
         $this->_attributes['metadataDriverImpl'] = $driverImpl;
     }
 
     /**
-     * Add a new default annotation driver with a correctly configured annotation reader.
+     * Add a new default annotation driver with a correctly configured annotation reader. If $useSimpleAnnotationReader
+     * is true, the notation `@Entity` will work, otherwise, the notation `@ORM\Entity` will be supported.
      *
      * @param array $paths
-     * @return Mapping\Driver\AnnotationDriver
+     * @param bool $useSimpleAnnotationReader
+     * @return AnnotationDriver
      */
-    public function newDefaultAnnotationDriver($paths = array())
+    public function newDefaultAnnotationDriver($paths = array(), $useSimpleAnnotationReader = true)
     {
-        switch (true) {
-            case (version_compare(\Doctrine\Common\Version::VERSION, '2.2.0-DEV', '>=')):
-                // Register the ORM Annotations in the AnnotationRegistry
-                AnnotationRegistry::registerFile(__DIR__ . '/Mapping/Driver/DoctrineAnnotations.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/Mapping/Driver/DoctrineAnnotations.php');
 
-                $reader = new \Doctrine\Common\Annotations\SimpleAnnotationReader();
-                $reader->addNamespace('Doctrine\ORM\Mapping');
+        if ($useSimpleAnnotationReader) {
+            // Register the ORM Annotations in the AnnotationRegistry
+            $reader = new SimpleAnnotationReader();
+            $reader->addNamespace('Doctrine\ORM\Mapping');
+            $cachedReader = new CachedReader($reader, new ArrayCache());
 
-                $reader = new \Doctrine\Common\Annotations\CachedReader($reader, new ArrayCache());
-                break;
-
-            case (version_compare(\Doctrine\Common\Version::VERSION, '2.1.0-DEV', '>=')):
-                // Register the ORM Annotations in the AnnotationRegistry
-                AnnotationRegistry::registerFile(__DIR__ . '/Mapping/Driver/DoctrineAnnotations.php');
-
-                $reader = new AnnotationReader();
-                $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
-                $reader->setIgnoreNotImportedAnnotations(true);
-                $reader->setEnableParsePhpImports(false);
-
-                $reader = new \Doctrine\Common\Annotations\CachedReader(
-                    new \Doctrine\Common\Annotations\IndexedReader($reader), new ArrayCache()
-                );
-                break;
-
-            default:
-                $reader = new AnnotationReader();
-                $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
-                break;
+            return new AnnotationDriver($cachedReader, (array) $paths);
         }
 
-        return new AnnotationDriver($reader, (array) $paths);
+        return new AnnotationDriver(
+            new CachedReader(new AnnotationReader(), new ArrayCache()),
+            (array) $paths
+        );
     }
 
     /**
@@ -178,8 +167,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
      * Resolves a registered namespace alias to the full namespace.
      *
      * @param string $entityNamespaceAlias
+     * @throws ORMException
      * @return string
-     * @throws MappingException
      */
     public function getEntityNamespace($entityNamespaceAlias)
     {
@@ -193,8 +182,7 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Set the entity alias map
      *
-     * @param array $entityAliasMap
-     * @return void
+     * @param array $entityNamespaces
      */
     public function setEntityNamespaces(array $entityNamespaces)
     {
@@ -215,7 +203,7 @@ class Configuration extends \Doctrine\DBAL\Configuration
      * Gets the cache driver implementation that is used for the mapping metadata.
      *
      * @throws ORMException
-     * @return Mapping\Driver\Driver
+     * @return MappingDriver
      */
     public function getMetadataDriverImpl()
     {
@@ -244,6 +232,28 @@ class Configuration extends \Doctrine\DBAL\Configuration
     public function setQueryCacheImpl(Cache $cacheImpl)
     {
         $this->_attributes['queryCacheImpl'] = $cacheImpl;
+    }
+
+    /**
+     * Gets the cache driver implementation that is used for the hydration cache (SQL cache).
+     *
+     * @return \Doctrine\Common\Cache\Cache
+     */
+    public function getHydrationCacheImpl()
+    {
+        return isset($this->_attributes['hydrationCacheImpl'])
+            ? $this->_attributes['hydrationCacheImpl']
+            : null;
+    }
+
+    /**
+     * Sets the cache driver implementation that is used for the hydration cache (SQL cache).
+     *
+     * @param \Doctrine\Common\Cache\Cache $cacheImpl
+     */
+    public function setHydrationCacheImpl(Cache $cacheImpl)
+    {
+        $this->_attributes['hydrationCacheImpl'] = $cacheImpl;
     }
 
     /**
@@ -283,6 +293,7 @@ class Configuration extends \Doctrine\DBAL\Configuration
      * Gets a previously registered named DQL query.
      *
      * @param string $name The name of the query.
+     * @throws ORMException
      * @return string The DQL query.
      */
     public function getNamedQuery($name)
@@ -297,9 +308,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Adds a named native query to the configuration.
      *
-     * @param string $name The name of the query.
-     * @param string $sql The native SQL query string.
-     * @param ResultSetMapping $rsm The ResultSetMapping used for the results of the SQL query.
+     * @param string                 $name The name of the query.
+     * @param string                 $sql  The native SQL query string.
+     * @param Query\ResultSetMapping $rsm  The ResultSetMapping used for the results of the SQL query.
      */
     public function addNamedNativeQuery($name, $sql, Query\ResultSetMapping $rsm)
     {
@@ -309,9 +320,10 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Gets the components of a previously registered named native query.
      *
-     * @param string $name The name of the query.
-     * @return array A tuple with the first element being the SQL string and the second
-     *          element being the ResultSetMapping.
+     * @param  string $name  The name of the query.
+     * @throws ORMException
+     * @return array         A tuple with the first element being the SQL string and the second
+     *                       element being the ResultSetMapping.
      */
     public function getNamedNativeQuery($name)
     {
@@ -353,9 +365,14 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $name
      * @param string $className
+     * @throws ORMException
      */
     public function addCustomStringFunction($name, $className)
     {
+        if (Query\Parser::isInternalFunction($name)) {
+            throw ORMException::overwriteInternalDQLFunctionNotAllowed($name);
+        }
+
         $this->_attributes['customStringFunctions'][strtolower($name)] = $className;
     }
 
@@ -386,7 +403,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
      */
     public function setCustomStringFunctions(array $functions)
     {
-        $this->_attributes['customStringFunctions'] = array_change_key_case($functions);
+        foreach ($functions as $name => $className) {
+            $this->addCustomStringFunction($name, $className);
+        }
     }
 
     /**
@@ -398,9 +417,14 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $name
      * @param string $className
+     * @throws ORMException
      */
     public function addCustomNumericFunction($name, $className)
     {
+        if (Query\Parser::isInternalFunction($name)) {
+            throw ORMException::overwriteInternalDQLFunctionNotAllowed($name);
+        }
+
         $this->_attributes['customNumericFunctions'][strtolower($name)] = $className;
     }
 
@@ -431,7 +455,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
      */
     public function setCustomNumericFunctions(array $functions)
     {
-        $this->_attributes['customNumericFunctions'] = array_change_key_case($functions);
+        foreach ($functions as $name => $className) {
+            $this->addCustomNumericFunction($name, $className);
+        }
     }
 
     /**
@@ -443,9 +469,14 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $name
      * @param string $className
+     * @throws ORMException
      */
     public function addCustomDatetimeFunction($name, $className)
     {
+        if (Query\Parser::isInternalFunction($name)) {
+            throw ORMException::overwriteInternalDQLFunctionNotAllowed($name);
+        }
+
         $this->_attributes['customDatetimeFunctions'][strtolower($name)] = $className;
     }
 
@@ -476,7 +507,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
      */
     public function setCustomDatetimeFunctions(array $functions)
     {
-        $this->_attributes['customDatetimeFunctions'] = array_change_key_case($functions);
+        foreach ($functions as $name => $className) {
+            $this->addCustomDatetimeFunction($name, $className);
+        }
     }
 
     /**
@@ -506,7 +539,7 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Set a class metadata factory.
      *
-     * @param string $cmf
+     * @param string $cmfName
      */
     public function setClassMetadataFactoryName($cmfName)
     {
@@ -604,7 +637,33 @@ class Configuration extends \Doctrine\DBAL\Configuration
         if ( ! isset($this->_attributes['namingStrategy'])) {
             $this->_attributes['namingStrategy'] = new DefaultNamingStrategy();
         }
-        
+
         return $this->_attributes['namingStrategy'];
+    }
+
+    /**
+     * Set quote strategy.
+     *
+     * @since 2.3
+     * @param Doctrine\ORM\Mapping\QuoteStrategy $quoteStrategy
+     */
+    public function setQuoteStrategy(QuoteStrategy $quoteStrategy)
+    {
+        $this->_attributes['quoteStrategy'] = $quoteStrategy;
+    }
+
+    /**
+     * Get quote strategy.
+     *
+     * @since 2.3
+     * @return Doctrine\ORM\Mapping\QuoteStrategy
+     */
+    public function getQuoteStrategy()
+    {
+        if ( ! isset($this->_attributes['quoteStrategy'])) {
+            $this->_attributes['quoteStrategy'] = new DefaultQuoteStrategy();
+        }
+
+        return $this->_attributes['quoteStrategy'];
     }
 }

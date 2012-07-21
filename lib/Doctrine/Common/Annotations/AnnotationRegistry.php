@@ -13,12 +13,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\Common\Annotations;
 
+/**
+ * AnnotationRegistry
+ */
 final class AnnotationRegistry
 {
     /**
@@ -46,6 +49,11 @@ final class AnnotationRegistry
         self::$loaders = array();
     }
 
+    /**
+     * Register file
+     *
+     * @param string $file
+     */
     static public function registerFile($file)
     {
         require_once $file;
@@ -83,6 +91,8 @@ final class AnnotationRegistry
      * IMPORTANT: Loaders have to return true if they loaded a class that could contain the searched annotation class.
      *
      * @param callable $callable
+     *
+     * @throws \InvalidArgumentException
      */
     static public function registerLoader($callable)
     {
@@ -96,7 +106,7 @@ final class AnnotationRegistry
      * Autoload an annotation class silently.
      *
      * @param string $class
-     * @return void
+     * @return boolean
      */
     static public function loadAnnotationClass($class)
     {

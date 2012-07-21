@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -155,7 +155,7 @@ final class DriverManager
      */
     private static function _checkParams(array $params)
     {
-        // check existance of mandatory parameters
+        // check existence of mandatory parameters
 
         // driver
         if ( ! isset($params['driver']) && ! isset($params['driverClass'])) {

@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -34,6 +34,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform,
 abstract class Type
 {
     const TARRAY = 'array';
+    const SIMPLE_ARRAY = 'simple_array';
+    const JSON_ARRAY = 'json_array';
     const BIGINT = 'bigint';
     const BOOLEAN = 'boolean';
     const DATETIME = 'datetime';
@@ -56,6 +58,8 @@ abstract class Type
     /** The map of supported doctrine mapping types. */
     private static $_typesMap = array(
         self::TARRAY => 'Doctrine\DBAL\Types\ArrayType',
+        self::SIMPLE_ARRAY => 'Doctrine\DBAL\Types\SimpleArrayType',
+        self::JSON_ARRAY => 'Doctrine\DBAL\Types\JsonArrayType',
         self::OBJECT => 'Doctrine\DBAL\Types\ObjectType',
         self::BOOLEAN => 'Doctrine\DBAL\Types\BooleanType',
         self::INTEGER => 'Doctrine\DBAL\Types\IntegerType',
@@ -191,7 +195,7 @@ abstract class Type
         if ( ! isset(self::$_typesMap[$name])) {
             throw DBALException::typeNotFound($name);
         }
-        
+
         if (isset(self::$_typeObjects[$name])) {
             unset(self::$_typeObjects[$name]);
         }
@@ -273,4 +277,30 @@ abstract class Type
     {
         return $sqlExpr;
     }
+
+    /**
+     * Get an array of database types that map to this Doctrine type.
+     *
+     * @param AbstractPlatform $platform
+     * @return array
+     */
+    public function getMappedDatabaseTypes(AbstractPlatform $platform)
+    {
+        return array();
+    }
+
+    /**
+     * If this Doctrine Type maps to an already mapped database type,
+     * reverse schema engineering can't take them apart. You need to mark
+     * one of those types as commented, which will have Doctrine use an SQL
+     * comment to typehint the actual Doctrine Type.
+     *
+     * @param AbstractPlatform $platform
+     * @return bool
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return false;
+    }
 }
+

@@ -13,13 +13,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\ORM;
 
-use Closure, Exception,
+use Exception,
     Doctrine\Common\EventManager,
     Doctrine\Common\Persistence\ObjectManager,
     Doctrine\DBAL\Connection,
@@ -192,8 +192,6 @@ class EntityManager implements ObjectManager
 
     /**
      * Starts a transaction on the underlying database connection.
-     *
-     * @deprecated Use {@link getConnection}.beginTransaction().
      */
     public function beginTransaction()
     {
@@ -210,15 +208,19 @@ class EntityManager implements ObjectManager
      * If an exception occurs during execution of the function or flushing or transaction commit,
      * the transaction is rolled back, the EntityManager closed and the exception re-thrown.
      *
-     * @param Closure $func The function to execute transactionally.
+     * @param callable $func The function to execute transactionally.
      * @return mixed Returns the non-empty value returned from the closure or true instead
      */
-    public function transactional(Closure $func)
+    public function transactional($func)
     {
+        if (!is_callable($func)) {
+            throw new \InvalidArgumentException('Expected argument of type "callable", got "' . gettype($func) . '"');
+        }
+
         $this->conn->beginTransaction();
 
         try {
-            $return = $func($this);
+            $return = call_user_func($func, $this);
 
             $this->flush();
             $this->conn->commit();
@@ -234,8 +236,6 @@ class EntityManager implements ObjectManager
 
     /**
      * Commits a transaction on the underlying database connection.
-     *
-     * @deprecated Use {@link getConnection}.commit().
      */
     public function commit()
     {
@@ -244,8 +244,6 @@ class EntityManager implements ObjectManager
 
     /**
      * Performs a rollback on the underlying database connection.
-     *
-     * @deprecated Use {@link getConnection}.rollback().
      */
     public function rollback()
     {

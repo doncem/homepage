@@ -14,7 +14,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -153,7 +153,6 @@ class SQLServerPlatform extends AbstractPlatform
     public function getDropIndexSQL($index, $table=null)
     {
         if ($index instanceof \Doctrine\DBAL\Schema\Index) {
-            $index_ = $index;
             $index = $index->getQuotedName($this);
         } else if (!is_string($index)) {
             throw new \InvalidArgumentException('AbstractPlatform::getDropIndexSQL() expects $index parameter to be string or \Doctrine\DBAL\Schema\Index.');
@@ -213,13 +212,13 @@ class SQLServerPlatform extends AbstractPlatform
         $sql[] = $query;
 
         if (isset($options['indexes']) && !empty($options['indexes'])) {
-            foreach ($options['indexes'] AS $index) {
+            foreach ($options['indexes'] as $index) {
                 $sql[] = $this->getCreateIndexSQL($index, $tableName);
             }
         }
 
         if (isset($options['foreignKeys'])) {
-            foreach ((array) $options['foreignKeys'] AS $definition) {
+            foreach ((array) $options['foreignKeys'] as $definition) {
                 $sql[] = $this->getCreateForeignKeySQL($definition, $tableName);
             }
         }
@@ -318,11 +317,7 @@ class SQLServerPlatform extends AbstractPlatform
         $sql = array();
         $columnSql = array();
 
-        if ($diff->newName !== false) {
-            $queryParts[] = 'RENAME TO ' . $diff->newName;
-        }
-
-        foreach ($diff->addedColumns AS $fieldName => $column) {
+        foreach ($diff->addedColumns as $column) {
             if ($this->onSchemaAlterTableAddColumn($column, $diff, $columnSql)) {
                 continue;
             }
@@ -330,7 +325,7 @@ class SQLServerPlatform extends AbstractPlatform
             $queryParts[] = 'ADD ' . $this->getColumnDeclarationSQL($column->getQuotedName($this), $column->toArray());
         }
 
-        foreach ($diff->removedColumns AS $column) {
+        foreach ($diff->removedColumns as $column) {
             if ($this->onSchemaAlterTableRemoveColumn($column, $diff, $columnSql)) {
                 continue;
             }
@@ -338,18 +333,18 @@ class SQLServerPlatform extends AbstractPlatform
             $queryParts[] = 'DROP COLUMN ' . $column->getQuotedName($this);
         }
 
-        foreach ($diff->changedColumns AS $columnDiff) {
+        foreach ($diff->changedColumns as $columnDiff) {
             if ($this->onSchemaAlterTableChangeColumn($columnDiff, $diff, $columnSql)) {
                 continue;
             }
 
-            /* @var $columnDiff Doctrine\DBAL\Schema\ColumnDiff */
+            /* @var $columnDiff \Doctrine\DBAL\Schema\ColumnDiff */
             $column = $columnDiff->column;
             $queryParts[] = 'ALTER COLUMN ' .
                     $this->getColumnDeclarationSQL($column->getQuotedName($this), $column->toArray());
         }
 
-        foreach ($diff->renamedColumns AS $oldColumnName => $column) {
+        foreach ($diff->renamedColumns as $oldColumnName => $column) {
             if ($this->onSchemaAlterTableRenameColumn($oldColumnName, $column, $diff, $columnSql)) {
                 continue;
             }
@@ -370,6 +365,10 @@ class SQLServerPlatform extends AbstractPlatform
         }
 
         $sql = array_merge($sql, $this->_getAlterTableIndexForeignKeySQL($diff));
+
+        if ($diff->newName !== false) {
+            $sql[] = "sp_RENAME '" . $diff->name . "', '" . $diff->newName . "'";
+        }
 
         return array_merge($sql, $tableSql, $columnSql);
     }
@@ -509,7 +508,7 @@ class SQLServerPlatform extends AbstractPlatform
     {
         $trimFn = '';
 
-        if (!$char) {
+        if ( ! $char) {
             if ($pos == self::TRIM_LEADING) {
                 $trimFn = 'LTRIM';
             } else if ($pos == self::TRIM_TRAILING) {
@@ -607,7 +606,7 @@ class SQLServerPlatform extends AbstractPlatform
     }
 
     /**
-     * Decleration for a UNIQUEIDENTIFIER (GUID) field in SQL Server
+     * Declaration for a UNIQUEIDENTIFIER (GUID) field in SQL Server
      *
      * @param array $field
      * @return string
@@ -692,7 +691,7 @@ class SQLServerPlatform extends AbstractPlatform
             } else {
                 $orderby = stristr($query, 'ORDER BY');
 
-                if (!$orderby) {
+                if ( ! $orderby) {
                     $over = 'ORDER BY (SELECT 0)';
                 } else {
                     $over = preg_replace('/\"[^,]*\".\"([^,]*)\"/i', '"inner_tbl"."$1"', $orderby);
@@ -705,7 +704,7 @@ class SQLServerPlatform extends AbstractPlatform
                 $start = $offset + 1;
                 $end = $offset + $limit;
 
-                $query = "SELECT * FROM (SELECT ROW_NUMBER() OVER ($over) AS \"doctrine_rownum\", $query) AS doctrine_tbl WHERE \"doctrine_rownum\" BETWEEN $start AND $end";
+                $query = "SELECT * FROM (SELECT ROW_NUMBER() OVER ($over) AS doctrine_rownum, $query) AS doctrine_tbl WHERE doctrine_rownum BETWEEN $start AND $end";
             }
         }
 
@@ -870,7 +869,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function appendLockHint($fromClause, $lockMode)
     {
-        // @todo coorect
+        // @todo correct
         if ($lockMode == \Doctrine\DBAL\LockMode::PESSIMISTIC_READ) {
             return $fromClause . ' WITH (tablockx)';
         } else if ($lockMode == \Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE) {
