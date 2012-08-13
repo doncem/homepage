@@ -78,6 +78,11 @@
     $(function() {
         $("#meanval").html(meanval);
         $("#stdval").html(stdval);
+        {% autoescape false %}
+        $("#source input[name='original-title'],#source input[name='english-title']").autocomplete({
+            source:["{{ autocompletes.movies|join('","') }}"]
+        });
+        {% endautoescape %}
     });
 {% endif %}
 {% endblock %}

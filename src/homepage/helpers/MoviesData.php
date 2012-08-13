@@ -17,8 +17,7 @@ class MoviesData {
         $this->em = $em;
     }
     
-    public function getMovies() {
-        //die(var_dump($this->em->find("\homepage\models\hMovies", 1)));
+    public function getMoviesPageStats() {
         // counter by years
         $query = $this->em->createQuery("SELECT m.year,COUNT(m.id) AS counter " .
                                         "FROM \homepage\models\hMovies m " .
@@ -109,5 +108,18 @@ class MoviesData {
                      "genres_list" => $genre_list,
                      "sum_series" => $sum_series,
                      "sum_directors" => array_sum($directed));
+    }
+    
+    public function getMovieNames() {
+        $query = $this->em->createQuery("SELECT m.id, m.title, m.title_en " .
+                                        "FROM \homepage\models\hMovies m " .
+                                        "ORDER BY m.title");
+        
+        $results = array();
+        foreach ($query->getResult() as $row) {
+            $results[$row["id"]] = $row["title"] . (strlen($row["title_en"]) > 0 ? " (" . $row["title_en"] . ")" : "");
+        }
+        
+        return $results;
     }
 }

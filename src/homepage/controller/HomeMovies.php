@@ -13,10 +13,10 @@ class HomeMovies extends \homepage\HomeController {
      */
     public function movies() {
         $this->view->page = "movies";
-        $this->view->js = array("/js/jquery.flot.min", "/js/homepage/movies");
+        $js = array("/js/jquery.flot.min", "/js/homepage/movies");
 
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
-        $data = $helper->getMovies();
+        $data = $helper->getMoviesPageStats();
 
         $this->view->sums = array("movies" => array_sum($data["by_decades"]),
                                 "series" => $data["sum_series"],
@@ -32,9 +32,16 @@ class HomeMovies extends \homepage\HomeController {
                                 "directed" => $data["by_directed"]);
 
         $this->view->dataScript = $this->getMoviesJavascript($data, "1961");
+        
+        if (CONFIG != "live") {
+            $this->view->autocompletes = $this->getAutocompleteArrays($helper);
+            $js[] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min";
+        }
+        
+        $this->view->js = $js;
     }
     
-    private function getMoviesJavascript($data, $begin) {
+    private function &getMoviesJavascript($data, $begin) {
         $return = "var d_y = [";
         $sum = 0;
         $count = 0;
@@ -157,7 +164,7 @@ class HomeMovies extends \homepage\HomeController {
         $return .= ",[" . $i . "," . $corr . "]];
             var d_g_x = [";
         $i = 0;
-        foreach ($data["genres_list"] as $key => $genre) {
+        foreach ($data["genres_list"] as $genre) {
             $return .= "[" . $i . ",'" . $genre . "']" . ((($i + 1) == count($data["genres_list"])) ? "" : ",");
             $i++;
         }
@@ -178,5 +185,9 @@ class HomeMovies extends \homepage\HomeController {
         $return .= "];";
         
         return $return;
+    }
+    
+    private function &getAutocompleteArrays(\homepage\helpers\MoviesData $helper) {
+        return array("movies" => $helper->getMovieNames());
     }
 }

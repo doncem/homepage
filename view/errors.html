@@ -32,10 +32,12 @@
     {% endfor %}
     {% endif %}
     <script type="text/javascript">
+    $(function() {
         if ($.browser.msie) {
             $("#ie-sucks").slideDown("slow");
         }
-        {% block script %}{% endblock %}
+    });
+    {% block script %}{% endblock %}
     </script>
 </body>
 </html>
