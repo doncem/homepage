@@ -97,14 +97,6 @@ $(function() {
         $(this).parent().parent().prepend(html);
     });
     
-    $("#source input[name='original-title'],#source input[name='english-title']").bind("keyup", function(event) {
-        var val = $(this).val();
-        if ((event.keyCode === $.ui.keyCode.DOWN) || (event.keyCode === $.ui.keyCode.UP)) {
-            console.log($(this).data("autocomplete").menu.options.selected());return false;
-            $(this).data("autocomplete").menu.activate(new $.Event("mouseover"), $("li[data-id='" + val + "']"));
-        }
-    });
-    
     $("#add-movie-form").submit(function(e) {
         e.preventDefault();
         return false;

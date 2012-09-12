@@ -132,7 +132,7 @@
     border:thin solid darken($mainColour, 7%);
     @include b-radius(0, 0, 3, 3);
 }
-.ui-state-active,.ui-menu-item:hover {
+#ui-active-menuitem,.ui-menu-item:hover {
     background-color:lighten($mainColour, 7%);
 }
 .ui-menu-item a {

@@ -187,7 +187,7 @@ class HomeMovies extends \homepage\HomeController {
         return $return;
     }
     
-    private function &getAutocompleteArrays(\homepage\helpers\MoviesData $helper) {
+    private function getAutocompleteArrays(\homepage\helpers\MoviesData $helper) {
         return array("movies" => $helper->getMovieNames());
     }
 }
