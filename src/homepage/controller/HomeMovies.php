@@ -13,7 +13,6 @@ class HomeMovies extends \homepage\HomeController {
      */
     public function movies() {
         $this->view->page = "movies";
-        $js = array("/js/jquery.flot.min", "/js/homepage/movies");
 
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
         $data = $helper->getMoviesPageStats();
@@ -31,14 +30,8 @@ class HomeMovies extends \homepage\HomeController {
                                 "countries" => $data["by_countries"],
                                 "directed" => $data["by_directed"]);
 
-        $this->view->dataScript = $this->getMoviesJavascript($data, "1961");
-        
-        if (CONFIG != "live") {
-            $this->view->autocompletes = $this->getAutocompleteArrays($helper);
-            $js[] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min";
-        }
-        
-        $this->view->js = $js;
+        $this->view->dataScript = $this->getMoviesJavascript($data, "1961");        
+        $this->view->js = array("/js/jquery.flot.min", "/js/homepage/movies");
     }
     
     private function &getMoviesJavascript($data, $begin) {
@@ -185,9 +178,5 @@ class HomeMovies extends \homepage\HomeController {
         $return .= "];";
         
         return $return;
-    }
-    
-    private function getAutocompleteArrays(\homepage\helpers\MoviesData $helper) {
-        return array("movies" => $helper->getMovieNames());
     }
 }

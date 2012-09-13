@@ -33,7 +33,12 @@ button {
     display:none;
 }
 
-#page {
-    margin:30px auto;
-    width:#{$pageSize}px;
+.clear {
+    clear:both;
+}
+.error {
+    color:$errorColour;
+}
+.hidden {
+    display:none;
 }

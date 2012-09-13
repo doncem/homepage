@@ -1,11 +1,8 @@
 <?php
-
-use \xframe\request\Controller;
-
 /**
  * Initializing controller
  */
-class ControllerInit extends Controller {
+class ControllerInit extends xframe\request\Controller {
 
     public function init() {
         $observers = $this->dic->exceptionHandler->getObservers();
@@ -15,7 +12,7 @@ class ControllerInit extends Controller {
             }
         }
         
-        $this->dic->exceptionHandler->attach(new ExHandling());
+        $this->dic->exceptionHandler->attach(new errors\observers\ExHandling());
         $this->view->isLive = CONFIG == "live" ? 1 : 0;
     }
 }

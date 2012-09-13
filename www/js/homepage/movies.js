@@ -67,38 +67,4 @@ $(function() {
             previousPoint = null;
         }
     });
-
-    $("#add-movie").click(function() {
-        $("#add-movie-form").toggle("slow", function() {
-            $("#add-movie").html($("#add-movie-form").is(":visible") ? "Cancel" : "Add");
-        });
-    });
-    
-    $("#its-movie").click(function() {
-        $("#source div.row:eq(3)").addClass("hidden");
-        $("#people input").removeAttr("disabled");
-        $("#people button").removeAttr("disabled");
-    });
-    
-    $("#its-series").click(function() {
-        $("#source div.row:eq(3)").removeClass("hidden");
-        $("#people input").attr("disabled", "disabled");
-        $("#people button").attr("disabled", "disabled");
-    });
-    
-    $(".add-more").click(function() {
-        html = "" +
-            "<div class=\"row\">" +
-            "    <div class=\"form-content-header\">&nbsp;</div>" +
-            "    <div class=\"form-content-data\">" +
-            "        <input type=\"text\" name=\"" + $(this).val() + "[]\" />" +
-            "    </div>" +
-            "</div>";
-        $(this).parent().parent().prepend(html);
-    });
-    
-    $("#add-movie-form").submit(function(e) {
-        e.preventDefault();
-        return false;
-    });
 });

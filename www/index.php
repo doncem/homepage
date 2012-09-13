@@ -12,17 +12,18 @@ use \xframe\request\Request;
  * It registers the autoloader, boots the framework and dispatches the request.
  */
 
-$root = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
-// Since I don't have server to modify apache freely, have to do some hacks
-include($root.'config/app.php');
+$root = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+define("ROOT_DIR", $root);
+// Since I don"t have server to modify apache freely, have to do some hacks
+include($root . "config/app.php");
 // Here we go...
-require('xframe/autoloader/Autoloader.php');
+require("xframe/autoloader/Autoloader.php");
 
 $autoloader = new Autoloader($root);
 $autoloader->register();
 
-$system = new System($root, $_SERVER['CONFIG']);
+$system = new System($root, $_SERVER["CONFIG"]);
 $system->boot();
 
-$request = new Request($_SERVER['REQUEST_URI'], $_REQUEST);
+$request = new Request($_SERVER["REQUEST_URI"], $_REQUEST);
 $system->getFrontController()->dispatch($request);

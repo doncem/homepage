@@ -4,7 +4,7 @@ namespace homepage\helpers;
 use Doctrine\ORM\EntityManager;
 
 /**
- * @IgnoreAnnotation("Annotation")
+ * @IgnoreAnnotation
  */
 class MoviesData {
     
@@ -108,18 +108,5 @@ class MoviesData {
                      "genres_list" => $genre_list,
                      "sum_series" => $sum_series,
                      "sum_directors" => array_sum($directed));
-    }
-    
-    public function getMovieNames() {
-        $query = $this->em->createQuery("SELECT m.id, m.title, m.title_en " .
-                                        "FROM \homepage\models\hMovies m " .
-                                        "ORDER BY m.title");
-        
-        $results = array();
-        foreach ($query->getResult() as $row) {
-            $results[$row["id"]] = $row["title"] . (strlen($row["title_en"]) > 0 ? " (" . $row["title_en"] . ")" : "");
-        }
-        
-        return $results;
     }
 }

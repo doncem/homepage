@@ -7,35 +7,38 @@
     {% endif %}
     <meta name="description" content="{% block meta_description %}{% endblock %}"/>
     {#<meta name="author" content="Donatas Martinkus"/>#}
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/cdcollection/{{ html.css }}.css" />
     <link rel="shortcut icon" href="/img/favicon.ico" />
     <title>{{ html.title }} - {% block title %}{% endblock %}</title>
 </head>
 <body>
     <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>
-    <div id="page">
-        <div id="header">
+    <div class="container">
+        <header class="row">
             <div id="header-title">{{ html.title }}</div>
             <div id="header-sub-title">{{ html.subtitle }}</div>
-        </div>
-        <div id="content">
-            <div id="page-title">
-                <h1>{% block page_title %}{% endblock %}</h1>
+        </header>
+        <section class="container-fluid">
+            <div class="row-fluid">
+                <div id="page-menu" class="span2">
+                    <h1>{% block page_title %}{% endblock %}</h1>
+                </div>
+                <div id="page-content" class="span10">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
-            <div id="page-content">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-        <div class="clear"></div>
+        </section>
     </div>
     {% if isLive == 1 %}
     {% include "common/ga.html" %}
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min,js"></script>
     {% if js is defined %}
-    {% for j in js %}
+    {%- for j in js -%}
     <script type="text/javascript" src="{{ j }}.js"></script>
-    {% endfor %}
+    {%- endfor -%}
     {% endif %}
     <script type="text/javascript">
     $(function() {

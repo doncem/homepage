@@ -1,4 +1,5 @@
 <?php
+namespace errors\observers;
 
 use \SplObserver;
 use \SplSubject;
@@ -18,14 +19,16 @@ class ExHandling implements SplObserver {
      * @param SplSubject $subject
      */
     public function update(SplSubject $subject) {
-        $root = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
         $registry = new \xframe\registry\Registry(array(
-            'root' => $root,
-            'tmp' => $root . "tmp" . DIRECTORY_SEPARATOR,
+            'root' => ROOT_DIR,
+            'tmp' => ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
             'configFilename' => "config" . DIRECTORY_SEPARATOR . CONFIG . ".ini",
         ));
-        $registry->load($root . "config" . DIRECTORY_SEPARATOR . CONFIG . ".ini", $root);
-        $view = new \xframe\view\TwigView($registry, $root, $root . "tmp" . DIRECTORY_SEPARATOR, $root . "view" . DIRECTORY_SEPARATOR);
+        $registry->load(ROOT_DIR . "config" . DIRECTORY_SEPARATOR . CONFIG . ".ini", ROOT_DIR);
+        $view = new \xframe\view\TwigView($registry,
+                                          ROOT_DIR,
+                                          ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
+                                          ROOT_DIR . "view" . DIRECTORY_SEPARATOR);
         $html = new \HtmlInit($registry);
 
         $view->html = $html->getDefaults(null, "Error");

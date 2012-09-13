@@ -27,9 +27,9 @@
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>
     {% if js is defined %}
-    {% for j in js %}
+    {%- for j in js -%}
     <script type="text/javascript" src="{{ j }}.js"></script>
-    {% endfor %}
+    {%- endfor -%}
     {% endif %}
     <script type="text/javascript">
     $(function() {

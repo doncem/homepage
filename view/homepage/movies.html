@@ -8,9 +8,6 @@
 
 {% block content %}
 <p>Some basic statistic from my watched list of movies and TV shows. List is made out of memory and free will</p>
-{% if isLive != 1 %}
-{% include "homepage/add-movies.html" %}
-{% endif %}
 {% if sums is defined %}
 <div id="main_stats">
     <table>
@@ -56,36 +53,22 @@
 <div id="p_directed" class="placeholder"></div>
 <div id="countries">
     <table>
-        <tr>
-            <th></th>
-            <th>#movies</th>
-        </tr>
-        {% for country,movie in data.countries %}
-        <tr>
-            <td>{{ country }}</td>
-            <td>{{ movie }}</td>
-        </tr>
-        {% endfor %}
+        <tr><th></th><th>#movies</th></tr>
+        {%- for country,movie in data.countries -%}
+        <tr><td>{{- country -}}</td><td>{{- movie -}}</td></tr>
+        {%- endfor -%}
     </table>
 </div>
 {% endif %}
 {% endblock %}
 {% block script %}
 {% if data is defined %}
-    {% autoescape false %}
-    {{ dataScript }}
-    {% endautoescape %}
+    {%- autoescape false -%}
+    {{- dataScript -}}
+    {%- endautoescape -%}
     $(function() {
         $("#meanval").html(meanval);
         $("#stdval").html(stdval);
-        {% autoescape false %}
-        $("#source input[name='original-title']").autocomplete({
-            source:["{{ autocompletes.movies|join('","') }}"]
-        });
-        $("#source input[name='english-title']").autocomplete({
-            source:["{{ autocompletes.movies|join('","') }}"]
-        });
-        {% endautoescape %}
     });
 {% endif %}
 {% endblock %}
