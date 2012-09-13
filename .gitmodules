@@ -1,0 +1,18 @@
+[submodule "lib/Doctrine/Common"]
+    path = lib/Doctrine/Common
+    url = git://github.com/doctrine/common.git/lib/Doctrine/Common
+[submodule "lib/Doctrine/DBAL"]
+    path = lib/Doctrine/DBAL
+    url = git://github.com/doctrine/dbal.git/lib/Doctrine/DBAL
+[submodule "lib/Doctrine/ORM"]
+    path = lib/Doctrine/ORM
+    url = https://github.com/doctrine/doctrine2.git/lib/Doctrine/ORM
+[submodule "lib/Twig"]
+    path = lib/Twig
+    url = https://github.com/fabpot/Twig.git/lib/Twig
+[submodule "lib/addendum"]
+    path = lib/addendum
+    url = https://github.com/linusnorton/xFrame.git/lib/addendum
+[submodul "lib/xFrame"]
+    path = lib/xFrame
+    url = https://github.com/linusnorton/xFrame.git/lib/xframe
