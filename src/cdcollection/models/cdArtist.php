@@ -95,4 +95,8 @@ class cdArtist {
     public function getLastUpdate() {
         return $this->last_update;
     }
+    
+    public function getUrl() {
+        return urlencode($this->name);
+    }
 }

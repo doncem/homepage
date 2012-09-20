@@ -107,4 +107,8 @@ class cdAlbum {
     public function getRYear() {
         return $this->r_year;
     }
+    
+    public function getUrl() {
+        return urlencode($this->name);
+    }
 }

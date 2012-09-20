@@ -15,18 +15,30 @@
 <body>
     <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>
     <div class="container">
-        <header class="row">
-            <div id="header-title">{{ html.title }}</div>
-            <div id="header-sub-title">{{ html.subtitle }}</div>
+        <header class="row-fluid">
+            <div id="header-title" class="span4">
+                <h1>{{ html.title }}</h1>
+            </div>
+            <div id="header-quote" class="span8 pull-right">
+                <blockquote class="pull-right">
+                    <p><em>{{ html.quote.text }}</em></p>
+                    <small>
+                        <a href="{{ html.base_url }}artist/{{html.quote.place.artist_link }}">{{ html.quote.place.artist_name }}</a> - <a href="{{ html.base_url }}artist/{{html.quote.place.artist_link }}/album/{{html.quote.place.album_link }}">{{ html.quote.place.track_name }}</a>
+                    </small>
+                </blockquote>
+            </div>
         </header>
-        <section class="container-fluid">
-            <div class="row-fluid">
-                <div id="page-menu" class="span2">
-                    <h1>{% block page_title %}{% endblock %}</h1>
-                </div>
-                <div id="page-content" class="span10">
-                    {% block content %}{% endblock %}
-                </div>
+        <section class="row-fluid black">
+            <div class="span8">breadcrums</div>
+            <div class="span4 pull-right">search</div>
+        </section>
+        <section class="row-fluid">
+            <div id="page-menu" class="span3">
+                <h2>Selection</h2>
+                {% include "common/artist-selection.html" %}
+            </div>
+            <div id="page-content" class="span9">
+                {% block content %}{% endblock %}
             </div>
         </section>
     </div>

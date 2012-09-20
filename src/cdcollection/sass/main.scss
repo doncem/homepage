@@ -2,3 +2,10 @@
 @import "../../_sass-modules/functions";
 @import "../../_sass-modules/defaults";
 /* here sass conversion did not work - change it manually */
+.black {
+    background-color:black;
+    color:white;
+}
+#header-quote blockquote {
+    margin-bottom:0px;
+}
