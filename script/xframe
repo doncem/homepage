@@ -1,5 +1,0 @@
-#!/usr/bin/env php
-<?php
-$include = array(realpath("../../twig/lib"), get_include_path());
-set_include_path(implode(PATH_SEPARATOR, $include));
-require __DIR__."/xframe.php";

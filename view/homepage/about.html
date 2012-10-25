@@ -4,33 +4,28 @@
 
 {% block title %}About Page{% endblock %}
 
-{% block page_title %}About page{% endblock %}
+{% block page_title %}About site{% endblock %}
 
 {% block content %}
-<p>This web page:
-    <ul>
-        <li>was not designed</li>
-        <li>is built with:
-            <ul>
-                <li><a href="https://github.com/linusnorton/xFrame" target="_blank">xFrame</a></li>
-                <li><a href="http://twig.sensiolabs.org/" target="_blank">Twig</a></li>
-                <li><a href="http://www.doctrine-project.org/" target="_blank">Doctrine2</a> (movies/cdcollection)</li>
-                <li><a href="http://jquery.com/" target="_blank">jQuery</a></li>
-                <li><a href="http://sass-lang.com/" target="_blank">Sass</a></li>
-                <li><a href="http://code.google.com/p/flot/" target="_blank">flot</a> (in movies only)</li>
-                <li><a href="http://netbeans.org/" target="_blank">NetBeans</a> (I know - LOL)</li>
-            </ul>
-        </li>
-        <li>will use later too:
-            <ul>
-                <li>more new stuff provided by html5 and hopefully css3</li>
-            </ul>
-        </li>
-        <li>is in:
-            <ul>
-                <li><a href="https://github.com/doncem/homepage" target="_blank">github</a></li>
-            </ul>
-        </li>
-    </ul>
-</p>
+<p>This web site:</p>
+<ul>
+    <li>was not designed</li>
+    <li>is built with:
+        <ul>
+            <li><a href="https://github.com/linusnorton/xFrame" target="_blank">xFrame</a></li>
+            <li><a href="http://twig.sensiolabs.org/" target="_blank">Twig</a></li>
+            <li><a href="http://www.doctrine-project.org/" target="_blank">Doctrine2</a> (movies{% if isLive != 1 %}/cdcollection){% endif %}</li>
+            <li><a href="http://jquery.com/" target="_blank">jQuery</a></li>
+            <li><a href="http://sass-lang.com/" target="_blank">Sass</a></li>
+            <li><a href="http://code.google.com/p/flot/" target="_blank">flot</a> (in movies only)</li>
+            <li><a href="http://netbeans.org/" target="_blank">NetBeans</a> (I know - LOL)</li>
+        </ul>
+    </li>
+    <li>is with .lt domain even though all content is in English. Therefore, I'm hoping to either develop some sort of extention to Twig and xFrame to apply 'translator' or Twig will create something usable</li>
+    <li>is in:
+        <ul>
+            <li><a href="https://github.com/doncem/homepage" target="_blank">github</a></li>
+        </ul>
+    </li>
+</ul>
 {% endblock %}

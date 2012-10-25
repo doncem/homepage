@@ -14,34 +14,27 @@
         <tr>
             <td>Movies:</td>
             <td>{{ sums.movies }}</td>
+            <td>{{ (sums.genres / sums.movies)|number_format(5) }} g/m</td>
+            <td>{{ (sums.countries / sums.movies)|number_format(5) }} c/m</td>
+            <td>{{ sums.directors }} d</td>
         </tr>
         <tr>
             <td>TV shows:</td>
             <td>{{ sums.series }}</td>
+            <td>{{ (sums.genres_series / sums.series)|number_format(5) }} g/s</td>
+            <td>{{ (sums.countries_series / sums.series)|number_format(5) }} c/s</td>
+            <td></td>
         </tr>
         <tr>
-            <td>Genres per movie:</td>
-            <td>{{ (sums.genres / sums.movies)|number_format(5) }}</td>
+            <td colspan="5">Applies to first graph:</td>
         </tr>
-        <tr>
-            <td>Genres per TV show:</td>
-            <td>{{ (sums.genres_series / sums.series)|number_format(5) }}</td>
+        <tr id="meanval">
+            <td colspan="2">Mean growth:</td>
+            <td colspan="3"></td>
         </tr>
-        <tr>
-            <td>Countries per movie:</td>
-            <td>{{ (sums.countries / sums.movies)|number_format(5) }}</td>
-        </tr>
-        <tr>
-            <td>Directors:</td>
-            <td>{{ sums.directors }}</td>
-        </tr>
-        <tr>
-            <td>Mean growth:</td>
-            <td id="meanval"></td>
-        </tr>
-        <tr>
-            <td>Next standard diff<br />(squared):</td>
-            <td id="stdval"></td>
+        <tr id="stdval">
+            <td colspan="2">Next standard diff (squared):</td>
+            <td colspan="3"></td>
         </tr>
     </table>
 </div>
@@ -59,16 +52,28 @@
         {%- endfor -%}
     </table>
 </div>
+<div id="series">
+    <table>
+        <tr><th></th><th>#series</th></tr>
+        {%- for country,serie in data.countries_series -%}
+        <tr><td>{{- country -}}</td><td>{{- serie -}}</td></tr>
+        {%- endfor -%}
+    </table>
+</div>
 {% endif %}
 {% endblock %}
 {% block script %}
 {% if data is defined %}
-    {%- autoescape false -%}
+<script type="text/javascript">
+//<!--
+    {% autoescape false -%}
     {{- dataScript -}}
     {%- endautoescape -%}
     $(function() {
-        $("#meanval").html(meanval);
-        $("#stdval").html(stdval);
+        $("#meanval td").last().html(meanval);
+        $("#stdval td").last().html(stdval);
     });
+//--!>
+</script>
 {% endif %}
 {% endblock %}

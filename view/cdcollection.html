@@ -52,13 +52,6 @@
     <script type="text/javascript" src="{{ j }}.js"></script>
     {%- endfor -%}
     {% endif %}
-    <script type="text/javascript">
-    $(function() {
-        if ($.browser.msie) {
-            $("#ie-sucks").slideDown("slow");
-        }
-    });
     {% block script %}{% endblock %}
-    </script>
 </body>
 </html>

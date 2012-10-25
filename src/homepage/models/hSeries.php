@@ -44,6 +44,15 @@ class hSeries {
     protected $link;
     
     /**
+     * @ManyToMany(targetEntity="hCountries")
+     * @JoinTable(name="h_series_countries",
+     *            joinColumns={@JoinColumn(name="serie", referencedColumnName="id")},
+     *            inverseJoinColumns={@JoinColumn(name="country", referencedColumnName="id")}
+     * )
+     */
+    private $countries;
+    
+    /**
      * @ManyToMany(targetEntity="hGenres")
      * @JoinTable(name="h_series_genres",
      *            joinColumns={@JoinColumn(name="serie", referencedColumnName="id")},
@@ -53,7 +62,12 @@ class hSeries {
     private $genres;
     
     public function __construct() {
+        $this->countries = new \Doctrine\Common\Collections\ArrayCollection();
         $this->genres = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function getCountries() {
+        return $this->countries->getValues();
     }
     
     public function getGenres() {

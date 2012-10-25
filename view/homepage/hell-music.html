@@ -7,7 +7,9 @@
 {% block page_title %}Works for Hell-Music{% endblock %}
 
 {% block content %}
+<p>All published documents are in Lithuanian language because hell-music is a Lithuanian site. All documents are formed like &#39;YYYYMMDD &lt;name&gt;&#39;</p>
 <h2>News</h2>
+<p>All &lt;name&gt; elements are group names</p>
 {%- set l = links.news|length -%}
 <table id="news">
 {%- set i = 0 -%}
@@ -40,14 +42,16 @@
 {%- endif -%}
 </table>
 <h2>Reviews</h2>
+<p>All &lt;name&gt; elements are short names - conclusions</p>
 <ol>
     {%- for key, review in links.reviews -%}
     <li><a href="{{ review[0] }}{{ key }}">{{ review[1] }}</a></li>
     {%- endfor -%}
 </ol>
-<h2>Reportings</h2>
+<h2>Reports</h2>
+<p>All &lt;name&gt; elements either short names - conclusions. If you don't know the certain name, it might be group name or festival name</p>
 <ol>
-    {%- for key, report in links.reportings -%}
+    {%- for key, report in links.reports -%}
     <li><a href="{{ report[0] }}{{ key }}">{{ report[1] }}</a></li>
     {%- endfor -%}
 </ol>

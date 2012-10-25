@@ -29,11 +29,25 @@ class hCountries {
      */
     private $movies;
     
+    /**
+     * @ManyToMany(targetEntity="hSeries")
+     * @JoinTable(name="h_series_countries",
+     *            joinColumns={@JoinColumn(name="country", referencedColumnName="id")},
+     *            inverseJoinColumns={@JoinColumn(name="serie", referencedColumnName="id")}
+     * )
+     */
+    private $series;
+    
     public function __construct() {
         $this->movies = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->series = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     public function getMovies() {
         return $this->movies->getValues();
+    }
+    
+    public function getSeries() {
+        return $this->series->getValues();
     }
 }

@@ -12,8 +12,6 @@ class HomeMovies extends \homepage\HomeController {
      * @Template("homepage/movies")
      */
     public function movies() {
-        $this->view->page = "movies";
-
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
         $data = $helper->getMoviesPageStats();
 
@@ -22,16 +20,17 @@ class HomeMovies extends \homepage\HomeController {
                                 "genres" => array_sum($data["by_genres"]),
                                 "genres_series" => array_sum($data["by_genres_series"]),
                                 "countries" => array_sum($data["by_countries"]),
+                                "countries_series" => array_sum($data["by_countries_series"]),
                                 "directors" => $data["sum_directors"]);
         $this->view->data = array("years" => $data["by_years"],
                                 "decades" => $data["by_decades"],
                                 "genres" => $data["by_genres"],
                                 "genres_series" => $data["by_genres_series"],
                                 "countries" => $data["by_countries"],
+                                "countries_series" => $data["by_countries_series"],
                                 "directed" => $data["by_directed"]);
 
-        $this->view->dataScript = $this->getMoviesJavascript($data, "1961");        
-        $this->view->js = array("/js/jquery.flot.min", "/js/homepage/movies");
+        $this->view->dataScript = $this->getMoviesJavascript($data, "1961");
     }
     
     private function &getMoviesJavascript($data, $begin) {
@@ -85,7 +84,7 @@ class HomeMovies extends \homepage\HomeController {
         $return .= "var meanval = " . round(1 / $count, 5) . ";";
         $a = 2 / $count;
         $b = ($count - 1) / pow($count, 2) - 2 * $mean / $count;
-        $return .= "var stdval = \"" . round($a, 5) . " * x<span class=\\\"sub\\\">k</span> " . round($b, 5) . "\";
+        $return .= "var stdval = \"" . round($a, 5) . " * x<span class=\\\"sub\\\">k</span> " . ($b < 0 ? "-" : "+") . " " . abs(round($b, 5)) . "\";
             var d_y_x = [";
         $i = 0;
         foreach ($data["by_years"] as $year => $value) {

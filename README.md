@@ -25,3 +25,14 @@ Either you have them installed somewhere and already is in include path or you m
     * doctrine/lib/Doctrine/ORM
     * doctrine-common/lib/Doctrine/Common
     * doctrine-dbal/lib/Doctrine/DBAL
+
+Library versions
+----------------
+
+All libraries I use for dev are straight out of master branches. So, not 'stable' releases
+
+* xFrame addendum - 2.1
+* Twig - 1.10.0
+* Doctrine ORM - 2.4.0-DEV
+* Doctrine Common - 2.4.0-DEV
+* Doctrine DBAL - 2.4.0-DEV

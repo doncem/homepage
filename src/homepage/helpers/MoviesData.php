@@ -77,6 +77,16 @@ class MoviesData {
             $countries[$row["country"]] = $row["counter"];
         }
         
+        $query = $this->em->createQuery("SELECT c.country,COUNT(sc.id) AS counter " .
+                                        "FROM \homepage\models\hCountries c " .
+                                        "JOIN c.series sc " .
+                                        "GROUP BY c.country " .
+                                        "ORDER BY counter DESC,c.country ASC");//COUNT(sc.id)
+        $countries_series = array();
+        foreach ($query->getResult() as $row) {
+            $countries_series[$row["country"]] = $row["counter"];
+        }
+        
         // counter by directors
         $query = $this->em->createQuery("SELECT d.director,COUNT(md.id) AS counter " .
                                         "FROM \homepage\models\hDirectors d " .
@@ -104,6 +114,7 @@ class MoviesData {
                      "by_genres" => $genres,
                      "by_genres_series" => $genres_series,
                      "by_countries" => $countries,
+                     "by_countries_series" => $countries_series,
                      "by_directed" => $directed,
                      "genres_list" => $genre_list,
                      "sum_series" => $sum_series,

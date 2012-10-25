@@ -23,17 +23,21 @@
         padding:0px;
     }
     li {
-        margin:22px 0px;
+        margin:25px 0px;
         list-style:none;
         a {
             border:thin solid darken($mainColour, 3%);
             @include b-radius(15, 0, 0, 3);
             padding:10px 10px 8px 15px;
             &:hover {
-                background-color:lighten($mainColour, 3%);
+                background-color:lighten($mainColour, 5%);
             }
             &.active {
+                background-color:lighten($mainColour, 3%);
                 color:darken($linkColour, 15%);
+                &:hover {
+                    background-color:lighten($mainColour, 5%);
+                }
             }
         }
     }
@@ -50,6 +54,16 @@
     vertical-align:top;
 }
 /* movies */
+#main_stats tr:hover {
+    background-color:lighten($mainColour, 3%);
+}
+#main_stats td {
+    padding-right:20px;
+}
+#stdval td:first-child {
+    vertical-align:top;
+}
+
 .placeholder {
     height:500px;
     margin:10px 0px;
