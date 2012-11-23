@@ -17,10 +17,14 @@ class SetJS extends Plugin {
     
     public function init() {
         $this->available_js = array(
-            "bootstrap_min" => "/js/bootstrap.min",
-            "general"       => "/js/general",
-            "flot_min"      => "/js/jquery.flot.min",
-            "home_movies"   => "/js/homepage/movies"
+            "bootstrap_min"         => "/js/bootstrap.min",
+            "general"               => "/js/general",
+            "general_min"           => "/js/general.min",
+            "flot_min"              => "/js/jquery.flot.min",
+            "home_movies"           => "/js/homepage/movies",
+            "home_movies_min"       => "/js/homepage/movies.min",
+            "home_experiments"      => "/js/homepage/experiments",
+            "home_experiments_min"  => "/js/homepage/experiments.min"
         );
         
         return $this;
@@ -39,18 +43,21 @@ class SetJS extends Plugin {
         } else if ($namespace[0] != "homepage") {
             return null;
         } else {
+            $array = array(file_exists($this->dic->root . "www/" . $this->available_js["general_min"]) ? $this->available_js["general_min"] : $this->available_js["general"]);
             switch ($namespace[2]) {
                 case "HomeMovies":
-                    return array(
-                        $this->available_js["general"],
-                        $this->available_js["flot_min"],
-                        $this->available_js["home_movies"]);
+                    $array[] = $this->available_js["flot_min"];
+                    $array[] = file_exists($this->dic->root . "www/" . $this->available_js["home_movies_min"]) ? $this->available_js["home_movies_min"] : $this->available_js["home_movies"];
+                    break;
+                case "HomeExperiments":
+                    $array[] = file_exists($this->dic->root . "www/" . $this->available_js["home_experiments_min"]) ? $this->available_js["home_experiments_min"] : $this->available_js["home_experiments"];
                     break;
                 case "HomeIndex":
                 default:
-                    return array($this->available_js["general"]);
                     break;
             }
+            
+            return $array;
         }
     }
 }

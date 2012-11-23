@@ -18,3 +18,11 @@
     background:linear-gradient($dir, $fadingC $startFader1, $mainC $endFader1, $mainC $startFader2, $fadingC $endFader2);/* W3C */
     /*filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$fadingC}', endColorstr='#{$fadingC}',GradientType=1 );/* IE6-9 */
 }
+@mixin wrapper() {
+    background-color:darken($mainColour, 70%);
+    opacity:0.3;
+    position:absolute;
+    top:0;
+    left:0;
+    z-idnex:100;
+}

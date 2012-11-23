@@ -7,7 +7,7 @@
 {% block page_title %}Movies and TV shows{% endblock %}
 
 {% block content %}
-<p>Some basic statistic from my watched list of movies and TV shows. List is made out of memory and free will</p>
+<p>I like to waste some time with various sessions of movies/tv shows. Some basic statistics from my list of watched movies and TV shows. List is made out of memory and free will</p>
 {% if sums is defined %}
 <div id="main_stats">
     <table>
@@ -40,9 +40,13 @@
 </div>
 {% endif %}
 {% if data is defined %}
+<p>Numbers per years</p>
 <div id="p_year" class="placeholder"></div>
+<p>Numbers per decades</p>
 <div id="p_decade" class="placeholder"></div>
+<p>Percentages of items having particular genre</p>
 <div id="p_genre" class="placeholder"></div>
+<p>Percentage of directors who made a certain number of movies</p>
 <div id="p_directed" class="placeholder"></div>
 <div id="countries">
     <table>

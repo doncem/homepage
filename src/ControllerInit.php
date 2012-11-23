@@ -13,6 +13,6 @@ class ControllerInit extends xframe\request\Controller {
         }
         
         $this->dic->exceptionHandler->attach(new errors\observers\ExHandling());
-        $this->view->isLive = CONFIG == "live" ? 1 : 0;
+        $this->view->isLive = (CONFIG == "live" || isset($this->request->DEPLOY)) ? 1 : 0;
     }
 }

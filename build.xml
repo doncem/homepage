@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : build.xml
+    Created on : 2012 October 27, 14:00
+    Author     : donatas <donatasmart@gmail.com>
+    Description: Project deployment
+-->
+<project name="donatasmart-webpage" basedir="." default="deploy">
+    <if>
+        <isset property="config"/>
+        <then>
+            <property name="config" value="${config}" />
+        </then>
+        <else>
+            <property name="config" value="dev" />
+        </else>
+    </if>
+    <property name="configDir" value="./config/" />
+    <property file="${configDir}${config}.ini" />
+    <property name="documentation" value="./doc/" />
+    <property name="install" value="./install/" />
+    <property name="public" value="./www/" />
+
+    <!-- Clean -->
+    <target name="clean" description="Clean documentation">
+        <delete includeemptydirs="true" verbose="false">
+            <fileset dir="${documentation}">
+                <exclude name=".gitignore" />
+            </fileset>
+        </delete>
+    </target>
+    
+    <!-- Run the PHP Documentor -->
+    <target name="document-phpdoc" depends="clean" description="Generate documentation with phpDocumentator">
+        <exec command="phpdoc -t ${documentation} -o HTML:Smarty:HandS -d ." dir="." checkreturn="true" />
+    </target>
+    
+    <!-- Run the DocBlox -->
+    <target name="document-docblox" depends="clean" description="Generate documentation with DocBlox">
+        <exec command="docblox run" dir="." checkreturn="true" />
+    </target>
+
+    <!-- Build-->
+    <target name="build" description="Build the project">
+        <exec command="ln -s ../libraries/ ./lib" dir="." checkreturn="true" />
+        <phingcall target="create-database" />
+        <phingcall target="set-database" />
+    </target>
+    
+    <!-- Deploy-->
+    <target name="deploy" depends="minify-resources" description="Deploy the project">
+        <delete includeemptydirs="true" verbose="false">
+            <fileset dir="./static">
+                <exclude name=".gitignore" />
+                <exclude name="css" />
+                <exclude name="docs" />
+                <exclude name="img" />
+                <exclude name="js" />
+            </fileset>
+        </delete>
+        <exec command="php deployToStatic.php" dir="./script" checkreturn="true" />
+    </target>
+    
+    <target name="push-to-ftp" description="Push deployed project">
+        <exec command="scp ./ ${FTP_USER}:${FTP_PASS}@${FTP_HOST}/${FTP_PUBLIC}" dir="./static" checkreturn="true" />
+    </target>
+    
+    <!-- Minify public resources -->
+    <target name="minify-resources" description="Minify public JSs">
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/experiments.js -o ${public}js/homepage/experiments.min.js" dir="." checkreturn="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/movies.js -o ${public}js/homepage/movies.min.js" dir="." checkreturn="true" />
+    </target>
+    
+    <target name="watch-sass" description="Generate CSS">
+        <exec command="sass --line-comments --style compressed --watch ./src/cdcollection/sass:${public}css/cdcollection ./src/errors/sass:${public}css/errors ./src/homepage/sass:${public}css/homepage" dir="." checkreturn="true" />
+    </target>
+
+    <!-- Following three targets are DB related -->
+    <!-- Create -->
+    <target name="create-database" description="Create the database">
+        <exec command="mysql -h${DATABASE_HOST}
+                             -u${DATABASE_USERNAME}
+                             -p${DATABASE_PASSWORD}
+                             -e'CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME}'"
+              dir="."
+              checkreturn="true" />
+    </target>
+    
+    <!-- Set -->
+    <target name="set-database" description="Create all default tables and fetch all default data">
+        <exec command="mysql -h${DATABASE_HOST}
+                             -u${DATABASE_USERNAME}
+                             -p${DATABASE_PASSWORD}
+                             ${DATABASE_NAME} &lt; ${install}create.sql"
+              dir="."
+              checkreturn="true" />
+        <exec command="mysql -h${DATABASE_HOST}
+                             -u${DATABASE_USERNAME}
+                             -p${DATABASE_PASSWORD}
+                             ${DATABASE_NAME} &lt; ${install}data.sql"
+              dir="."
+              checkreturn="true" />
+    </target>
+    
+    <!-- Patch the update -->
+    <target name="update-database" description="Update the database">
+        <exec command="mysql -h${DATABASE_HOST}
+                             -u${DATABASE_USERNAME}
+                             -p${DATABASE_PASSWORD}
+                             ${DATABASE_NAME} &lt; ${install}update.sql"
+              dir="."
+              checkreturn="true" />
+    </target>
+</project>

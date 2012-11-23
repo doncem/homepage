@@ -53,6 +53,7 @@
 #news td {
     vertical-align:top;
 }
+/* end hell-music */
 /* movies */
 #main_stats tr:hover {
     background-color:lighten($mainColour, 3%);
@@ -107,3 +108,29 @@
     opacity:0.7;
 }
 /* end movies */
+/* experiments */
+.experiment {
+    @include b-radius(5, 5, 5, 5);
+    &:hover {
+        background-color:lighten($mainColour, 3%);
+    }
+    &.active {
+        background-color:lighten($mainColour, 5%);
+        padding-left:5px;
+        padding-right:5px;
+    }
+}
+.experiment-container {
+    //display:none;
+}
+//jquery-grid
+#jquery-window-grid-container {
+    @include wrapper();
+    .grid-element {
+        @include b-radius(5, 5, 5, 5);
+        border:thin solid darken($mainColour, 50%);
+        float:left;
+        z-index:101;
+    }
+}
+/* end experiments */
