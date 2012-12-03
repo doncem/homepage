@@ -61,10 +61,23 @@
         <exec command="php deployToStatic.php" dir="./script" checkreturn="true" />
     </target>
     
-    <target name="push-to-ftp" description="Push deployed project">
-        <exec command="scp ./ ${FTP_USER}:${FTP_PASS}@${FTP_HOST}/${FTP_PUBLIC}" dir="./static" checkreturn="true" />
+    <fileset dir="./static" id="files.app">
+        <include name="**/index.html" />
+        <include name="index.php" />
+    </fileset>
+
+    <target name="push-to-ftp" description="Using ftpdeploy extension">
+        <ftpdeploy
+            host="${FTP_HOST}"
+            port="21"
+            username="${FTP_USER}"
+            password="${FTP_PASS}"
+            dir="${FTP_PUBLIC}"
+            mode="binary">
+            <fileset refid="files.app" />
+        </ftpdeploy>
     </target>
-    
+
     <!-- Minify public resources -->
     <target name="minify-resources" description="Minify public JSs">
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" />

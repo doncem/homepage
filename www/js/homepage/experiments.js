@@ -7,7 +7,7 @@ const TOP_GAP_SCROLL = 20;
  * If 'e' has class 'active' - scroll to it, it's active already<br />
  * Else if link is with hash - activate it<br />
  * Else go to that link
- * @param {jQuery} object e
+ * @param {jQuery} e Experiment to activate
  */
 function activateExperiment(e) {
     if (e.hasClass("active")) {
@@ -17,7 +17,7 @@ function activateExperiment(e) {
 
         if (href.attr("href").substr(0, 1) == "#") {
             e.addClass("active");
-            href.parent().fadeOut("slow");
+            //href.parent().fadeOut("slow");
             scrollToTop(e, TOP_GAP_SCROLL);
             window[getFunction(href.attr("href").substr(1))]();
         } else {
@@ -25,7 +25,11 @@ function activateExperiment(e) {
         }
     }
 }
-
+/**
+ * Converts element id into camel case function name
+ * @param {String} id
+ * @return {String} Function name
+ */
 function getFunction(id) {
     arr = id.split("-");
     s = arr[0];
@@ -36,7 +40,6 @@ function getFunction(id) {
     
     return s;
 }
-
 /**
  * Add activation links to each non-active experiment.<br />
  * Attach a click to it as well
@@ -77,22 +80,22 @@ $(function() {
 });
 
 var jqueryWindowGrid = function() {
-    this.c = $("#jquery-window-grid-container");
-    this.element = "<div class=\"grid-element\"></div>";
-    this.gap = 4;
-    this.activeColour = "#012345";
-    this.colour = "#543210";
+    var c = $("#jquery-window-grid-container");
+    var element = "<div class=\"grid-element\"></div>";
+    var gap = 4;
+    var activeColour = "#012345";
+    var colour = "#543210";
     
     var calculateSize = function(wSize, k) {
-        return Math.floor((wSize - this.gap) / k - this.gap - 2);
+        return Math.floor((wSize - gap) / k - gap - 2);
     }
     
     var calculateMax = function(wSize) {
-        return Math.floor((wSize - this.gap) / (3 + this.gap));
+        return Math.floor((wSize - gap) / (3 + gap));
     }
     
     var close = function() {
-        this.c.children("div").each(function(i, e) {
+        c.children("div").each(function(i, e) {
             setTimeout(function(e) { $(e).hide("fast"); }, 400);
         }).parent().hide("slow");
     }
@@ -113,28 +116,28 @@ var jqueryWindowGrid = function() {
         //
     }
     
-    if (this.c.children("div").length > 1) {
-        this.c.show("slow").children("div").each(function(i, e) {
+    if (c.children("div").length > 1) {
+        c.show("slow").children("div").each(function(i, e) {
             setTimeout(function(e) { $(e).fadeIn("fast"); }, 400);
         });
     } else {
-        this.x = 1;
-        this.y = 1;
-        this.xCurrent = 1;
-        this.yCurrent = 1;
-        this.xMax = calculateMax($(window).width());
-        this.yMax = calculateMax($(window).height());
-        this.c.css({
-            paddingTop: this.gap,
-            paddingLeft: this.gap,
+        var x = 1;
+        var y = 1;
+        var xCurrent = 1;
+        var yCurrent = 1;
+        var xMax = calculateMax($(window).width());
+        var yMax = calculateMax($(window).height());
+        c.css({
+            paddingLeft: gap,
+            paddingTop: gap,
             width: $(window).width(),
             height: $(window).height()
         }).show("slow").children("div").css({
-            marginRight: this.gap,
-            marginBottom: this.gap,
-            width: $(window).width() - 2 * (this.gap + 1),
-            height: $(window).height() - 2 * (this.gap + 1),
-            color: this.activeColour
+            marginRight: gap,
+            marginBottom: gap,
+            width: $(window).width() - 2 * (gap + 1),
+            height: $(window).height() - 2 * (gap + 1),
+            color: activeColour
         }).fadeIn("fast");
     }
     

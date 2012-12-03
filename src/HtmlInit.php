@@ -2,7 +2,7 @@
 use xframe\registry\Registry;
 
 /**
- * Iniate default html elements 
+ * Iniate default html elements
  */
 class HtmlInit {
     
@@ -23,7 +23,7 @@ class HtmlInit {
     
     /**
      * Set default html elements from Registry
-     * @param Registry $registry 
+     * @param Registry $registry
      */
     public function __construct(Registry $registry) {
         $this->lang = $registry->get("HTML_LANG");
@@ -45,15 +45,16 @@ class HtmlInit {
                                 $css = null,
                                 array $params = array()) {
         if (!$sock = @fsockopen("www.google.com", 80, $num, $error, 5)) {
-            $js = "/js/jquery-1.8.1.min";
+            $js = "/js/jquery-1.8.3.min";
         } else {
-            $js = "//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min";
+            $js = "//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min";
         }
-        return array_merge(array("lang" => $lang ? $lang : $this->lang,
-                                 "title" => $title ? $title : $this->title,
-                                 "css" => $css ? $css : $this->css,
-                                 "js" => $js),
-                           $params
-            );
+        return array_merge(array(
+            "lang" => $lang ? $lang : $this->lang,
+            "title" => $title ? $title : $this->title,
+            "css" => $css ? $css : $this->css,
+            "js" => $js),
+            $params
+        );
     }
 }
