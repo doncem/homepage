@@ -63,10 +63,27 @@
     
     <fileset dir="./static" id="files.app">
         <include name="**/index.html" />
-        <include name="index.php" />
+        <include name="index.html" />
+    </fileset>
+    
+    <fileset dir="./www" id="files.static">
+        <include name="css/*.css" />
+        <include name="css/**/*.css" />
+        <include name="js/*.js" />
+        <include name="js/**/*.js" />
+    </fileset>
+    
+    <fileset dir="./www/docs/hell-music" id="files.pdfs">
+        <include name="articles/**/*.pdf" />
+        <include name="news/*.pdf" />
     </fileset>
 
-    <target name="push-to-ftp" description="Using ftpdeploy extension">
+    <target name="push-to-ftp" description="Using ftpdeploy extension push files">
+        <phingcall target="_push-to-ftp-html" />
+        <phingcall target="_push-to-ftp-static" />
+    </target>
+
+    <target name="_push-to-ftp-html" description="Push html files">
         <ftpdeploy
             host="${FTP_HOST}"
             port="21"
@@ -75,6 +92,30 @@
             dir="${FTP_PUBLIC}"
             mode="binary">
             <fileset refid="files.app" />
+        </ftpdeploy>
+    </target>
+    
+    <target name="_push-to-ftp-static" description="Push css and js files">
+        <ftpdeploy
+            host="${FTP_HOST}"
+            port="21"
+            username="${FTP_USER}"
+            password="${FTP_PASS}"
+            dir="${FTP_PUBLIC}"
+            mode="binary">
+            <fileset refid="files.static" />
+        </ftpdeploy>
+    </target>
+    
+    <target name="_push-to-ftp-pdfs" description="Push pdf files">
+        <ftpdeploy
+            host="${FTP_HOST}"
+            port="21"
+            username="${FTP_USER}"
+            password="${FTP_PASS}"
+            dir="${FTP_PUBLIC}"
+            mode="binary">
+            <fileset refid="files.pdfs" />
         </ftpdeploy>
     </target>
 

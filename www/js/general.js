@@ -1,12 +1,12 @@
 /**
  * Scroll window to match top with with a top of element.<br />
  * Given 'topGap' is a required additional spacing from the top
- * @param object e
- * @param int topGap
+ * @param {jQuery} e
+ * @param {int} topGap
  */
 function scrollToTop(e, topGap) {
     $(window).scrollTop(e.scrollTop() - topGap);
-    e.children(".experiment-container").slideDown("slow");
+    //e.children(".experiment-container").slideDown("slow");
 }
 
 $(function() {

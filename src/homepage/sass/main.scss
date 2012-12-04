@@ -120,6 +120,16 @@
         padding-right:5px;
     }
 }
+.experiment .version-history {
+    display:none;
+    span {
+        font-weight:bold;
+    }
+    ul {
+        margin-top:0px;
+        margin-bottom:0px;
+    }
+}
 .experiment-container {
     display:none;
 }

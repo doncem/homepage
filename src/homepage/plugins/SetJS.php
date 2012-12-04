@@ -33,9 +33,10 @@ class SetJS extends Plugin {
     /**
      * Return specific js for the certain home pages
      * @param string $classname Class name with leading namespaces
+     * @param boolean $isLive Allow includes of minified js only if it's for live deployment
      * @return null|array
      */
-    public function getHomeJS($classname) {
+    public function getHomeJS($classname, $isLive) {
         $namespace = explode("\\", $classname);
         
         if ($namespace[1] != "controller") {
@@ -43,20 +44,19 @@ class SetJS extends Plugin {
         } else if ($namespace[0] != "homepage") {
             return null;
         } else {
-            $array = array(file_exists($this->dic->root . "www/" . $this->available_js["general_min"]) ? $this->available_js["general_min"] : $this->available_js["general"]);
+            $array = array(file_exists($this->dic->root . "www" . $this->available_js["general_min"] . ".js") && $isLive ? $this->available_js["general_min"] : $this->available_js["general"]);
             switch ($namespace[2]) {
                 case "HomeMovies":
                     $array[] = $this->available_js["flot_min"];
-                    $array[] = file_exists($this->dic->root . "www/" . $this->available_js["home_movies_min"]) ? $this->available_js["home_movies_min"] : $this->available_js["home_movies"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_movies_min"] . ".js") && $isLive ? $this->available_js["home_movies_min"] : $this->available_js["home_movies"];
                     break;
                 case "HomeExperiments":
-                    $array[] = file_exists($this->dic->root . "www/" . $this->available_js["home_experiments_min"]) ? $this->available_js["home_experiments_min"] : $this->available_js["home_experiments"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_experiments_min"] . ".js") && $isLive ? $this->available_js["home_experiments_min"] : $this->available_js["home_experiments"];
                     break;
                 case "HomeIndex":
                 default:
                     break;
             }
-            
             return $array;
         }
     }

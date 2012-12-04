@@ -11,7 +11,7 @@ const TOP_GAP_SCROLL = 20;
  */
 function activateExperiment(e) {
     if (e.hasClass("active")) {
-        scrllToTop(e, TOP_GAP_SCROLL);
+        scrollToTop(e, TOP_GAP_SCROLL);
     } else {
         var href = e.children(".link-container").children("a");
 
@@ -49,13 +49,13 @@ $.fn.attachExperiment = function() {
     
     if (!$("#" + link).hasClass("active")) {
         if (link.substr(0, 6) == "jquery") {
-            $("#" + link).append("<p class=\"link-container\"><a href=\"#" + link + "\">Launch it</a></p>");
+            $("#" + link).append("<p class=\"link-container\"><a href=\"#" + link + "\" class=\"launch-link\">Launch it</a></p>");
         } else {
             $("#" + link).append("<p class=\"link-container\"><a href=\"/" + link + "/\">Go there</a></p>");
         }
     }
     
-    $("#" + link + " a").live("click", function(e) {
+    $("#" + link).on("click", ".launch-link", function(e) {
         e.preventDefault();
         activateExperiment($("#" + link));
     });
@@ -64,6 +64,11 @@ $.fn.attachExperiment = function() {
 $(function() {
     $(".experiment").each(function(i, e) {
         $(e).attachExperiment();
+    });
+    
+    $(".version-history-link").click(function(e) {
+        e.preventDefault();
+        $(this).next(".version-history").slideToggle("fast");
     });
     
     if ((window.location.pathname == $("#menu a.active").attr("href")) && ($(window.location.hash).length > 0)) {
@@ -96,7 +101,7 @@ var jqueryWindowGrid = function() {
     
     var close = function() {
         c.children("div").each(function(i, e) {
-            setTimeout(function(e) { $(e).hide("fast"); }, 400);
+            setTimeout(function(e) { $(e).fadeOut("fast"); }, 400);
         }).parent().hide("slow");
     }
     
@@ -130,15 +135,17 @@ var jqueryWindowGrid = function() {
         c.css({
             paddingLeft: gap,
             paddingTop: gap,
-            width: $(window).width(),
-            height: $(window).height()
-        }).show("slow").children("div").css({
-            marginRight: gap,
-            marginBottom: gap,
-            width: $(window).width() - 2 * (gap + 1),
-            height: $(window).height() - 2 * (gap + 1),
-            color: activeColour
-        }).fadeIn("fast");
+            width: $(window).width()- gap,
+            height: $(window).height() - gap
+        }).show("slow", function() {
+            $(this).children("div").css({
+                marginRight: gap,
+                marginBottom: gap,
+                width: $(window).width() - 2 * (gap + 1),
+                height: $(window).height() - 2 * (gap + 1),
+                color: activeColour
+            }).fadeIn("fast");
+        });
     }
     
     $(window).keyup(function(e) {
