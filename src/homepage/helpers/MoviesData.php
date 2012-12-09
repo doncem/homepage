@@ -17,7 +17,53 @@ class MoviesData {
         $this->em = $em;
     }
     
+    /**
+     * Get count of current movies and series
+     * @return array {
+     * <br />&nbsp;&nbsp;'movies' => int,
+     * <br />&nbsp;&nbsp;'series' => int
+     * <br />}
+     */
+    public function checkForUpdate() {
+        $this->em->beginTransaction();
+        // array of entities :/
+        //$this->em->getRepository("\homepage\models\hMovies")->findAll();
+        // get amounts
+        $counters = array();
+        $query = $this->em->createQuery("SELECT 'movies' AS type, COUNT(m.id) AS counter " .
+                                        "FROM \homepage\models\hMovies m " .
+                                        "GROUP BY type ");
+        foreach ($query->getResult() as $row) {
+            $counters[$row["type"]] = $row["counter"];
+        }
+        $query = $this->em->createQuery("SELECT 'series' AS type, COUNT(s.id) AS counter " .
+                                        "FROM \homepage\models\hSeries s " .
+                                        "GROUP BY type");
+        foreach ($query->getResult() as $row) {
+            $counters[$row["type"]] = $row["counter"];
+        }
+        
+        $this->em->commit();
+        
+        return $counters;
+    }
+    
+    /**
+     * Get statistics
+     * @return array {
+     * <br />&nbsp;&nbsp;'by_years'             => { int(year) => # },
+     * <br />&nbsp;&nbsp;'by_decades'           => { int(decade) => # },
+     * <br />&nbsp;&nbsp;'by_genres'            => { string(genre) => # },
+     * <br />&nbsp;&nbsp;'by_genres_series'     => { string(genre) => # },
+     * <br />&nbsp;&nbsp;'by_countries'         => { string(country) => # },
+     * <br />&nbsp;&nbsp;'by_countries_series'  => { string(country) => # },
+     * <br />&nbsp;&nbsp;'genres_list'          => { genre },
+     * <br />&nbsp;&nbsp;'sum_series'           => int,
+     * <br />&nbsp;&nbsp;'sum_directors'        => int
+     * <br />}
+     */
     public function getMoviesPageStats() {
+        $this->em->beginTransaction();
         // counter by years
         $query = $this->em->createQuery("SELECT m.year,COUNT(m.id) AS counter " .
                                         "FROM \homepage\models\hMovies m " .
@@ -108,6 +154,8 @@ class MoviesData {
         foreach ($query->getResult() as $row) {
             $sum_series = $row["counter"];
         }
+        
+        $this->em->commit();
         
         return array("by_years" => $years,
                      "by_decades" => $decades,

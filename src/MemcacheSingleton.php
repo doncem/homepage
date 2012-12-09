@@ -9,7 +9,6 @@ class MemcacheSingleton {
     private $prefix_namespace = true;
     private $prefix = null;
     private $log = array();
-    private $index;
     
     /**
      * Initilaises the MemcacheSingleton
@@ -98,7 +97,7 @@ class MemcacheSingleton {
      * @param string $identifier
      * @return mixed false on cache miss
      */
-    private function get($namespace, $identifier) {
+    public function get($namespace, $identifier) {
         $content = false;
         
         if ($this->prefix_namespace === true) {
@@ -142,7 +141,7 @@ class MemcacheSingleton {
      * @param int $expire_time [optional] Default 86400 = 1 day
      * @return boolean
      */
-    private function set($namespace, $identifier, $content, $expire_time = 86400) {
+    public function set($namespace, $identifier, $content, $expire_time = 86400) {
         $cached = false;
         
         if ($this->prefix_namespace === true) {

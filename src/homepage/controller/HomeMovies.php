@@ -13,7 +13,22 @@ class HomeMovies extends \homepage\HomeController {
      */
     public function movies() {
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
-        $data = $helper->getMoviesPageStats();
+        $counters = $helper->checkForUpdate();
+        $data = \MemcacheSingleton::instance()->get("page_data", "movies");
+        
+        if (
+                ($data !== false) &&
+                ($counters["movies"] != array_sum($data["by_decades"])) &&
+                ($counters["series"] != $data["sum_series"])
+            ) {
+                \MemcacheSingleton::instance()->expire("page_data", "movies");
+                $data = false;
+        }
+        
+        if ($data === false) {
+            $data = $helper->getMoviesPageStats();
+            \MemcacheSingleton::instance()->set("page_data", "movies", $data, 60 * 60 * 24 * 30);
+        }
 
         $this->view->sums = array("movies" => array_sum($data["by_decades"]),
                                 "series" => $data["sum_series"],

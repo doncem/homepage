@@ -1,4 +1,5 @@
 <ul>
+    {%- if isLive == 1 %}<li>Last deploy: {{ lastDeploy }}</li>{% endif -%}
     <li><a href="/"{% if requested_page == "index" %} class="active"{% endif %}>Main</a></li>
     <li><a href="/about/"{% if requested_page == "about" %} class="active"{% endif %}>About site</a></li>
     <li><a href="/hell-music/"{% if requested_page == "hell-music" %} class="active"{% endif %}>Hell-Music</a></li>
