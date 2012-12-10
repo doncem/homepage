@@ -4,6 +4,15 @@
  */
 class ControllerInit extends xframe\request\Controller {
 
+    /**
+     * <ul>
+     * <li>Replacing xframe's ExceptionOutputter observer with ExHandling</li>
+     * <li>Is it live? Question answered buy checking whether CONFIG is 'live' or request has 'DEPLOY' parameter</li>
+     * <li>Assigning 'lastDeploy' for live versions</li>
+     * </ul>
+     * @see \xframe\exception\ExceptionOutputter
+     * @see errors\observers\ExHandling
+     */
     public function init() {
         $observers = $this->dic->exceptionHandler->getObservers();
         foreach ($observers as $observer) {

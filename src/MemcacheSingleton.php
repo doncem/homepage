@@ -1,22 +1,24 @@
 <?php
 
+use xframe\registry\Registry;
+
 class MemcacheSingleton {
 
     private static $instance;
     private $memcache;
+    private $registry;
     private $connected = false;
-    private $server_pool;
     private $prefix_namespace = true;
     private $prefix = null;
     private $log = array();
     
     /**
      * Initilaises the MemcacheSingleton
-     * @param array $server_pool
+     * @param Registry $registry
      */
-    private function __construct(array $server_pool) {
-        $this->memcache = new Memcache();
-        $this->server_pool = $server_pool;
+    private function __construct(Registry $registry) {
+        $this->memcache = new Memcached();
+        $this->registry = $registry;
         $this->log = array(
             "get" => array("Namespace\tIdentifier\tKey"),
             "set" => array("Namespace\tIdentifier\tKey\tMax Cache Time")
@@ -30,11 +32,16 @@ class MemcacheSingleton {
      */
     public function connect() {
         if (!$this->connected) {
-            foreach ($this->server_pool as $server) {
+            $this->memcache->addServer(
+                $this->registry->get("MEMCACHE_HOST"),
+                (int)$this->registry->get("MEMCACHE_HOST")
+            );
+            $this->connected = true;
+            /*foreach ($this->server_pool as $server) {
                 if ($this->memcache->addServer($server->address, $server->port)) {
                     $this->connected = true;
                 }
-            }
+            }*/
         }
         
         return $this->connected;
@@ -50,13 +57,12 @@ class MemcacheSingleton {
     
     /**
      * Initialises the memcache singleton with a server list
-     * @param array $server_list
+     * @param Registry $registry
      * @return MemcacheSingleton
      */
-    public static function instance($server_list = array()) {
+    public static function instance(Registry $registry) {
         if (!isset(self::$instance)) {
-            self::$instance = new MemcacheSingleton($server_list);
-            
+            self::$instance = new MemcacheSingleton($registry);
         }
         
         return self::$instance;
@@ -123,7 +129,7 @@ class MemcacheSingleton {
                 if ($expiry <= time()) {
                     //only keep object in cache for another minute, to let the cached item be repopulated and to prevent cache rushing
                     $cached_oject["expiry"] = $max_cache_time = time() + 60;
-                    $this->memcache->replace($key, $cached_oject, /*MEMCACHE_COMPRESSED???*/true, $max_cache_time);
+                    $this->memcache->replace($key, $cached_oject, $max_cache_time);
                 } else {
                     $content = $cached_object["content"];
                 }
@@ -147,7 +153,7 @@ class MemcacheSingleton {
         if ($this->prefix_namespace === true) {
             $namespace = strtolower($this->get_namespace_prefix() . $namespace);
         }
-        
+
         if ($this->connected) {
             $key = $this->get_namespaced_key($namespace, $identifier);
             //store the expire time in the cached object to prevent cache rushes when items expire
@@ -162,11 +168,13 @@ class MemcacheSingleton {
             $to_cache["cached"] = time();
             $to_cache["expiry"] = $expiry;
             $to_cache["content"] =  $content;
-            
-            if (!$this->memcache->replace($key, $to_cache, /*MEMCACHE_COMPRESSED???*/true, $max_cache_time)) {
-                if ($this->memcache->add($key, $to_cache, /*MEMCACHE_COMPRESSED???*/true, $max_cache_time)) {
+
+            if (!$this->memcache->replace($key, $to_cache, $max_cache_time)) {
+                if ($this->memcache->add($key, $to_cache, $max_cache_time)) {
                     $cached = true;
                 }
+            } else {
+                $cached = true;
             }
         }
         
@@ -203,7 +211,7 @@ class MemcacheSingleton {
      * @return array see http://www.php.net/manual/en/memcache.getextendedstats.php
      */
     public function get_status() {
-        return $this->memcache->getExtendedStats();
+        return $this->memcache->getStats();
     }
     
     /**

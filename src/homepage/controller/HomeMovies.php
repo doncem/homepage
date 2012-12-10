@@ -14,20 +14,48 @@ class HomeMovies extends \homepage\HomeController {
     public function movies() {
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
         $counters = $helper->checkForUpdate();
-        $data = \MemcacheSingleton::instance()->get("page_data", "movies");
+        $data = $this->memcache_instance->get(
+            \MemcacheNamespaces::NAMESPACE_PAGE,
+            \MemcacheNamespaces::KEY_MOVIES_DATA
+        );
+        $script = $this->memcache_instance->get(
+            \MemcacheNamespaces::NAMESPACE_PAGE,
+            \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT
+        );
         
         if (
-                ($data !== false) &&
+                (($data !== false) &&
                 ($counters["movies"] != array_sum($data["by_decades"])) &&
-                ($counters["series"] != $data["sum_series"])
+                ($counters["series"] != $data["sum_series"])) ||
+                ($script === false)
             ) {
-                \MemcacheSingleton::instance()->expire("page_data", "movies");
+                $this->memcache_instance->expire(
+                    \MemcacheNamespaces::NAMESPACE_PAGE,
+                    \MemcacheNamespaces::KEY_MOVIES_DATA
+                );
+                $this->memcache_instance->expire(
+                    \MemcacheNamespaces::NAMESPACE_PAGE,
+                    \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT
+                );
                 $data = false;
+                $script = false;
         }
         
-        if ($data === false) {
+        if (($data === false) || ($script === false)) {
             $data = $helper->getMoviesPageStats();
-            \MemcacheSingleton::instance()->set("page_data", "movies", $data, 60 * 60 * 24 * 30);
+            $script = "//CACHED-" . date("Y-m-d H:i:s") . "\n" . $this->getMoviesJavascript($data, "1961");
+            $this->memcache_instance->set(
+                \MemcacheNamespaces::NAMESPACE_PAGE,
+                \MemcacheNamespaces::KEY_MOVIES_DATA,
+                $data,
+                \MemcacheNamespaces::EXPIRE_MOVIES
+            );
+            $this->memcache_instance->set(
+                \MemcacheNamespaces::NAMESPACE_PAGE,
+                \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT,
+                $script,
+                \MemcacheNamespaces::EXPIRE_MOVIES
+            );
         }
 
         $this->view->sums = array("movies" => array_sum($data["by_decades"]),
@@ -44,11 +72,16 @@ class HomeMovies extends \homepage\HomeController {
                                 "countries" => $data["by_countries"],
                                 "countries_series" => $data["by_countries_series"],
                                 "directed" => $data["by_directed"]);
-
-        $this->view->dataScript = $this->getMoviesJavascript($data, "1961");
+        $this->view->dataScript = $script;
     }
     
-    private function &getMoviesJavascript($data, $begin) {
+    /**
+     * Get needed javascript variables for graphs to generate
+     * @param array $data
+     * @param int $begin From which year to begin first graph - count of movies
+     * @return string
+     */
+    private function &getMoviesJavascript(array $data, $begin) {
         $return = "var d_y = [";
         $sum = 0;
         $count = 0;

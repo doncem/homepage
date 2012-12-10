@@ -13,6 +13,11 @@ class MoviesData {
      */
     private $em;
 
+    /**
+     * Instantiate helper by assigning EntityManager
+     * @param EntityManager $em
+     * @see EntityManager
+     */
     public function __construct(EntityManager $em) {
         $this->em = $em;
     }
