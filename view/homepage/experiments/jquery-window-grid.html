@@ -3,9 +3,13 @@
 {% block experimentDescription%}<div>
     Will launch full sized grid (initially of 1 square).
     You can expand eitherway it by simply hitting arrow keys and see what happens.
-    Escape button closes it. Version: 0.0.1<br />
+    Escape button closes it. Version: 0.1.0b<br />
     <a href="javascript:void(0);" class="version-history-link">Version log</a>
     <div class="version-history">
+        <span>0.1.0b</span>
+        <ul>
+            <li>Basic navigation to the left</li>
+        </ul>
         <span>0.0.1:</span>
         <ul>
             <li>Initial launch - the grid of one element shows up</li>
@@ -14,5 +18,5 @@
 </div>{% endblock %}
 
 {% block experimentContainer%}
-<div class="grid-element" data-x="1" data-y="1"></div>
+<div id="grid-element-1-1" class="grid-element" data-x="1" data-y="1"></div>
 {% endblock %}

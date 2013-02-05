@@ -139,7 +139,7 @@
     .grid-element {
         @include b-radius(5, 5, 5, 5);
         border:thin solid darken($mainColour, 50%);
-        float:left;
+        position:absolute;
         z-index:101;
     }
 }

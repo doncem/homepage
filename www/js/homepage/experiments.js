@@ -86,7 +86,7 @@ $(function() {
 
 var jqueryWindowGrid = function() {
     var c = $("#jquery-window-grid-container");
-    var element = "<div class=\"grid-element\"></div>";
+    var element = "<div id=\"grid-element-\" class=\"grid-element\" data-x=\"\" data-y=\"\"></div>";
     var gap = 4;
     var activeColour = "#012345";
     var colour = "#543210";
@@ -106,7 +106,39 @@ var jqueryWindowGrid = function() {
     }
     
     var moveLeft = function() {
-        //
+        xCurrent--;
+        $("#grid-element-" + (xCurrent + 1) + "-" + yCurrent).animate({backgroundColor:colour}, "fast");
+        
+        if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
+            $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
+        } else {
+            var line = $(".grid-element[data-y='" + yCurrent + "']");
+
+            if (line.length < xMax) {
+                var newX = calculateSize($(window).width(), line.length + 1);
+                var leftDiff = $(line[line.length - 1]).width() - newX;
+                $(".grid-element").each(function(i, e) {
+                    $(e).animate({
+                        left:parseInt($(e).css("left")) + leftDiff * (line.length - i),
+                        width:newX
+                    }, "fast");
+                });
+                c.prepend(element);
+                $("#grid-element-").attr("id", "grid-element-" + xCurrent + "-" + yCurrent)
+                                   .attr("data-x", xCurrent)
+                                   .attr("data-y", yCurrent)
+                                   .animate({
+                                       width:newX,
+                                       height:$(line[line.length - 1]).height(),
+                                       top:$(line[line.length - 1]).css("top"),
+                                       left:gap,
+                                       backgroundColor:activeColour
+                                   }, "fast");
+            } else {
+                $(line[line.length - 1]).animate({"color":activeColour}, "fast");
+                xCurrent = $(line[line.length - 1]).attr("data-x");
+            }
+        }
     }
     
     var moveUp = function() {
@@ -126,8 +158,6 @@ var jqueryWindowGrid = function() {
             setTimeout(function(e) { $(e).fadeIn("fast"); }, 400);
         });
     } else {
-        var x = 1;
-        var y = 1;
         var xCurrent = 1;
         var yCurrent = 1;
         var xMax = calculateMax($(window).width());
@@ -139,11 +169,11 @@ var jqueryWindowGrid = function() {
             height: $(window).height() - gap
         }).show("slow", function() {
             $(this).children("div").css({
-                marginRight: gap,
-                marginBottom: gap,
+                left: gap,
+                top: gap,
                 width: $(window).width() - 2 * (gap + 1),
                 height: $(window).height() - 2 * (gap + 1),
-                color: activeColour
+                backgroundColor: activeColour
             }).fadeIn("fast");
         });
     }

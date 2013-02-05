@@ -20,6 +20,8 @@ class SetJS extends Plugin {
             "bootstrap_min"         => "/js/bootstrap.min",
             "general"               => "/js/general",
             "general_min"           => "/js/general.min",
+            "jquery_color"          => "/js/jquery.color",
+            "jquery_color_min"      => "/js/jquery.color.min",
             "flot_min"              => "/js/jquery.flot.min",
             "home_movies"           => "/js/homepage/movies",
             "home_movies_min"       => "/js/homepage/movies.min",
@@ -52,6 +54,7 @@ class SetJS extends Plugin {
                     break;
                 case "HomeExperiments":
                     $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_experiments_min"] . ".js") && $isLive ? $this->available_js["home_experiments_min"] : $this->available_js["home_experiments"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_color_min"] . ".js") && $isLive ? $this->available_js["jquery_color_min"] : $this->available_js["jquery_color"];
                     break;
                 case "HomeIndex":
                 default:

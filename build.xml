@@ -124,6 +124,7 @@
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/experiments.js -o ${public}js/homepage/experiments.min.js" dir="." checkreturn="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/movies.js -o ${public}js/homepage/movies.min.js" dir="." checkreturn="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.color.js -o ${public}js/jquery.color.min.js" dir="." checkreturn="true" />
     </target>
     
     <target name="watch-sass" description="Generate CSS">
