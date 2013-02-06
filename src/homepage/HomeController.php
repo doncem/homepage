@@ -33,6 +33,6 @@ class HomeController extends \ControllerInit {
         $this->view->html = $html->getDefaults();
         $this->view->requested_page = $this->request->getRequestedResource();
         $this->view->js = $plugin->getHomeJS(get_called_class(), $this->view->isLive);
-        $this->memcache_instance = \MemcacheSingleton::instance($this->dic->registry);
+        $this->memcache_instance = \MemcacheSingleton::instance($this->dic);
     }
 }

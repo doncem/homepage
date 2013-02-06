@@ -1,12 +1,13 @@
 <?php
 
-use xframe\registry\Registry;
+use xframe\core\DependencyInjectionContainer;
 
 class MemcacheSingleton {
 
     private static $instance;
     private $memcache;
     private $registry;
+    private $type;
     private $connected = false;
     private $prefix_namespace = true;
     private $prefix = null;
@@ -14,16 +15,23 @@ class MemcacheSingleton {
     
     /**
      * Initilaises the MemcacheSingleton
-     * @param Registry $registry
+     * @param DependencyInjectionContainer $dic
      */
-    private function __construct(Registry $registry) {
+    private function __construct(DependencyInjectionContainer $dic) {
         try {
             $this->memcache = new Memcached();
+            $this->type = "memcached";
         } catch (Exception $ex) {
-            // check out xframe cache. afaik it haz
-            $this->memcache = new Memcache();
+            if ($dic->registry->get("CACHE_ENABLED")) {
+                $this->memcache = $dic->cache;
+                $this->type = "xframe";
+            } else {
+                $this->memcache = new Memcache();
+                $this->type = "memcache";
+            }
         }
-        $this->registry = $registry;
+        
+        $this->registry = $dic->registry;
         $this->log = array(
             "get" => array("Namespace\tIdentifier\tKey"),
             "set" => array("Namespace\tIdentifier\tKey\tMax Cache Time")
@@ -37,10 +45,13 @@ class MemcacheSingleton {
      */
     public function connect() {
         if (!$this->connected) {
-            $this->memcache->addServer(
-                $this->registry->get("MEMCACHE_HOST"),
-                (int)$this->registry->get("MEMCACHE_HOST")
-            );
+            if ($this->type != "xframe") {
+                $this->memcache->addServer(
+                    $this->registry->get("MEMCACHE_HOST"),
+                    (int)$this->registry->get("MEMCACHE_HOST")
+                );
+            }
+            
             $this->connected = true;
             /*foreach ($this->server_pool as $server) {
                 if ($this->memcache->addServer($server->address, $server->port)) {
@@ -62,12 +73,12 @@ class MemcacheSingleton {
     
     /**
      * Initialises the memcache singleton with a server list
-     * @param Registry $registry
+     * @param DependencyInjectionContainer $dic
      * @return MemcacheSingleton
      */
-    public static function instance(Registry $registry) {
+    public static function instance(DependencyInjectionContainer $dic) {
         if (!isset(self::$instance)) {
-            self::$instance = new MemcacheSingleton($registry);
+            self::$instance = new MemcacheSingleton($dic);
         }
         
         return self::$instance;
@@ -134,7 +145,12 @@ class MemcacheSingleton {
                 if ($expiry <= time()) {
                     //only keep object in cache for another minute, to let the cached item be repopulated and to prevent cache rushing
                     $cached_oject["expiry"] = $max_cache_time = time() + 60;
-                    $this->memcache->replace($key, $cached_oject, $max_cache_time);
+                    
+                    if ($this->type == "memcached") {
+                        $this->memcache->replace($key, $cached_oject, $max_cache_time);
+                    } else {
+                        $this->memcache->replace($key, $cached_oject, MEMCACHE_COMPRESSED, $max_cache_time);
+                    }
                 } else {
                     $content = $cached_object["content"];
                 }
@@ -174,12 +190,22 @@ class MemcacheSingleton {
             $to_cache["expiry"] = $expiry;
             $to_cache["content"] =  $content;
 
-            if (!$this->memcache->replace($key, $to_cache, $max_cache_time)) {
-                if ($this->memcache->add($key, $to_cache, $max_cache_time)) {
+            if ($this->type == "memcached") {
+                if (!$this->memcache->replace($key, $to_cache, $max_cache_time)) {
+                    if ($this->memcache->add($key, $to_cache, $max_cache_time)) {
+                        $cached = true;
+                    }
+                } else {
                     $cached = true;
                 }
             } else {
-                $cached = true;
+                if (!$this->memcache->replace($key, $to_cache, MEMCACHE_COMPRESSED, $max_cache_time)) {
+                    if ($this->memcache->add($key, $to_cache, MEMCACHE_COMPRESSED, $max_cache_time)) {
+                        $cached = true;
+                    }
+                } else {
+                    $cached = true;
+                }
             }
         }
         
