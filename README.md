@@ -30,6 +30,10 @@ Either you have them installed somewhere and already is in include path or you m
 * into lib/Doctrine folder, add as follows:
     * doctrine/lib/Doctrine/ORM
     * doctrine-common/lib/Doctrine/Common
+        * doctrine-annotations/lib/Doctrine/Common/Annotations
+        * doctrine-cache/lib/Doctrine/Common/Cache
+        * doctrine-collections/lib/Doctrine/Common/Collections
+        * doctrine-lexer/lib/Doctrine/Common/Lexer
     * doctrine-dbal/lib/Doctrine/DBAL
 * jquery-color/jquery.color.js linked in www/js/ folder
 

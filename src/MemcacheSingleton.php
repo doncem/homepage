@@ -17,7 +17,12 @@ class MemcacheSingleton {
      * @param Registry $registry
      */
     private function __construct(Registry $registry) {
-        $this->memcache = new Memcached();
+        try {
+            $this->memcache = new Memcached();
+        } catch (Exception $ex) {
+            // check out xframe cache. afaik it haz
+            $this->memcache = new Memcache();
+        }
         $this->registry = $registry;
         $this->log = array(
             "get" => array("Namespace\tIdentifier\tKey"),
