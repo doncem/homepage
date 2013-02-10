@@ -10,11 +10,12 @@ const TOP_GAP_SCROLL = 20;
  * @param {jQuery} e Experiment to activate
  */
 function activateExperiment(e) {
+    var href = e.children(".link-container").children("a");
+    
     if (e.hasClass("active")) {
         scrollToTop(e, TOP_GAP_SCROLL);
+        window[getFunction(href.attr("href").substr(1))]();
     } else {
-        var href = e.children(".link-container").children("a");
-
         if (href.attr("href").substr(0, 1) == "#") {
             e.addClass("active");
             //href.parent().fadeOut("slow");
@@ -92,11 +93,38 @@ var jqueryWindowGrid = function() {
     var colour = "#543210";
     
     var calculateSize = function(wSize, k) {
-        return Math.floor((wSize - gap) / k - gap - 2);
+        return Math.floor((wSize - gap) / k - gap - 2 * parseInt($(".grid-element").first().css("border-width")));
     }
     
     var calculateMax = function(wSize) {
         return Math.floor((wSize - gap) / (3 + gap));
+    }
+    
+    /**
+     * Add element to the grid
+     * @param {string} type Where to add element: 'prepend' or 'append'
+     * @param {int} w New width
+     * @param {int} h New height
+     * @param {int} t Position from top
+     * @param {int} l Position from left
+     */
+    var addE = function(type, w, h, t, l) {
+        if (type == "prepend") {
+            c.prepend(element);
+        } else {
+            c.append(element);
+        }
+
+        $("#grid-element-").attr("id", "grid-element-" + xCurrent + "-" + yCurrent)
+                           .attr("data-x", xCurrent)
+                           .attr("data-y", yCurrent)
+                           .animate({
+                               width:w,
+                               height:h,
+                               top:t,
+                               left:l,
+                               backgroundColor:activeColour
+                           }, "fast");
     }
     
     var close = function() {
@@ -112,45 +140,121 @@ var jqueryWindowGrid = function() {
         if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
             $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
         } else {
+            var column = $(".grid-element[data-x='" + xCurrent + "']");
             var line = $(".grid-element[data-y='" + yCurrent + "']");
 
-            if (line.length < xMax) {
-                var newX = calculateSize($(window).width(), line.length + 1);
-                var leftDiff = $(line[line.length - 1]).width() - newX;
-                $(".grid-element").each(function(i, e) {
-                    $(e).animate({
-                        left:parseInt($(e).css("left")) + leftDiff * (line.length - i),
-                        width:newX
-                    }, "fast");
-                });
-                c.prepend(element);
-                $("#grid-element-").attr("id", "grid-element-" + xCurrent + "-" + yCurrent)
-                                   .attr("data-x", xCurrent)
-                                   .attr("data-y", yCurrent)
-                                   .animate({
-                                       width:newX,
-                                       height:$(line[line.length - 1]).height(),
-                                       top:$(line[line.length - 1]).css("top"),
-                                       left:gap,
-                                       backgroundColor:activeColour
-                                   }, "fast");
+            if (column.length > 0) {
+                addE("prepend", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
             } else {
-                $(line[line.length - 1]).animate({"color":activeColour}, "fast");
-                xCurrent = $(line[line.length - 1]).attr("data-x");
+                if (line.length < xMax) {
+                    var newX = calculateSize($(window).width(), currentXMax + 1);
+                    $(".grid-element").each(function(i, e) {
+                        $(e).animate({
+                            left:(parseInt($(e).attr("data-x")) - xCurrent + 1) * gap + (parseInt($(e).attr("data-x")) - xCurrent) * (2 * parseInt($(".grid-element").first().css("border-width")) + newX),
+                            width:newX
+                        }, "fast");
+                    });
+                    currentXMax++;
+                    addE("prepend", newX, line.first().height(), line.first().css("top"), gap);
+                } else {
+                    $(line[line.length - 1]).animate({"color":activeColour}, "fast");
+                    xCurrent = parseInt($(line[line.length - 1]).attr("data-x"));
+                }
             }
         }
     }
     
     var moveUp = function() {
-        //
+        yCurrent--;
+        $("#grid-element-" + xCurrent + "-" + (yCurrent + 1)).animate({backgroundColor:colour}, "fast");
+        
+        if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
+            $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
+        } else {
+            var column = $(".grid-element[data-x='" + xCurrent + "']");
+            var line = $(".grid-element[data-y='" + yCurrent + "']");
+
+            if (line.length > 0) {
+                addE("prepend", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
+            } else {
+                if (column.length < yMax) {
+                    var newY = calculateSize($(window).height(), currentYMax + 1);
+                    $(".grid-element").each(function(i, e) {
+                        $(e).animate({
+                            top:(parseInt($(e).attr("data-y")) - yCurrent + 1) * gap + (parseInt($(e).attr("data-y")) - yCurrent) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY),
+                            height:newY
+                        }, "fast");
+                    });
+                    currentYMax++;
+                    addE("prepend", column.first().width(), newY, gap, parseInt(column.first().css("left")));
+                } else {
+                    $(column[column.length - 1]).animate({"color":activeColour}, "fast");
+                    yCurrent = parseInt($(column[column.length - 1]).attr("data-y"));
+                }
+            }
+        }
     }
     
     var moveRight = function() {
-        //
+        xCurrent++;
+        $("#grid-element-" + (xCurrent - 1) + "-" + yCurrent).animate({backgroundColor:colour}, "fast");
+        
+        if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
+            $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
+        } else {
+            var column = $(".grid-element[data-x='" + xCurrent + "']");
+            var line = $(".grid-element[data-y='" + yCurrent + "']");
+
+            if (column.length > 0) {
+                addE("append", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
+            } else {
+                if (line.length < xMax) {
+                    currentXMax++;
+                    var newX = calculateSize($(window).width(), currentXMax);
+                    $(".grid-element").each(function(i, e) {
+                        $(e).animate({
+                            left:(currentXMax - xCurrent + parseInt($(e).attr("data-x"))) * gap + (currentXMax - xCurrent + parseInt($(e).attr("data-x")) - 1) * (2 * parseInt($(".grid-element").first().css("border-width")) + newX),
+                            width:newX
+                        }, "fast");
+                    });
+                    addE("append", newX, line.first().height(), line.first().css("top"), currentXMax * gap + (currentXMax - 1) * (2 * parseInt($(".grid-element").first().css("border-width")) + newX));
+                } else {
+                    $(line[0]).animate({"color":activeColour}, "fast");
+                    xCurrent = parseInt($(line[0]).attr("data-x"));
+                }
+            }
+        }
     }
     
     var moveDown = function() {
-        //
+        yCurrent++;
+        $("#grid-element-" + xCurrent + "-" + (yCurrent - 1)).animate({backgroundColor:colour}, "fast");
+        
+        if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
+            $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
+        } else {
+            var column = $(".grid-element[data-x='" + xCurrent + "']");
+            var line = $(".grid-element[data-y='" + yCurrent + "']");
+
+            if (line.length > 0) {
+                addE("append", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
+            } else {
+                if (column.length < yMax) {
+                    currentYMax++;
+                    var newY = calculateSize($(window).height(), currentYMax);
+                    $(".grid-element").each(function(i, e) {
+                        $(e).animate({
+                            top:(currentYMax - yCurrent + parseInt($(e).attr("data-y"))) * gap + (currentYMax - yCurrent + parseInt($(e).attr("data-y")) - 1) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY),
+                            height:newY
+                        }, "fast");
+                    });
+                    addE("append", column.first().width(), newY, currentYMax * gap + (currentYMax - 1) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY), column.first().css("left"));
+                } else {
+                    $(column[0]).animate({"color":activeColour}, "fast");
+                    yCurrent = parseInt($(column[0]).attr("data-y"));
+                }
+            }
+        }
     }
     
     if (c.children("div").length > 1) {
@@ -162,6 +266,8 @@ var jqueryWindowGrid = function() {
         var yCurrent = 1;
         var xMax = calculateMax($(window).width());
         var yMax = calculateMax($(window).height());
+        var currentXMax = 1;
+        var currentYMax = 1;
         c.css({
             paddingLeft: gap,
             paddingTop: gap,
