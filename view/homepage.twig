@@ -15,7 +15,7 @@
 <body>
     <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>
     <div id="page">
-        <div id="menu">{% include "common/menu.html" %}</div>
+        <div id="menu">{% include "common/menu.twig" %}</div>
         <div id="content">
             <div id="page-title">
                 <h1>{% block page_title %}{% endblock %}</h1>
@@ -27,7 +27,7 @@
         <div class="clear"></div>
     </div>
     {% if isLive == 1 %}
-    {% include "common/ga.html" %}
+    {% include "common/ga.twig" %}
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>
     {% if js is defined %}

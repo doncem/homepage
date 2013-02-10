@@ -1,4 +1,4 @@
-{% extends "homepage.html" %}
+{% extends "homepage.twig" %}
 
 {% block meta_description %}Something to bug around, waste some time{% endblock %}
 
@@ -12,7 +12,7 @@
 {%- if availableExperiments|length > 0 -%}
     {%- for link,title in availableExperiments -%}
 <div id="{{ link }}" class="experiment{% if link == enabledExperiment.link %} active{% endif %}">
-    {% include "homepage/experiments/%s.html"|format(link) %}
+    {% include "homepage/experiments/%s.twig"|format(link) %}
 </div>
     {%- endfor -%}
 {%- else -%}
