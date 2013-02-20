@@ -23,6 +23,8 @@ class SetJS extends Plugin {
             "jquery_color"          => "/js/jquery.color",
             "jquery_color_min"      => "/js/jquery.color.min",
             "flot_min"              => "/js/jquery.flot.min",
+            "modernizr"             => "/js/modernizr-2.6.2",
+            "modernizr_min"         => "/js/modernizr-2.6.2-min",
             "home_movies"           => "/js/homepage/movies",
             "home_movies_min"       => "/js/homepage/movies.min",
             "home_experiments"      => "/js/homepage/experiments",
@@ -47,6 +49,8 @@ class SetJS extends Plugin {
             return null;
         } else {
             $array = array(file_exists($this->dic->root . "www" . $this->available_js["general_min"] . ".js") && $isLive ? $this->available_js["general_min"] : $this->available_js["general"]);
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["modernizr_min"] . ".js") && $isLive ? $this->available_js["modernizr_min"] : $this->available_js["modernizr"];
+            
             switch ($namespace[2]) {
                 case "HomeMovies":
                     $array[] = $this->available_js["flot_min"];

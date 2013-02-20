@@ -50,7 +50,7 @@ All libraries I use for dev are straight out of master branches. So, not 'stable
 
 All tools are installed/used from available repositories with stable releases
 
-* jQuery - 1.8.3
+* jQuery - 1.9.1
 * jQuery Color - 2.1.1
 * flot - 0.7
 * Sass - 3.1.15

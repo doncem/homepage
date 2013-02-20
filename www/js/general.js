@@ -10,9 +10,10 @@ function scrollToTop(e, topGap) {
 }
 
 $(function() {
-    if ($.browser.msie) {
-        $("#ie-sucks").slideDown("slow");
-    }
+    //depricated
+    //if ($.browser.msie) {
+        //$("#ie-sucks").slideDown("slow");
+    //}
 
     var menuFontSize = $("#menu a").first().css("font-size");
     $("#menu a").hover(

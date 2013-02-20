@@ -67,9 +67,9 @@ $(function() {
         $(e).attachExperiment();
     });
     
-    $(".version-history-link").click(function(e) {
+    $(".development-history-link").click(function(e) {
         e.preventDefault();
-        $(this).next(".version-history").slideToggle("fast");
+        $(this).next(".development-history").slideToggle("fast");
     });
     
     if ((window.location.pathname == $("#menu a.active").attr("href")) && ($(window.location.hash).length > 0)) {
