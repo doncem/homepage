@@ -21,6 +21,16 @@
     <property name="install" value="./install/" />
     <property name="public" value="./www/" />
 
+    <!-- Initialize external libraries -->
+    <target name="init" description="Clone external libraries from github (creates external 'source-libraries' folder)">
+        <exec command="sh install-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
+    </target>
+
+    <!-- Update external libraries -->
+    <target name="update-libs" description="Runs update script for external libraries update">
+        <exec command="sh update-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
+    </target>
+
     <!-- Clean -->
     <target name="clean" description="Clean documentation">
         <delete includeemptydirs="true" verbose="false">
@@ -58,7 +68,7 @@
                 <exclude name="js" />
             </fileset>
         </delete>
-        <exec command="php deployToStatic.php" dir="./script" checkreturn="true" />
+        <exec command="php deployToStatic.php" dir="./script" checkreturn="true" passthru="true" />
     </target>
     
     <fileset dir="./static" id="files.app">
@@ -121,14 +131,15 @@
 
     <!-- Minify public resources -->
     <target name="minify-resources" description="Minify public JSs">
-        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" />
-        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/experiments.js -o ${public}js/homepage/experiments.min.js" dir="." checkreturn="true" />
-        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/movies.js -o ${public}js/homepage/movies.min.js" dir="." checkreturn="true" />
-        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.color.js -o ${public}js/jquery.color.min.js" dir="." checkreturn="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" passthru="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/experiments.js -o ${public}js/homepage/experiments.min.js" dir="." checkreturn="true" passthru="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/movies.js -o ${public}js/homepage/movies.min.js" dir="." checkreturn="true" passthru="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.color.js -o ${public}js/jquery.color.min.js" dir="." checkreturn="true" passthru="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.flot.js -o ${public}js/jquery.flot.min.js" dir="." checkreturn="true" passthru="true" />
     </target>
     
     <target name="watch-sass" description="Generate CSS">
-        <exec command="sass --line-comments --style compressed --watch ./src/cdcollection/sass:${public}css/cdcollection ./src/errors/sass:${public}css/errors ./src/homepage/sass:${public}css/homepage" dir="." checkreturn="true" />
+        <exec command="sass --line-comments --style compressed --watch ./src/cdcollection/sass:${public}css/cdcollection ./src/errors/sass:${public}css/errors ./src/homepage/sass:${public}css/homepage" dir="." checkreturn="true" passthru="true" />
     </target>
 
     <!-- Following three targets are DB related -->
@@ -139,7 +150,8 @@
                              -p${DATABASE_PASSWORD}
                              -e'CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME}'"
               dir="."
-              checkreturn="true" />
+              checkreturn="true"
+              passthru="true" />
     </target>
     
     <!-- Set -->
@@ -149,13 +161,15 @@
                              -p${DATABASE_PASSWORD}
                              ${DATABASE_NAME} &lt; ${install}create.sql"
               dir="."
-              checkreturn="true" />
+              checkreturn="true"
+              passthru="true" />
         <exec command="mysql -h${DATABASE_HOST}
                              -u${DATABASE_USERNAME}
                              -p${DATABASE_PASSWORD}
                              ${DATABASE_NAME} &lt; ${install}data.sql"
               dir="."
-              checkreturn="true" />
+              checkreturn="true"
+              passthru="true" />
     </target>
     
     <!-- Patch the update -->
@@ -165,6 +179,7 @@
                              -p${DATABASE_PASSWORD}
                              ${DATABASE_NAME} &lt; ${install}update.sql"
               dir="."
-              checkreturn="true" />
+              checkreturn="true"
+              passthru="true" />
     </target>
 </project>

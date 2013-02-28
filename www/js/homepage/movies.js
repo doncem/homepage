@@ -17,7 +17,7 @@ function drawPlot(p, d) {
         {
             legend:{position:d.legend.position,backgroundOpacity:0.6},
             grid:{clickable:true,hoverable:true},
-            xaxis:{tickSize:1,ticks:d.x},
+            xaxis:{tickSize:1,ticks:d.x.data,labelAngle:d.x.angle},
             yaxes:[{ticks:10},{alignTicksWithAxis: d.y.align,position:d.y.position}]
         }
     );
@@ -36,10 +36,10 @@ function showTooltip(x, y, contents, c, showFixed) {
 
 $(function() {
     g = {
-        "p_year" : {"graphs" : [{"data":d_y,"label":"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")","bars":true,"lines":false,"y":1},{"data":d_y_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_y_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":d_y_x,"y":{"align":null,"position":"left"}},
-        "p_decade" : {"graphs" : [{"data":d_yd,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_yd_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_yd_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":d_yd_x,"y":{"align":null,"position":"left"}},
-        "p_genre" : {"graphs":[{"data":d_g_m,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_g_s,"label":"tv shows","bars":true,"lines":false,"y":1},{"data":d_g_c,"label":"correlation","bars":false,"lines":true,"y":2}],"legend":{"position":"nw"},"x":d_g_x,"y":{"align":1,"position":"right"}},
-        "p_directed" : {"graphs":[{"data":d_d,"label":"#movies by directors","bars":true,"lines":false,"y":1}],"legend":{"position":"ne"},"x":d_d_x,"y":{"align":null,"position":"left"}}
+        "p_year" : {"graphs" : [{"data":d_y,"label":"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")","bars":true,"lines":false,"y":1},{"data":d_y_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_y_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_y_x,"angle":270},"y":{"align":null,"position":"left"}},
+        "p_decade" : {"graphs" : [{"data":d_yd,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_yd_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_yd_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_yd_x,"angle":0},"y":{"align":null,"position":"left"}},
+        "p_genre" : {"graphs":[{"data":d_g_m,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_g_s,"label":"tv shows","bars":true,"lines":false,"y":1},{"data":d_g_c,"label":"correlation","bars":false,"lines":true,"y":2}],"legend":{"position":"nw"},"x":{"data":d_g_x,"angle":270},"y":{"align":1,"position":"right"}},
+        "p_directed" : {"graphs":[{"data":d_d,"label":"#movies by directors","bars":true,"lines":false,"y":1}],"legend":{"position":"ne"},"x":{"data":d_d_x,"angle":0},"y":{"align":null,"position":"left"}}
     };
     
     for (i in g) {
