@@ -1,7 +1,7 @@
 /**
  * How much to leave from top
  */
-const TOP_GAP_SCROLL = 20;
+var TOP_GAP_SCROLL = 20;
 
 /**
  * If 'e' has class 'active' - scroll to it, it's active already<br />
@@ -16,7 +16,7 @@ function activateExperiment(e) {
         scrollToTop(e, TOP_GAP_SCROLL);
         window[getFunction(href.attr("href").substr(1))]();
     } else {
-        if (href.attr("href").substr(0, 1) == "#") {
+        if (href.attr("href").substr(0, 1) === "#") {
             e.addClass("active");
             //href.parent().fadeOut("slow");
             scrollToTop(e, TOP_GAP_SCROLL);
@@ -49,7 +49,7 @@ $.fn.attachExperiment = function() {
     var link = $(this).attr("id");
     
     if (!$("#" + link).hasClass("active")) {
-        if (link.substr(0, 6) == "jquery") {
+        if (link.substr(0, 6) === "jquery") {
             $("#" + link).append("<p class=\"link-container\"><a href=\"#" + link + "\" class=\"launch-link\">Launch it</a></p>");
         } else {
             $("#" + link).append("<p class=\"link-container\"><a href=\"/" + link + "/\">Go there</a></p>");
@@ -60,7 +60,7 @@ $.fn.attachExperiment = function() {
         e.preventDefault();
         activateExperiment($("#" + link));
     });
-}
+};
 
 $(function() {
     $(".experiment").each(function(i, e) {
@@ -72,7 +72,7 @@ $(function() {
         $(this).next(".development-history").slideToggle("fast");
     });
     
-    if ((window.location.pathname == $("#menu a.active").attr("href")) && ($(window.location.hash).length > 0)) {
+    if ((window.location.pathname === $("#menu a.active").attr("href")) && ($(window.location.hash).length > 0)) {
         activateExperiment($(window.location.hash));
     } else if ($(".experiment.active").length > 0) {
         activateExperiment($(".experiment.active").first());
@@ -94,11 +94,11 @@ var jqueryWindowGrid = function() {
     
     var calculateSize = function(wSize, k) {
         return Math.floor((wSize - gap) / k - gap - 2 * parseInt($(".grid-element").first().css("border-width")));
-    }
+    };
     
     var calculateMax = function(wSize) {
         return Math.floor((wSize - gap) / (3 + gap));
-    }
+    };
     
     /**
      * Add element to the grid
@@ -109,7 +109,7 @@ var jqueryWindowGrid = function() {
      * @param {int} l Position from left
      */
     var addE = function(type, w, h, t, l) {
-        if (type == "prepend") {
+        if (type === "prepend") {
             c.prepend(element);
         } else {
             c.append(element);
@@ -125,13 +125,13 @@ var jqueryWindowGrid = function() {
                                left:l,
                                backgroundColor:activeColour
                            }, "fast");
-    }
+    };
     
     var close = function() {
         c.children("div").each(function(i, e) {
             setTimeout(function(e) { $(e).fadeOut("fast"); }, 400);
         }).parent().hide("slow");
-    }
+    };
     
     var moveLeft = function() {
         xCurrent--;
@@ -162,7 +162,7 @@ var jqueryWindowGrid = function() {
                 }
             }
         }
-    }
+    };
     
     var moveUp = function() {
         yCurrent--;
@@ -193,7 +193,7 @@ var jqueryWindowGrid = function() {
                 }
             }
         }
-    }
+    };
     
     var moveRight = function() {
         xCurrent++;
@@ -224,7 +224,7 @@ var jqueryWindowGrid = function() {
                 }
             }
         }
-    }
+    };
     
     var moveDown = function() {
         yCurrent++;
@@ -255,7 +255,7 @@ var jqueryWindowGrid = function() {
                 }
             }
         }
-    }
+    };
     
     if (c.children("div").length > 1) {
         c.show("slow").children("div").each(function(i, e) {
@@ -304,12 +304,12 @@ var jqueryWindowGrid = function() {
                 moveDown();
                 break;
         }
-    }
+    };
     
     var timeout;
     $(window).keyup(function(e) {
         e.preventDefault();
-        timeout = setTimeout(doKeyUp, timeout != undefined ? 100 : 0, e.which);
+        timeout = setTimeout(doKeyUp, timeout !== undefined ? 100 : 0, e.which);
     });
     
     $(window).resize(function() {
@@ -331,4 +331,4 @@ var jqueryWindowGrid = function() {
             }, "fast");
         });
     });
-}
+};

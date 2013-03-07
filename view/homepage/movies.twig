@@ -51,33 +51,35 @@
 <div id="countries">
     <table>
         <tr><th></th><th>#movies</th></tr>
-        {%- for country,movie in data.countries -%}
-        <tr><td>{{- country -}}</td><td>{{- movie -}}</td></tr>
-        {%- endfor -%}
+        {% for country,movie in data.countries %}
+        <tr><td>{{ country }}</td><td>{{ movie }}</td></tr>
+        {% endfor %}
     </table>
 </div>
 <div id="series">
     <table>
         <tr><th></th><th>#series</th></tr>
-        {%- for country,serie in data.countries_series -%}
-        <tr><td>{{- country -}}</td><td>{{- serie -}}</td></tr>
-        {%- endfor -%}
+        {% for country,serie in data.countries_series %}
+        <tr><td>{{ country }}</td><td>{{ serie }}</td></tr>
+        {% endfor %}
     </table>
 </div>
 {% endif %}
 {% endblock %}
 {% block script %}
 {% if data is defined %}
+{% spaceless %}
 <script type="text/javascript">
 //<!--
-    {% autoescape false -%}
-    {{- dataScript -}}
-    {%- endautoescape -%}
+    {% autoescape false %}
+    {{ dataScript }}
+    {% endautoescape %}
     $(function() {
         $("#meanval td").last().html(meanval);
         $("#stdval td").last().html(stdval);
     });
 //--!>
 </script>
+{% endspaceless %}
 {% endif %}
 {% endblock %}

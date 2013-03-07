@@ -10,49 +10,49 @@
 <p>All published documents are in Lithuanian language because hell-music is a Lithuanian site. All documents are formed like &#39;YYYYMMDD &lt;name&gt;&#39;</p>
 <h2>News</h2>
 <p>All &lt;name&gt; elements are group names</p>
-{%- set l = links.news|length -%}
+{% set l = links.news|length %}
 <table id="news">
-{%- set i = 0 -%}
-{%- for key, news in links.news -%}
-    {%- if loop.index % (columns * amount) == 1 -%}
+{% set i = 0 %}
+{% for key, news in links.news %}
+    {% if loop.index % (columns * amount) == 1 %}
     <tr>
-    {%- endif -%}
-        {%- if loop.index % amount == 1 -%}
-        {%- set i = i + 1 -%}
+    {% endif %}
+        {% if loop.index % amount == 1 %}
+        {% set i = i + 1 %}
         <td><ol start="{{ ((loop.index // amount) * amount) + 1 }}">
-            {%- endif -%}
+            {% endif %}
                 <li><a href="{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
-            {%- if loop.index is divisibleby(amount) -%}
+            {% if loop.index is divisibleby(amount) %}
             </ol></td>
-        {%- endif -%}
-    {%- if loop.index is divisibleby(columns * amount) -%}
+        {% endif %}
+    {% if loop.index is divisibleby(columns * amount) %}
     </tr>
-    {%- endif -%}
-{%- endfor -%}
-{%- if (links.news is divisibleby(amount)) and (i is divisibleby(columns)) -%}
+    {% endif %}
+{% endfor %}
+{% if (links.news is divisibleby(amount)) and (i is divisibleby(columns)) %}
     </tr>
-{%- elseif (i is divisibleby(columns)) -%}
+{% elseif (i is divisibleby(columns)) %}
             </ol></td></tr>
-{%- else -%}
+{% else %}
             </ol></td>
-    {%- set i = i + 1 -%}
-    {%- for j in range(i, cells) -%}
+    {% set i = i + 1 %}
+    {% for j in range(i, cells) %}
         <td></td>
-    {%- endfor -%}
-{%- endif -%}
+    {% endfor %}
+{% endif %}
 </table>
 <h2>Reviews</h2>
 <p>All &lt;name&gt; elements are short names - conclusions</p>
 <ol>
-    {%- for key, review in links.reviews -%}
+    {% for key, review in links.reviews %}
     <li><a href="{{ review[0] }}{{ key }}">{{ review[1] }}</a></li>
-    {%- endfor -%}
+    {% endfor %}
 </ol>
 <h2>Reports</h2>
 <p>All &lt;name&gt; elements either short names - conclusions. If you don't know the certain name, it might be group name or festival name</p>
 <ol>
-    {%- for key, report in links.reports -%}
+    {% for key, report in links.reports %}
     <li><a href="{{ report[0] }}{{ key }}">{{ report[1] }}</a></li>
-    {%- endfor -%}
+    {% endfor %}
 </ol>
 {% endblock %}

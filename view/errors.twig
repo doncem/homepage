@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ html.lang }}">
-<head>
+<head>{% spaceless %}
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     {% if isLive == 1 %}
     <meta name="google-site-verification" content="gND_iyudJzru_kmf-YSstX8_FFr7vXAFV8ajx-KbuaM" />
@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="/css/errors/{{ html.css }}.css" />
     <link rel="shortcut icon" href="/img/favicon.ico" />
     <title>{{ html.title }} - {% block title %}Oh Dear...{% endblock %}</title>
-</head>
-<body>
+{% endspaceless %}</head>
+<body>{% spaceless %}
     <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>
     <div id="page">
         {% block content %}
@@ -27,10 +27,11 @@
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>
     {% if js is defined %}
-    {%- for j in js -%}
+    {% for j in js %}
     <script type="text/javascript" src="{{ j }}.js"></script>
-    {%- endfor -%}
+    {% endfor %}
     {% endif %}
+    {% endspaceless %}
     {% block script %}{% endblock %}
 </body>
 </html>

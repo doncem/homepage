@@ -3,19 +3,19 @@
 {% block meta_description %}Something to bug around, waste some time{% endblock %}
 
 {% block title %}Experiment
-{%- if enabledExperiment is defined %} - {{ enabledExperiment.title }}{% else %}s{% endif -%}
+{% if enabledExperiment is defined %} - {{ enabledExperiment.title }}{% else %}s{% endif %}
 {% endblock %}
 
 {% block page_title %}Experiments{% endblock %}
 
 {% block content %}
-{%- if availableExperiments|length > 0 -%}
-    {%- for link,title in availableExperiments -%}
+{% if availableExperiments|length > 0 %}
+    {% for link,title in availableExperiments %}
 <div id="{{ link }}" class="experiment{% if link == enabledExperiment.link %} active{% endif %}">
     {% include "homepage/experiments/%s.twig"|format(link) %}
 </div>
-    {%- endfor -%}
-{%- else -%}
+    {% endfor %}
+{% else %}
 <p>No experiments available</p>
-{%- endif -%}
+{% endif %}
 {% endblock %}

@@ -51,11 +51,11 @@ $(function() {
     $(".placeholder").bind("plothover", function(event, pos, item) {
         if (item) {
             $(this).css("cursor", "pointer");
-            if ((previousPoint != item.dataIndex) || (previousLabel != item.series.label)) {
+            if ((previousPoint !== item.dataIndex) || (previousLabel !== item.series.label)) {
                 previousPoint = item.dataIndex;
                 previousLabel = item.series.label;
                 $("#tooltip").remove();
-                showTooltip(item.pageX, item.pageY, item.datapoint[1], item.series.color, !(($(this).attr("id") == "p_year") || ($(this).attr("id") == "p_decade") || (item.series.label == "correlation")));
+                showTooltip(item.pageX, item.pageY, item.datapoint[1], item.series.color, !(($(this).attr("id") === "p_year") || ($(this).attr("id") === "p_decade") || (item.series.label === "correlation")));
             }
         } else {
             $(this).css("cursor", "default");
