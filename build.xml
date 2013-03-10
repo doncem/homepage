@@ -24,6 +24,7 @@
     <!-- Initialize external libraries -->
     <target name="init" description="Clone external libraries from github (creates external 'source-libraries' folder)">
         <exec command="sh install-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
+        <exec command="sh combine-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
     </target>
 
     <!-- Update external libraries -->

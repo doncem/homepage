@@ -22,10 +22,10 @@ class HomeMovies extends \homepage\HomeController {
             \MemcacheNamespaces::NAMESPACE_PAGE,
             \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT
         );
-        
+
         if (
                 (($data !== false) &&
-                ($counters["movies"] != array_sum($data["by_decades"])) &&
+                ($counters["movies"] != array_sum($data["by_decades"])) ||
                 ($counters["series"] != $data["sum_series"])) ||
                 ($script === false)
             ) {
