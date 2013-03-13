@@ -1,3 +1,13 @@
 <h2>{{ title }}</h2>
 <p>{% block experimentDescription %}{% endblock %}</p>
-<div id="{{ link }}-container" class="experiment-container">{% block experimentContainer%}{% endblock %}</div>
+<div id="{{ link }}-container" class="experiment-container{% block additionalClass%}{% endblock %}">
+    {% block experimentContainer%}{% endblock %}
+</div>
+{#
+short description (inside <p> tag):
+{% block experimentDescription %}{% endblock %}
+if needed:
+{% block additionalClass %}{% endblock %}
+contents:
+{% block experimentContainer %}{% endblock %}
+#}

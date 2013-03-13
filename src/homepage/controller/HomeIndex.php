@@ -53,7 +53,7 @@ class HomeIndex extends \homepage\HomeController {
         }
         
         $this->view->columns = 4;
-        $this->view->amount = (count($links["news"]) > 90 ? 10 : 11);
+        $this->view->amount = 12;
         $this->view->cells = (ceil(count($links["news"]) / $this->view->amount) % $this->view->columns) * $this->view->columns;
         $this->view->links = $links;
     }

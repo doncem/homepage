@@ -270,12 +270,7 @@ var jqueryWindowGrid = function() {
         var maxY = 1;
         var minX = 1;
         var minY = 1;
-        c.css({
-            paddingLeft: gap,
-            paddingTop: gap,
-            width: $(window).width()- gap,
-            height: $(window).height() - gap
-        }).show("slow", function() {
+        c.sizeWrapper(gap, 0).show("slow", function() {
             $(this).children("div").css({
                 left: gap,
                 top: gap,
@@ -318,10 +313,6 @@ var jqueryWindowGrid = function() {
         var newX = calculateSize($(window).width(), maxX - minX + 1);
         var newY = calculateSize($(window).height(), maxY - minY + 1);
         
-        c.css({
-            width: $(window).width()- gap,
-            height: $(window).height() - gap
-        });
         $(".grid-element").each(function(i, e) {
             $(e).animate({
                 top:(parseInt($(e).attr("data-y")) - minY + 1) * gap + (parseInt($(e).attr("data-y")) - minY) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY),

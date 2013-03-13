@@ -53,6 +53,6 @@ All tools are installed/cloned from available repositories
 
 * jQuery - 1.9.1
 * jQuery Color - 2.1.1
-* flot - 0.8 alpha
+* flot - 0.8.0 beta
 * Sass - 3.1.15
 * Memcached - 1.4.14

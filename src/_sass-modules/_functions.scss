@@ -1,8 +1,15 @@
-@mixin transformed($degree) {
+@mixin do-rotate($degree) {
     -o-transform:rotate(#{$degree}deg);
     -moz-transform:rotate(#{$degree}deg);
     -webkit-transform:rotate(#{$degree}deg);
     transform:rotate(#{$degree}deg);
+}
+@mixin do-scale($howMuch) {
+    -moz-transform:scale($howMuch);
+    -webkit-transform:scale($howMuch);
+    -ms-transform:scale($howMuch);
+    -o-transform:scale($howMuch);
+    transform:scale($howMuch);
 }
 @mixin b-radius($topLeft, $topRight, $bottomRight, $bottomLeft) {
     border-radius:#{$topLeft}px #{$topRight}px #{$bottomRight}px #{$bottomLeft}px;
@@ -20,9 +27,39 @@
 }
 @mixin wrapper() {
     background-color:darken($mainColour, 70%);
+    display:none;
     opacity:0.7;
     position:absolute;
     top:0;
     left:0;
     z-idnex:100;
+}
+@mixin animate-me($name, $duration, $count, $direction) {
+    -moz-animation-name:$name;
+    -moz-animation-duration:$duration;
+    -moz-animation-iteration-count:$count;
+    -moz-animation-direction:$direction;
+    -webkit-animation-name:$name;
+    -webkit-animation-duration:$duration;
+    -webkit-animation-iteration-count:$count;
+    -webkit-animation-direction:$direction;
+    -ms-animation-name:$name;
+    -ms-animation-duration:$duration;
+    -ms-animation-iteration-count:$count;
+    -ms-animation-direction:$direction;
+    -o-animation-name:$name;
+    -o-animation-duration:$duration;
+    -o-animation-iteration-count:$count;
+    -o-animation-direction:$direction;
+    animation-name:$name;
+    animation-duration:$duration;
+    animation-iteration-count:$count;
+    animation-direction:$direction;
+}
+@mixin animate-delay-me($delay) {
+    -moz-animation-delay:$delay;
+    -webkit-animation-delay:$delay;
+    -ms-animation-delay:$delay;
+    -o-animation-delay:$delay;
+    animation-delay:$delay;
 }

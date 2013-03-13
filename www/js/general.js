@@ -9,6 +9,41 @@ function scrollToTop(e, topGap) {
     //e.children(".experiment-container").slideDown("slow");
 }
 
+/**
+ * Set wrapper to window size with required gaps
+ * @param {int} topLeftGap
+ * @param {int} bottomRightGap
+ * @returns {Object} jQuery selected object
+ */
+$.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
+    var options = {};
+    
+    if (topLeftGap > 0) {
+        options = $.extend({
+            paddingTop: topLeftGap,
+            paddingLeft: topLeftGap
+        }, options);
+    } else {
+        topLeftGap = parseInt($(this).css("padding-top"));
+    }
+    
+    if (bottomRightGap > 0) {
+        options = $.extend({
+            paddingBottom: bottomRightGap,
+            paddingRight: bottomRightGap
+        }, options);
+    } else {
+        bottomRightGap = parseInt($(this).css("padding-bottom"));
+    }
+    
+    $(this).css($.extend({
+        width: $(document).width() - topLeftGap - bottomRightGap,
+        height: $(document).height() - topLeftGap - bottomRightGap
+    }, options));
+    
+    return $(this);
+};
+
 $(function() {
     //depricated
     //if ($.browser.msie) {
@@ -25,4 +60,8 @@ $(function() {
             $(this).animate({"font-size":menuFontSize}, "slow", function() {$(this).removeAttr("style");});
         }
     );
+    
+    $(window).resize(function() {
+        $(".wrapper").sizeWrapper();
+    });
 });

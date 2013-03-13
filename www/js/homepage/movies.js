@@ -16,7 +16,7 @@ function drawPlot(p, d) {
     $.plot($("#" + p), source,
         {
             legend:{position:d.legend.position,backgroundOpacity:0.6},
-            grid:{clickable:true,hoverable:true},
+            grid:{clickable:d.grid.clickable,hoverable:true},
             xaxis:{tickSize:1,ticks:d.x.data,labelAngle:d.x.angle},
             yaxes:[{ticks:10},{alignTicksWithAxis: d.y.align,position:d.y.position}]
         }
@@ -36,10 +36,10 @@ function showTooltip(x, y, contents, c, showFixed) {
 
 $(function() {
     g = {
-        "p_year" : {"graphs" : [{"data":d_y,"label":"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")","bars":true,"lines":false,"y":1},{"data":d_y_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_y_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_y_x,"angle":270},"y":{"align":null,"position":"left"}},
-        "p_decade" : {"graphs" : [{"data":d_yd,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_yd_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_yd_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_yd_x,"angle":0},"y":{"align":null,"position":"left"}},
-        "p_genre" : {"graphs":[{"data":d_g_m,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_g_s,"label":"tv shows","bars":true,"lines":false,"y":1},{"data":d_g_c,"label":"correlation","bars":false,"lines":true,"y":2}],"legend":{"position":"nw"},"x":{"data":d_g_x,"angle":270},"y":{"align":1,"position":"right"}},
-        "p_directed" : {"graphs":[{"data":d_d,"label":"#movies by directors","bars":true,"lines":false,"y":1}],"legend":{"position":"ne"},"x":{"data":d_d_x,"angle":0},"y":{"align":null,"position":"left"}}
+        "p_year" : {"grid":{"clickable":true},"graphs" : [{"data":d_y,"label":"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")","bars":true,"lines":false,"y":1},{"data":d_y_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_y_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_y_x,"angle":270},"y":{"align":null,"position":"left"}},
+        "p_decade" : {"grid":{"clickable":false},"graphs" : [{"data":d_yd,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_yd_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_yd_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_yd_x,"angle":0},"y":{"align":null,"position":"left"}},
+        "p_genre" : {"grid":{"clickable":true},"graphs":[{"data":d_g_m,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_g_s,"label":"tv shows","bars":true,"lines":false,"y":1},{"data":d_g_c,"label":"correlation","bars":false,"lines":true,"y":2}],"legend":{"position":"nw"},"x":{"data":d_g_x,"angle":270},"y":{"align":1,"position":"right"}},
+        "p_directed" : {"grid":{"clickable":true},"graphs":[{"data":d_d,"label":"#movies by directors","bars":true,"lines":false,"y":1}],"legend":{"position":"ne"},"x":{"data":d_d_x,"angle":0},"y":{"align":null,"position":"left"}}
     };
     
     for (i in g) {
@@ -66,11 +66,13 @@ $(function() {
     
     $(".placeholder").bind("plotclick", function(event, pos, item) {
         if (item) {
-            alert(item.dataIndex+"\n"+item.datapoint[0]+"\n"+item.datapoint[1]+"\n"+item.series.label+"\n"+
+            // changing ID here. dunno of a solution how to start css3 animation when visible :/
+            $("#page-content .wrapper").sizeWrapper().show("fast").children("#loading").attr("id", "spinning-squares");
+/*            alert(item.dataIndex+"\n"+item.datapoint[0]+"\n"+item.datapoint[1]+"\n"+item.series.label+"\n"+
                 item.series.xaxis.options.ticks[item.dataIndex][0]+"\n"+
                 item.series.xaxis.ticks[item.dataIndex].v+"\n"+
                 item.series.xaxis.options.ticks[item.dataIndex][1]+"\n"+
-                item.series.xaxis.ticks[item.dataIndex].label);
+                item.series.xaxis.ticks[item.dataIndex].label);*/
             //item.dataIndex = item.datapoint[0]
             //item.datapoint[1] => value
             //item.series.label => label_name

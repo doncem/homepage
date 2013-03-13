@@ -78,7 +78,7 @@
     background-color:darken($mainColour, 7%) !important;
 }
 #p_year .xAxis .tickLabel, #p_genre .xAxis .tickLabel {
-    @include transformed(270);
+    @include do-rotate(270);
 }
 #p_year .xAxis .tickLabel {
     margin-left:10px;
@@ -135,7 +135,6 @@
 }
 //jquery-grid
 #jquery-window-grid-container {
-    @include wrapper();
     .grid-element {
         @include b-radius(5, 5, 5, 5);
         border:thin solid darken($mainColour, 50%);

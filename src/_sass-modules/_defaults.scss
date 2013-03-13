@@ -45,3 +45,85 @@ input,textarea,select,button{
 .hidden {
     display:none;
 }
+.wrapper {
+    @include wrapper();
+}
+// loading
+/* copy from: http://cssload.net/ */
+$i: 8;
+#spinning-squares {
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top:-#{$loadingAnimationHeight / 2}px;
+    margin-left:-#{($loadingAnimationHeight + $loadingAnimationElementGap) * $i / 2}px;
+    width:#{$loadingAnimationWidth}px;
+    height:#{$loadingAnimationHeight}px;
+    & > div {
+        position:absolute;
+        top:0;
+        background-color:$linkColour;
+        width:#{$loadingAnimationHeight}px;
+        height:#{$loadingAnimationHeight}px;
+        @include animate-me(bounce-spinning-square, $loadingAnimationSpeed, infinite, linear);
+        @include do-scale($loadingAnimationScale);
+    }
+}
+@while $i > 0 {
+    #spinning-square-#{$i} {
+        left:(($loadingAnimationHeight + $loadingAnimationElementGap) * ($i - 1))#{px};
+        @include animate-delay-me(($loadingAnimationDelay + ($loadingAnimationDelayGap * $i))#{s});
+    }
+    $i: $i - 1;
+}
+@-moz-keyframes bounce-spinning-square {
+    0% {
+        -moz-transform:scale(1);
+        background-color:$linkColour;
+    }
+    100% {
+        -moz-transform:scale(.3) rotate(90deg);
+        background-color:$mainColour;
+    }
+}
+@-webkit-keyframes bounce-spinning-square {
+    0% {
+        -webkit-transform:scale(1);
+        background-color:$linkColour;
+    }
+    100% {
+        -webkit-transform:scale(.3) rotate(90deg);
+        background-color:$mainColour;
+    }
+}
+@-ms-keyframes bounce-spinning-square {
+    0% {
+        -ms-transform:scale(1);
+        background-color:$linkColour;
+    }
+    100% {
+        -ms-transform:scale(.3) rotate(90deg);
+        background-color:$mainColour;
+    }
+}
+@-o-keyframes bounce-spinning-square {
+    0% {
+        -o-transform:scale(1);
+        background-color:$linkColour;
+    }
+    100% {
+        -o-transform:scale(.3) rotate(90deg);
+        background-color:$mainColour;
+    }
+}
+@keyframes bounce-spinning-square {
+    0% {
+        transform:scale(1);
+        background-color:$linkColour;
+    }
+    100% {
+        transform:scale(.3) rotate(90deg);
+        background-color:$mainColour;
+    }
+}
+// end loading
