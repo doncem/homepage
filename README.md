@@ -39,7 +39,7 @@ Either you have them installed somewhere and already is in include path or you m
 * jquery-flot/jquery.flot.js linked in www/js/ folder
 
 Versions of libraries and tools
-----------------
+-------------------------------
 
 All libraries I use for dev are straight out of master branches. So, not 'stable' releases
 
@@ -56,3 +56,8 @@ All tools are installed/cloned from available repositories
 * flot - 0.8.0 beta
 * Sass - 3.1.15
 * Memcached - 1.4.14
+
+Useful note
+-----------
+
+There is no collation for the `SET NAMES UTF-8` query. You should configure your MySQL server correctly. In your `my.cnf`, you have to add the lines `character-set-server=utf8` and `skip-character-set-client-handshake` at the end of the `[mysqld]` section.

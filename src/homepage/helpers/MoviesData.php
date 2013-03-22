@@ -31,21 +31,11 @@ class MoviesData {
      */
     public function checkForUpdate() {
         $this->em->beginTransaction();
-        // array of entities :/
-        //$this->em->getRepository("\homepage\models\hMovies")->findAll();
-        // get amounts
         $counters = array();
-        $query = $this->em->createQuery("SELECT 'movies' AS type, COUNT(m.id) AS counter " .
-                                        "FROM \homepage\models\hMovies m " .
-                                        "GROUP BY type ");
-        foreach ($query->getResult() as $row) {
-            $counters[$row["type"]] = $row["counter"];
-        }
-        $query = $this->em->createQuery("SELECT 'series' AS type, COUNT(s.id) AS counter " .
-                                        "FROM \homepage\models\hSeries s " .
-                                        "GROUP BY type");
-        foreach ($query->getResult() as $row) {
-            $counters[$row["type"]] = $row["counter"];
+        
+        foreach (array("movies", "series") as $type) {
+            $query = $this->em->createQuery("SELECT COUNT(t.id) FROM \homepage\models\h" . ucfirst($type) . " t");
+            $counters[$type] = $query->getSingleScalarResult();
         }
         
         $this->em->commit();

@@ -4,7 +4,7 @@ namespace homepage\models;
  * @Entity
  * @Table(name="h_directors")
  */
-class hDirectors {
+class hDirectors extends \SerializeMyVars {
     
     /**
      * @Id

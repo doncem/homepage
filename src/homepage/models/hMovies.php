@@ -4,7 +4,7 @@ namespace homepage\models;
  * @Entity
  * @Table(name="h_movies")
  */
-class hMovies {
+class hMovies extends \SerializeMyVars {
     
     /**
      * @Id

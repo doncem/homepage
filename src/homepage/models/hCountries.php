@@ -4,7 +4,7 @@ namespace homepage\models;
  * @Entity
  * @Table(name="h_countries")
  */
-class hCountries {
+class hCountries extends \SerializeMyVars {
     
     /**
      * @Id
