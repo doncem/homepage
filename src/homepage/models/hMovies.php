@@ -42,6 +42,7 @@ class hMovies extends \SerializeMyVars {
      *            joinColumns={@JoinColumn(name="movie", referencedColumnName="id")},
      *            inverseJoinColumns={@JoinColumn(name="country", referencedColumnName="id")}
      * )
+     * @OrderBy({"country" = "ASC"})
      */
     private $countries;
     
@@ -51,6 +52,7 @@ class hMovies extends \SerializeMyVars {
      *            joinColumns={@JoinColumn(name="movie", referencedColumnName="id")},
      *            inverseJoinColumns={@JoinColumn(name="director", referencedColumnName="id")}
      * )
+     * @OrderBy({"director" = "ASC"})
      */
     private $directors;
     
@@ -60,6 +62,7 @@ class hMovies extends \SerializeMyVars {
      *            joinColumns={@JoinColumn(name="movie", referencedColumnName="id")},
      *            inverseJoinColumns={@JoinColumn(name="genre", referencedColumnName="id")}
      * )
+     * @OrderBy({"genre" = "ASC"})
      */
     private $genres;
     

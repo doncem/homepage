@@ -49,6 +49,7 @@ class hSeries extends \SerializeMyVars {
      *            joinColumns={@JoinColumn(name="serie", referencedColumnName="id")},
      *            inverseJoinColumns={@JoinColumn(name="country", referencedColumnName="id")}
      * )
+     * @OrderBy({"country" = "ASC"})
      */
     private $countries;
     
@@ -58,6 +59,7 @@ class hSeries extends \SerializeMyVars {
      *            joinColumns={@JoinColumn(name="serie", referencedColumnName="id")},
      *            inverseJoinColumns={@JoinColumn(name="genre", referencedColumnName="id")}
      * )
+     * @OrderBy({"genre" = "ASC"})
      */
     private $genres;
     

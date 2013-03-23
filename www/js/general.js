@@ -1,4 +1,19 @@
 /**
+ * Remove certain elements from the array
+ * @param {mixed} v
+ * @returns {Array.prototype}
+ */
+Array.prototype.clean = function(v) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == v) {         
+            this.splice(i, 1);
+            i--;
+        }
+    }
+    
+    return this;
+};
+/**
  * Scroll window to match top with with a top of element.<br />
  * Given 'topGap' is a required additional spacing from the top
  * @param {jQuery} e
@@ -41,6 +56,12 @@ $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
         height: $(document).height() - topLeftGap - bottomRightGap
     }, options));
     
+    $(this).click(function(e) {
+        if ($(e.target).hasClass($(this).attr("class"))) {
+            $(this).children().each(function(i, e) { $(e).hide(); });
+            $(this).hide("fast");
+        }
+    });
     return $(this);
 };
 

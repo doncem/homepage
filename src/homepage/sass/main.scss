@@ -107,6 +107,18 @@
     padding:2px 3px;
     opacity:0.7;
 }
+.wrapper > .ajax-movies-data {
+    background-color:rgba($mainColour, 1);
+    padding:10px;
+    top: 10px;
+    position:fixed;
+    width:700px;
+    height:400px;
+    overflow:auto;
+    list-style:none;
+    left:50%;
+    margin-left:-350px;
+}
 /* end movies */
 /* experiments */
 .experiment {

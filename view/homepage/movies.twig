@@ -48,11 +48,11 @@
 <div id="p_genre" class="placeholder"></div>
 <p>Percentage of directors who made a certain number of movies</p>
 <div id="p_directed" class="placeholder"></div>
-<div id="countries">
+<div id="movies">
     <table>
         <tr><th></th><th>#movies</th></tr>
         {% for country,movie in data.countries %}
-        <tr><td>{{ country }}</td><td>{{ movie }}</td></tr>
+        <tr><td><a href="/ajax-movies-and-series-by-country/{{ country|lower }}">{{ country }}</a></td><td>{{ movie }}</td></tr>
         {% endfor %}
     </table>
 </div>
@@ -60,7 +60,7 @@
     <table>
         <tr><th></th><th>#series</th></tr>
         {% for country,serie in data.countries_series %}
-        <tr><td>{{ country }}</td><td>{{ serie }}</td></tr>
+        <tr><td><a href="/ajax-movies-and-series-by-country/{{ country|lower }}">{{ country }}</a></td><td>{{ serie }}</td></tr>
         {% endfor %}
     </table>
 </div>

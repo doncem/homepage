@@ -63,11 +63,20 @@ class Page implements StaticPage {
     }
     
     /**
-     * Save it. Only one folder nesting available
+     * Save it
      */
     public function save() {
         if (!file_exists($this->static_dir . $this->current_resource)) {
-            mkdir($this->static_dir . $this->current_resource);
+            $resource = explode("/", $this->current_resource);
+            $current = "/";
+            
+            foreach ($resource as $folder) {
+                if (!file_exists($this->static_dir .$current . $folder)) {
+                    mkdir($this->static_dir . $current . $folder);
+                }
+                
+                $current .= $folder . "/";
+            }
         }
         
         $index = fopen($this->static_dir . $this->current_resource . "/index.html", "w");

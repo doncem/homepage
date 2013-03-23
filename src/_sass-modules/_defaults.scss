@@ -62,7 +62,7 @@ $i: 8;
     & > div {
         position:absolute;
         top:0;
-        background-color:$linkColour;
+        background-color:rgba($linkColour, 1);
         width:#{$loadingAnimationHeight}px;
         height:#{$loadingAnimationHeight}px;
         @include animate-me(bounce-spinning-square, $loadingAnimationSpeed, infinite, linear);
@@ -79,51 +79,51 @@ $i: 8;
 @-moz-keyframes bounce-spinning-square {
     0% {
         -moz-transform:scale(1);
-        background-color:$linkColour;
+        background-color:rgba($linkColour, 1);
     }
     100% {
         -moz-transform:scale(.3) rotate(90deg);
-        background-color:$mainColour;
+        background-color:rgba($mainColour, 1);
     }
 }
 @-webkit-keyframes bounce-spinning-square {
     0% {
         -webkit-transform:scale(1);
-        background-color:$linkColour;
+        background-color:rgba($linkColour, 1);
     }
     100% {
         -webkit-transform:scale(.3) rotate(90deg);
-        background-color:$mainColour;
+        background-color:rgba($mainColour, 1);
     }
 }
 @-ms-keyframes bounce-spinning-square {
     0% {
         -ms-transform:scale(1);
-        background-color:$linkColour;
+        background-color:rgba($linkColour, 1);
     }
     100% {
         -ms-transform:scale(.3) rotate(90deg);
-        background-color:$mainColour;
+        background-color:rgba($mainColour, 1);
     }
 }
 @-o-keyframes bounce-spinning-square {
     0% {
         -o-transform:scale(1);
-        background-color:$linkColour;
+        background-color:rgba($linkColour, 1);
     }
     100% {
         -o-transform:scale(.3) rotate(90deg);
-        background-color:$mainColour;
+        background-color:rgba($mainColour, 1);
     }
 }
 @keyframes bounce-spinning-square {
     0% {
         transform:scale(1);
-        background-color:$linkColour;
+        background-color:rgba($linkColour, 1);
     }
     100% {
         transform:scale(.3) rotate(90deg);
-        background-color:$mainColour;
+        background-color:rgba($mainColour, 1);
     }
 }
 // end loading

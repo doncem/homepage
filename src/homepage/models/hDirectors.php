@@ -25,6 +25,7 @@ class hDirectors extends \SerializeMyVars {
      *            joinColumns={@JoinColumn(name="director", referencedColumnName="id")},
      *            inverseJoinColumns={@JoinColumn(name="movie", referencedColumnName="id")}
      * )
+     * @OrderBy({"title" = "ASC", "year" = "ASC"})
      */
     private $movies;
     
