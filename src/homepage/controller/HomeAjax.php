@@ -89,7 +89,7 @@ class HomeAjax extends \ControllerInit {
     public function moviesAndSeriesByCountry() {
         $country = current($this->em->getRepository("\homepage\models\hCountries")->findBy(
             array(
-                "country" => $this->request->country
+                "country" => urldecode($this->request->country)
             )
         ));
         

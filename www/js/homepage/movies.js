@@ -34,7 +34,239 @@ function showTooltip(x, y, contents, c, showFixed) {
     ).appendTo("body").fadeIn(200);
 }
 
+function formatStringForID(str) {
+    return str.replace(/[^a-zA-Z 0-9]+/g, '');
+};
+
+function checkJqxhr(jqxhr, elemID) {
+    if (typeof jqxhr === "object") {
+        jqxhr.done(function() {
+            if (elemID !== undefined) {
+                $("#" + elemID).show();
+            }
+        }).fail(function() {
+            $("#page-content .wrapper").append("<div class=\"error ajax-movies-data\">Something went wrong here :( - couldn't get what you requested</div>");
+        }).always(function() {
+            $("#spinning-squares").addClass("hidden").removeAttr("id");
+        });
+    }
+};
+
+function wrongParamsInRouter(error) {
+    $("#page-content .wrapper").append("<div class=\"error ajax-movies-data\">Something went wrong here :( - couldn't get what you requested. We have an error saying: " + error + "</div>");
+};
+
 $(function() {
+    var jqxhr;
+    var formatted;
+    var Router = Backbone.Router.extend({
+        routes: {
+            "by-year/:year": "moviesYear",
+            "by-genre/:genre" : "moviesGenre",
+            "by-director-count/:directors" : "moviesDirectors",
+            "by-country/:country/:type": "moviesCountry"
+        },
+        moviesYear: function(year) {
+            formatted = formatStringForID(year);
+            if ($("#p_year_" + formatted).length > 0) {
+                $("#page-content .wrapper").sizeWrapper().show("fast");
+                $("#p_year_" + formatted).show();
+            } else {
+                $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
+                jqxhr = $.getJSON(
+                    "/ajax-movies-by-year/" + year
+                    , function(json) {
+                        if (json.error !== undefined) {
+                            wrongParamsInRouter(json.error);
+                            return;
+                        }
+                        var contents = $("<ul />").attr("id", "p_year_" + formatted).addClass("ajax-movies-data");
+                        $.each(json.movies, function(i, e) {
+                            contents.append(
+                                $("<li />").append(
+                                    $("<a />").attr({
+                                        "href": e.link,
+                                        "target": "_blank"
+                                    }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : ""))
+                                ).append(
+                                    $("<ul />").append(
+                                        $("<li />").html("<strong>Genres: </strong>" + $.map(json.genres[i], function(g, i_g) { return g.genre; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Countries: </strong>" + $.map(json.countries[i], function(c, i_c) { return c.country; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Directors: </strong>" + $.map(json.directors[i], function(d, i_d) { return d.director; }).join(", "))
+                                    )
+                                )
+                            );
+                        });
+                        $("#page-content .wrapper").append(contents);
+                    }
+                );
+                checkJqxhr(jqxhr);
+            }
+        },
+        moviesGenre: function(genre) {
+            formatted = formatStringForID(genre);
+            if ($("#p_genre_" + formatted).length > 0) {
+                $("#page-content .wrapper").sizeWrapper().show("fast");
+                $("#p_genre_" + formatted).show();
+            } else {
+                $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
+                jqxhr = $.getJSON(
+                    "/ajax-movies-and-series-by-genre/" + genre
+                    , function(json) {
+                        if (json.error !== undefined) {
+                            wrongParamsInRouter(json.error);
+                            return;
+                        }
+                        var contents = $("<ul />").attr("id", "p_genre_" + formatted).addClass("ajax-movies-data")
+                            .append($("<li />").html("<strong>MOVIES:</strong>"));
+                        $.each(json.movies, function(i, e) {
+                            contents.append(
+                                $("<li />").append(
+                                    $("<a />").attr({
+                                        "href": e.link,
+                                        "target": "_blank"
+                                    }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year + "]")
+                                ).append(
+                                    $("<ul />").append(
+                                        $("<li />").html("<strong>Genres: </strong>" + $.map(json.genres[i], function(g, i_g) { return g.genre; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Countries: </strong>" + $.map(json.countries[i], function(c, i_c) { return c.country; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Directors: </strong>" + $.map(json.directors[i], function(d, i_d) { return d.director; }).join(", "))
+                                    )
+                                )
+                            );
+                        });
+                        contents.append($("<li />").html("<strong>SERIES:</strong>"));
+                        $.each(json.series, function(i, e) {
+                            contents.append(
+                                $("<li />").append(
+                                    $("<a />").attr({
+                                        "href": e.link,
+                                        "target": "_blank"
+                                    }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year_from + " - " + e.year_until + "]")
+                                ).append(
+                                    $("<ul />").append(
+                                        $("<li />").html("<strong>Genres: </strong>" + $.map(json.series_genres[i], function(genre, i_genre) { return genre.genre; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Countries: </strong>" + $.map(json.series_countries[i], function(country, i_country) { return country.country; }).join(", "))
+                                    )
+                                )
+                            );
+                        });
+                        $("#page-content .wrapper").append(contents);
+                    }
+                );
+                checkJqxhr(jqxhr);
+            }
+        },
+        moviesDirectors: function(directors) {
+            formatted = formatStringForID(directors);
+            if ($("#p_directed_" + formatted).length > 0) {
+                $("#page-content .wrapper").sizeWrapper().show("fast");
+                $("#p_directed_" + formatted).show();
+            } else {
+                $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
+                jqxhr = $.getJSON(
+                    "/ajax-movies-by-director-count/" + directors
+                    , function(json) {
+                        if (json.error !== undefined) {
+                            wrongParamsInRouter(json.error);
+                            return;
+                        }
+                        var contents = $("<ul />").attr("id", "p_directed_" + formatted).addClass("ajax-movies-data");
+                        $.each(json.directors, function(i, e) {
+                            contents.append(
+                                $("<li />").html("<strong>" + e.director + "</strong>").append(
+                                    $("<ul />").append(
+                                        $.map(json["movies_" + i], function(movie, movie_i) {
+                                            return $("<li />").append(
+                                                $("<a />").attr({
+                                                    "href": movie.link,
+                                                    "target": "_blank"
+                                                }).html(movie.title + (movie.title_en !== null ? " (" + movie.title_en + ")" : "") + " [" + movie.year + "]")
+                                            ).append(
+                                                $("<ul />").append(
+                                                    $("<li />").html("<strong>Genres: </strong>" + $.map(json["genres_" + i][movie_i], function(g, i_g) { return g.genre; }).join(", "))
+                                                ).append(
+                                                    $("<li />").html("<strong>Countries: </strong>" + $.map(json["countries_" + i][movie_i], function(c, i_c) { return c.country; }).join(", "))
+                                                ).append(
+                                                    (json["directors_" + i][movie_i].length > 1 ? $("<li />").html("<strong>Other directors: </strong>" + $.map(json["directors_" + i][movie_i], function(d, i_d) { return d.director !== e.director ? d.director : ""; }).clean().join(", ")) : "")
+                                                )
+                                            ).html();
+                                        }).join()
+                                    )
+                                )
+                            );
+                        });
+                        $("#page-content .wrapper").append(contents);
+                    }
+                );
+                checkJqxhr(jqxhr);
+            }
+        },
+        moviesCountry: function(country, type) {
+            formatted = formatStringForID(country);
+            if ($("#p_" + type + "_" + formatted).length > 0) {
+                $("#page-content .wrapper").sizeWrapper().show("fast");
+                $("#p_" + type + "_" + formatted).show();
+            } else {
+                $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
+                jqxhr = $.getJSON(
+                    "/ajax-movies-and-series-by-country/" + country
+                    , function(json) {
+                        if (json.error !== undefined) {
+                            wrongParamsInRouter(json.error);
+                            return;
+                        }
+                        var contents = $("<ul />").attr("id", "p_movies_" + formatted).addClass("ajax-movies-data hidden");
+                        $.each(json.movies, function(i, e) {
+                            contents.append(
+                                $("<li />").append(
+                                    $("<a />").attr({
+                                        "href": e.link,
+                                        "target": "_blank"
+                                    }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year + "]")
+                                ).append(
+                                    $("<ul />").append(
+                                        $("<li />").html("<strong>Genres: </strong>" + $.map(json.genres[i], function(g, i_g) { return g.genre; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Countries: </strong>" + $.map(json.countries[i], function(c, i_c) { return c.country; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Directors: </strong>" + $.map(json.directors[i], function(d, i_d) { return d.director; }).join(", "))
+                                    )
+                                )
+                            );
+                        });
+                        $("#page-content .wrapper").append(contents);
+                        contents = $("<ul />").attr("id", "p_series_" + formatted).addClass("ajax-movies-data hidden");
+                        $.each(json.series, function(i, e) {
+                            contents.append(
+                                $("<li />").append(
+                                    $("<a />").attr({
+                                        "href": e.link,
+                                        "target": "_blank"
+                                    }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year_from + " - " + e.year_until + "]")
+                                ).append(
+                                    $("<ul />").append(
+                                        $("<li />").html("<strong>Genres: </strong>" + $.map(json.series_genres[i], function(g, i_g) { return g.genre; }).join(", "))
+                                    ).append(
+                                        $("<li />").html("<strong>Countries: </strong>" + $.map(json.series_countries[i], function(c, i_c) { return c.country; }).join(", "))
+                                    )
+                                )
+                            );
+                        });
+                        $("#page-content .wrapper").append(contents);
+                    }
+                );
+                checkJqxhr(jqxhr, "p_" + type + "_" + formatted);
+            }
+        }
+    });
+    new Router();
+    Backbone.history.start({silent:true});
     g = {
         "p_year" : {"grid":{"clickable":true},"graphs" : [{"data":d_y,"label":"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")","bars":true,"lines":false,"y":1},{"data":d_y_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_y_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_y_x,"angle":270},"y":{"align":null,"position":"left"}},
         "p_decade" : {"grid":{"clickable":false},"graphs" : [{"data":d_yd,"label":"movies","bars":true,"lines":false,"y":1},{"data":d_yd_m,"label":"mean","bars":false,"lines":true,"y":1},{"data":d_yd_s,"label":"standard deviation","bars":false,"lines":true,"y":1}],"legend":{"position":"nw"},"x":{"data":d_yd_x,"angle":0},"y":{"align":null,"position":"left"}},
@@ -67,216 +299,22 @@ $(function() {
     $(".placeholder").bind("plotclick", function(event, pos, item) {
         if (item) {
             if (item.series.bars.show) {
-                var responseID = "";
-                var contents = "";
-                var jqxhr = "";
+                var label = encodeURI(item.series.xaxis.ticks[item.dataIndex].label);
                 switch (event.currentTarget.id) {
                     case "p_year":
-                        responseID = "p_year_" + item.series.xaxis.ticks[item.dataIndex].label;
-                        if ($("#" + responseID).length > 0) {
-                            $("#page-content .wrapper").sizeWrapper().show("fast");
-                            $("#" + responseID).show();
-                        } else {
-                            $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
-                            jqxhr = $.getJSON(
-                                "/ajax-movies-by-year/" + encodeURI(item.series.xaxis.ticks[item.dataIndex].label)
-                                , function(json) {
-                                    contents = $("<ul />").attr("id", responseID).addClass("ajax-movies-data");
-                                    $.each(json.movies, function(i, e) {
-                                        contents.append(
-                                            $("<li />").append(
-                                                $("<a />").attr({
-                                                    "href": e.link,
-                                                    "target": "_blank"
-                                                }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : ""))
-                                            ).append(
-                                                $("<ul />").append(
-                                                    $("<li />").html("<strong>Genres: </strong>" + $.map(json.genres[i], function(genre, i_genre) { return genre.genre; }).join(", "))
-                                                ).append(
-                                                    $("<li />").html("<strong>Countries: </strong>" + $.map(json.countries[i], function(country, i_country) { return country.country; }).join(", "))
-                                                ).append(
-                                                    $("<li />").html("<strong>Directors: </strong>" + $.map(json.directors[i], function(director, i_director) { return director.director; }).join(", "))
-                                                )
-                                            )
-                                        );
-                                    });
-                                    $("#page-content .wrapper").append(contents);
-                                }
-                            );
-                        }
+                        window.location.hash = "#by-year/" + label;
                         break;
                     case "p_genre":
-                        responseID = "p_genre_" + item.series.xaxis.ticks[item.dataIndex].label;
-                        if ($("#" + responseID).length > 0) {
-                            $("#page-content .wrapper").sizeWrapper().show("fast");
-                            $("#" + responseID).show();
-                        } else {
-                            $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
-                            jqxhr = $.getJSON(
-                                "/ajax-movies-and-series-by-genre/" + encodeURI(item.series.xaxis.ticks[item.dataIndex].label)
-                                , function(json) {
-                                    contents = $("<ul />").attr("id", responseID).addClass("ajax-movies-data")
-                                        .append($("<li />").html("<strong>MOVIES:</strong>"));
-                                    $.each(json.movies, function(i, e) {
-                                        contents.append(
-                                            $("<li />").append(
-                                                $("<a />").attr({
-                                                    "href": e.link,
-                                                    "target": "_blank"
-                                                }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year + "]")
-                                            ).append(
-                                                $("<ul />").append(
-                                                    $("<li />").html("<strong>Genres: </strong>" + $.map(json.genres[i], function(genre, i_genre) { return genre.genre; }).join(", "))
-                                                ).append(
-                                                    $("<li />").html("<strong>Countries: </strong>" + $.map(json.countries[i], function(country, i_country) { return country.country; }).join(", "))
-                                                ).append(
-                                                    $("<li />").html("<strong>Directors: </strong>" + $.map(json.directors[i], function(director, i_director) { return director.director; }).join(", "))
-                                                )
-                                            )
-                                        );
-                                    });
-                                    contents.append($("<li />").html("<strong>SERIES:</strong>"));
-                                    $.each(json.series, function(i, e) {
-                                        contents.append(
-                                            $("<li />").append(
-                                                $("<a />").attr({
-                                                    "href": e.link,
-                                                    "target": "_blank"
-                                                }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year_from + " - " + e.year_until + "]")
-                                            ).append(
-                                                $("<ul />").append(
-                                                    $("<li />").html("<strong>Genres: </strong>" + $.map(json.series_genres[i], function(genre, i_genre) { return genre.genre; }).join(", "))
-                                                ).append(
-                                                    $("<li />").html("<strong>Countries: </strong>" + $.map(json.series_countries[i], function(country, i_country) { return country.country; }).join(", "))
-                                                )
-                                            )
-                                        );
-                                    });
-                                    $("#page-content .wrapper").append(contents);
-                                }
-                            );
-                        }
+                        window.location.hash = "#by-genre/" + label;
                         break;
                     case "p_directed":
-                        responseID = "p_directed_" + item.series.xaxis.ticks[item.dataIndex].label;
-                        if ($("#" + responseID).length > 0) {
-                            $("#page-content .wrapper").sizeWrapper().show("fast");
-                            $("#" + responseID).show();
-                        } else {
-                            $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
-                            jqxhr = $.getJSON(
-                                "/ajax-movies-by-director-count/" + encodeURI(item.series.xaxis.ticks[item.dataIndex].label)
-                                , function(json) {
-                                    contents = $("<ul />").attr("id", responseID).addClass("ajax-movies-data");
-                                    $.each(json.directors, function(i, e) {
-                                        contents.append(
-                                            $("<li />").html("<strong>" + e.director + "</strong>").append(
-                                                $("<ul />").append(
-                                                    $.map(json["movies_" + i], function(movie, movie_i) {
-                                                        return $("<li />").append(
-                                                            $("<a />").attr({
-                                                                "href": movie.link,
-                                                                "target": "_blank"
-                                                            }).html(movie.title + (movie.title_en !== null ? " (" + movie.title_en + ")" : "") + " [" + movie.year + "]")
-                                                        ).append(
-                                                            $("<ul />").append(
-                                                                $("<li />").html("<strong>Genres: </strong>" + $.map(json["genres_" + i][movie_i], function(genre, i_genre) { return genre.genre; }).join(", "))
-                                                            ).append(
-                                                                $("<li />").html("<strong>Countries: </strong>" + $.map(json["countries_" + i][movie_i], function(country, i_country) { return country.country; }).join(", "))
-                                                            ).append(
-                                                                (json["directors_" + i][movie_i].length > 1 ? $("<li />").html("<strong>Other directors: </strong>" + $.map(json["directors_" + i][movie_i], function(director, i_director) { return director.director !== e.director ? director.director : ""; }).clean().join(", ")) : "")
-                                                            )
-                                                        ).html();
-                                                    }).join()
-                                                )
-                                            )
-                                        );
-                                    });
-                                    $("#page-content .wrapper").append(contents);
-                                }
-                            );
-                        }
+                        window.location.hash = "#by-director-count/" + label;
                         break;
                     default:
-                        alert("Nothing available here :/");
+                        alert("Nothing's available here :/");
                         break;
                 }
-                
-                if (typeof jqxhr === "object") {
-                    jqxhr.error(function() {
-                        $("#page-content .wrapper").append("<div class=\"error\">Something went wrong here :( - couldn't get what you requested</div>");
-                    }).complete(function() {
-                        $("#spinning-squares").addClass("hidden").removeAttr("id");
-                    });
-                }
             }
-/*            alert(item.dataIndex+"\n"+item.datapoint[0]+"\n"+item.datapoint[1]+"\n"+item.series.label+"\n"+
-                item.series.xaxis.options.ticks[item.dataIndex][0]+"\n"+
-                item.series.xaxis.ticks[item.dataIndex].v+"\n"+
-                item.series.xaxis.options.ticks[item.dataIndex][1]+"\n"+
-                item.series.xaxis.ticks[item.dataIndex].label);*/
-            //item.dataIndex = item.datapoint[0]
-            //item.datapoint[1] => value
-            //item.series.label => label_name
-            //item.series.xaxis.options.ticks[item.dataIndex][0] = item.series.xaxis.ticks[item.dataIndex].v
-            //item.series.xaxis.options.ticks[item.dataIndex][1] = item.series.xaxis.ticks[item.dataIndex].label
-            //alert(item.series.xaxis.options.ticks[item.dataIndex][1]);
-        }
-    });
-    
-    $("#movies a,#series a").click(function(e) {
-        e.preventDefault();
-        var that = $(this);
-        var responseID = "p_" + that.parents("div").attr("id") + "_" + that.html().replace(" ", "_");
-        
-        if ($("#" + responseID).length > 0) {
-            $("#page-content .wrapper").sizeWrapper().show("fast");
-            $("#" + responseID).show();
-        } else {
-            $("#page-content .wrapper").sizeWrapper().show("fast").children(".loading").removeClass("hidden").attr("id", "spinning-squares");
-            $.getJSON(
-                that.attr("href")
-                , function(json) {
-                    var contents = $("<ul />").attr("id", "p_movies_" + that.html().replace(" ", "_")).addClass("ajax-movies-data" + (that.parents("div").attr("id") === "movies" ? "" : " hidden"));
-                    $.each(json.movies, function(i, e) {
-                        contents.append(
-                            $("<li />").append(
-                                $("<a />").attr({
-                                    "href": e.link,
-                                    "target": "_blank"
-                                }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year + "]")
-                            ).append(
-                                $("<ul />").append(
-                                    $("<li />").html("<strong>Genres: </strong>" + $.map(json.genres[i], function(genre, i_genre) { return genre.genre; }).join(", "))
-                                ).append(
-                                    $("<li />").html("<strong>Countries: </strong>" + $.map(json.countries[i], function(country, i_country) { return country.country; }).join(", "))
-                                ).append(
-                                    $("<li />").html("<strong>Directors: </strong>" + $.map(json.directors[i], function(director, i_director) { return director.director; }).join(", "))
-                                )
-                            )
-                        );
-                    });
-                    $("#page-content .wrapper").append(contents);
-                    contents = $("<ul />").attr("id", "p_series_" + that.html().replace(" ", "_")).addClass("ajax-movies-data" + (that.parents("div").attr("id") === "series" ? "" : " hidden"));
-                    $.each(json.series, function(i, e) {
-                        contents.append(
-                            $("<li />").append(
-                                $("<a />").attr({
-                                    "href": e.link,
-                                    "target": "_blank"
-                                }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year_from + " - " + e.year_until + "]")
-                            ).append(
-                                $("<ul />").append(
-                                    $("<li />").html("<strong>Genres: </strong>" + $.map(json.series_genres[i], function(genre, i_genre) { return genre.genre; }).join(", "))
-                                ).append(
-                                    $("<li />").html("<strong>Countries: </strong>" + $.map(json.series_countries[i], function(country, i_country) { return country.country; }).join(", "))
-                                )
-                            )
-                        );
-                    });
-                    $("#page-content .wrapper").append(contents);
-                }
-            );
         }
     });
 });

@@ -25,6 +25,7 @@
     <target name="init" description="Clone external libraries from github (creates external 'source-libraries' folder)">
         <exec command="sh install-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
         <exec command="sh combine-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
+        <exec command="ln -s ../libraries lib" dir="." checkreturn="true" passthru="true" />
     </target>
 
     <!-- Update external libraries -->
@@ -132,11 +133,13 @@
 
     <!-- Minify public resources -->
     <target name="minify-resources" description="Minify public JSs">
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/backbone.js -o ${public}js/backbone.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/experiments.js -o ${public}js/homepage/experiments.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/movies.js -o ${public}js/homepage/movies.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.color.js -o ${public}js/jquery.color.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.flot.js -o ${public}js/jquery.flot.min.js" dir="." checkreturn="true" passthru="true" />
+        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/underscore.js -o ${public}js/underscore.min.js" dir="." checkreturn="true" passthru="true" />
     </target>
     
     <target name="watch-sass" description="Generate CSS">

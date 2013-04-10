@@ -17,19 +17,23 @@ class SetJS extends Plugin {
     
     public function init() {
         $this->available_js = array(
+            "backbone"              => "/js/backbone",
+            "backbone_min"          => "/js/backbone.min",
             "bootstrap_min"         => "/js/bootstrap.min",
             "general"               => "/js/general",
             "general_min"           => "/js/general.min",
+            "home_experiments"      => "/js/homepage/experiments",
+            "home_experiments_min"  => "/js/homepage/experiments.min",
+            "home_movies"           => "/js/homepage/movies",
+            "home_movies_min"       => "/js/homepage/movies.min",
             "jquery_color"          => "/js/jquery.color",
             "jquery_color_min"      => "/js/jquery.color.min",
             "jquery_flot"           => "/js/jquery.flot",
             "jquery_flot_min"       => "/js/jquery.flot.min",
             "modernizr"             => "/js/modernizr-2.6.2",
             "modernizr_min"         => "/js/modernizr-2.6.2-min",
-            "home_movies"           => "/js/homepage/movies",
-            "home_movies_min"       => "/js/homepage/movies.min",
-            "home_experiments"      => "/js/homepage/experiments",
-            "home_experiments_min"  => "/js/homepage/experiments.min"
+            "underscore"            => "/js/underscore",
+            "underscore_min"        => "/js/underscore.min"
         );
         
         return $this;
@@ -54,6 +58,8 @@ class SetJS extends Plugin {
             
             switch ($namespace[2]) {
                 case "HomeMovies":
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["underscore_min"] . ".js") && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"] . ".js") && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
                     $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_flot_min"] . ".js") && $isLive ? $this->available_js["jquery_flot_min"] : $this->available_js["jquery_flot"];
                     $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_movies_min"] . ".js") && $isLive ? $this->available_js["home_movies_min"] : $this->available_js["home_movies"];
                     break;
