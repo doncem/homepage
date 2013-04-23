@@ -26,7 +26,7 @@
     /*filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$fadingC}', endColorstr='#{$fadingC}',GradientType=1 );/* IE6-9 */
 }
 @mixin wrapper() {
-    background-color:rgba(darken($mainColour, 70%), 0.7);
+    background-color:rgba(darken($mainColour, 70%), 0.6);
     display:none;
     position:absolute;
     top:0;

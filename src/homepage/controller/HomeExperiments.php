@@ -15,7 +15,8 @@ class HomeExperiments extends \homepage\HomeController {
      * @var array
      */
     static private $availableExperiments = array(
-        "jquery-window-grid" => "jQuery Window Grid"
+        "jquery-window-grid"    => "jQuery Window Grid",
+        "jukebox"               => "Jukebox"
     );
     
     /**

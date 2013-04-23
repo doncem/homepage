@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ html.lang }}">
+<head>{% spaceless %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    {% if isLive == 1 %}
+    <meta name="google-site-verification" content="gND_iyudJzru_kmf-YSstX8_FFr7vXAFV8ajx-KbuaM" />
+    {% endif %}
+    <meta name="description" content="{% block meta_description %}{% endblock %}"/>
+    {#<meta name="author" content="Donatas Martinkus"/>#}
+    <link rel="stylesheet" type="text/css" href="/css/jukebox/{{ html.css }}.css" />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <title>{{ html.title }} - {% block title %}{% endblock %}</title>
+{% endspaceless %}</head>
+<body>{% spaceless %}
+    <div id="page">
+        <div id="history">{% include "jukebox/history.twig" %}</div>
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="tops">{% include "jukebox/tops.twig" %}</div>
+        <div id="keyboard">{% include "jukebox/keyboard.twig" %}</div>
+    </div>
+    {% if isLive == 1 %}
+    {% include "common/ga.html" %}
+    {% endif %}
+    <script type="text/javascript" src="{{ html.js }}.js"></script>
+    {% if js is defined %}
+    {% for j in js %}
+    <script type="text/javascript" src="{{ j }}.js"></script>
+    {% endfor %}
+    {% endif %}
+    {% endspaceless %}
+    {% block script %}{% endblock %}
+</body>
+</html>

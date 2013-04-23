@@ -35,7 +35,7 @@ All libraries I use for dev are straight out of master branches. So, not 'stable
 All tools are installed/cloned from available repositories
 
 * backbone - 1.0.0
-* flot - 0.8.0
+* flot - 0.8.1-alpha
 * jQuery - 1.9.1
 * jQuery Color - 2.1.1
 * Memcached - 1.4.14

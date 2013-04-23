@@ -30,6 +30,8 @@ class SetJS extends Plugin {
             "jquery_color_min"      => "/js/jquery.color.min",
             "jquery_flot"           => "/js/jquery.flot",
             "jquery_flot_min"       => "/js/jquery.flot.min",
+            "jukebox_me"            => "/js/jukebox/me",
+            "jukebox_me_min"        => "/js/jukebox/me.min",
             "modernizr"             => "/js/modernizr-2.6.2",
             "modernizr_min"         => "/js/modernizr-2.6.2-min",
             "underscore"            => "/js/underscore",
@@ -50,9 +52,13 @@ class SetJS extends Plugin {
         
         if ($namespace[1] != "controller") {
             return null;
-        } else if ($namespace[0] != "homepage") {
-            return null;
-        } else {
+        } else if ($namespace[0] == "jukebox") {
+            $array = array(file_exists($this->dic->root . "www" . $this->available_js["underscore_min"] . ".js") && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"]);
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"] . ".js") && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["jukebox_me_min"] . ".js") && $isLive ? $this->available_js["jukebox_me_min"] : $this->available_js["jukebox_me"];
+            
+            return $array;
+        } else if ($namespace[0] == "homepage") {
             $array = array(file_exists($this->dic->root . "www" . $this->available_js["general_min"] . ".js") && $isLive ? $this->available_js["general_min"] : $this->available_js["general"]);
             $array[] = file_exists($this->dic->root . "www" . $this->available_js["modernizr_min"] . ".js") && $isLive ? $this->available_js["modernizr_min"] : $this->available_js["modernizr"];
             
@@ -71,7 +77,10 @@ class SetJS extends Plugin {
                 default:
                     break;
             }
+            
             return $array;
+        } else {
+            return null;
         }
     }
 }

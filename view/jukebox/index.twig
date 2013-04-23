@@ -1,0 +1,18 @@
+{% extends "jukebox.twig" %}
+
+{% block meta_description %}Fairly simple jukebox... or maybe just a load of c-rap{% endblock %}
+
+{% block title %}Jukebox{% endblock %}
+
+{% block content %}
+<div id="results-container">
+    <ul>
+        <li><strong>Filter:</strong></li>
+        <li>by artists</li>
+        <li>by albums</li>
+        <li>by songs</li>
+    </ul><div id="results"></div></div>
+<div id="search-container">
+    <input type="text" name="search-q" id="search-q" />
+</div>
+{% endblock %}
