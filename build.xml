@@ -20,12 +20,18 @@
     <property name="documentation" value="./doc/" />
     <property name="install" value="./install/" />
     <property name="public" value="./www/" />
+    <property name="report" value="./report/" />
 
     <!-- Initialize external libraries -->
     <target name="init" description="Clone external libraries from github (creates external 'source-libraries' folder)">
         <exec command="sh install-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
         <exec command="sh combine-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
         <exec command="ln -s ../libraries lib" dir="." checkreturn="true" passthru="true" />
+        <chmod file="./tmp" mode="0777" />
+        <mkdir dir="${documentation}" />
+        <chmod file="${documentation}" mode="0777" />
+        <mkdir dir="${report}" />
+        <chmod file="${report}" mode="0777" />
     </target>
 
     <!-- Update external libraries -->
@@ -40,21 +46,48 @@
                 <exclude name=".gitignore" />
             </fileset>
         </delete>
+        <delete includeemptydirs="true" verbose="false">
+            <fileset dir="${report}">
+                <exclude name=".gitignore" />
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="document" description="Generate default documentation">
+        <phingcall target="_document-docblox" />
     </target>
     
     <!-- Run the PHP Documentor -->
-    <target name="document-phpdoc" depends="clean" description="Generate documentation with phpDocumentator">
-        <exec command="phpdoc -t ${documentation} -o HTML:Smarty:HandS -d ." dir="." checkreturn="true" />
+    <target name="_document-phpdoc" depends="clean" description="Generate documentation with phpDocumentator">
+        <exec command="phpdoc -t ${documentation} -o HTML:Smarty:HandS -d ./src" dir="." checkreturn="true" />
     </target>
     
     <!-- Run the DocBlox -->
-    <target name="document-docblox" depends="clean" description="Generate documentation with DocBlox">
-        <exec command="docblox run" dir="." checkreturn="true" />
+    <target name="_document-docblox" depends="clean" description="Generate documentation with DocBlox">
+        <docblox title="Application&amp;Script documentation" destdir="${documentation}" template="new_black">
+            <fileset dir="./script">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir="./src">
+                <include name="**/*.php" />
+            </fileset>
+        </docblox>
+    </target>
+    
+    <!-- Run the unit tests -->
+    <target name="test" description="Run the unit tests">
+        <exec passthru="true" command="phpunit -d session.name=${config} -c ./test/phpunit.xml ."/>
+    </target>
+    
+    <!-- Run the unit tests and generate the coverage report -->
+    <target name="coverage" depends="clean" description="Run the unit tests and generate the coverage">
+        <exec outputProperty="result"
+              passthru="true"
+              command="phpunit -d session.name=${config} -c ./test/phpunit.xml --log-junit ${report}/logfile.xml --coverage-html ${report}/coverage-html/ ."/>
     </target>
 
     <!-- Build-->
     <target name="build" description="Build the project">
-        <exec command="ln -s ../libraries/ ./lib" dir="." checkreturn="true" />
         <phingcall target="create-database" />
         <phingcall target="set-database" />
     </target>

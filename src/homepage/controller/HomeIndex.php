@@ -14,18 +14,21 @@ namespace homepage\controller;
 class HomeIndex extends \homepage\HomeController {
     
     /**
+     * Homepage landing pagee
      * @Request("index")
      * @Template("homepage/index")
      */
     public function index() {}
     
     /**
+     * About homepage project
      * @Request("about")
      * @Template("homepage/about")
      */
     public function about() {}
     
     /**
+     * List of works I&#39;ve done for hell-music website
      * @Request("hell-music")
      * @Template("homepage/hell-music")
      */
@@ -59,6 +62,7 @@ class HomeIndex extends \homepage\HomeController {
     }
     
     /**
+     * List of links
      * @Request("links")
      * @Template("homepage/links")
      */

@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Simple user IP retrieval class
+ */
 class GetIP {
 
+    /**
+     * Retrieve IP
+     * @return string
+     */
     public function __construct() {
         if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
             $ip = $_SERVER["HTTP_CLIENT_IP"];

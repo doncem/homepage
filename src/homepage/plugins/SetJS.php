@@ -10,11 +10,15 @@ use xframe\plugin\Plugin;
 class SetJS extends Plugin {
     
     /**
-     * Mapped available JSs
+     * Mapped available JS files
      * @var array
      */
     private $available_js;
     
+    /**
+     * Set available JS files
+     * @return SetJS
+     */
     public function init() {
         $this->available_js = array(
             "backbone"              => "/js/backbone",

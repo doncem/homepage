@@ -7,16 +7,19 @@ use xframe\registry\Registry;
 class HtmlInit {
     
     /**
-     * @var string html tag attribute
+     * &lt;html&gt; tag attribute
+     * @var string
      */
     private $lang;
     
     /**
+     * Website general name included in every page
      * @var string
      */
     private $title;
     
     /**
+     * Default css file name for webpage module
      * @var string Filename
      */
     private $css;

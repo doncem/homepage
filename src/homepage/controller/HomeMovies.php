@@ -8,6 +8,7 @@ namespace homepage\controller;
 class HomeMovies extends \homepage\HomeController {
 
     /**
+     * Basic statistical representation of movies/tv shows I&#39;ve seen
      * @Request("movies")
      * @Template("homepage/movies")
      */

@@ -2,15 +2,57 @@
 
 use xframe\core\DependencyInjectionContainer;
 
+/**
+ * Singleton to use different type of memcache
+ */
 class MemcacheSingleton {
 
+    /**
+     * Singleton instance
+     * @var MemcacheSingleton
+     */
     private static $instance;
+    
+    /**
+     * Memcache object
+     * @var Memcache|Memcached
+     */
     private $memcache;
+    
+    /**
+     * Framework registry
+     * @var xframe\registry\Registry
+     */
     private $registry;
+    
+    /**
+     * Type of memcache: memcached|xframe|memcache
+     * @var string
+     */
     private $type;
+    
+    /**
+     * Is it connected
+     * @var boolean
+     */
     private $connected = false;
+    
+    /**
+     * Add a prefix to namespace?
+     * @var boolean
+     */
     private $prefix_namespace = true;
+    
+    /**
+     * Namespace prefix
+     * @var string|null
+     */
     private $prefix = null;
+    
+    /**
+     * Log container
+     * @var array
+     */
     private $log = array();
     
     /**
@@ -93,6 +135,10 @@ class MemcacheSingleton {
         $this->prefix = $prefix;
     }
     
+    /**
+     * Gets the namespace prefix
+     * @return string
+     */
     public function get_namespace_prefix() {
         $ns_prefix = "";
         
@@ -294,6 +340,10 @@ class MemcacheSingleton {
         $this->log['set'][] = "{$namespace}\t{$identifier}\t{$key}\t{$max_cache_time}";
     }
     
+    /**
+     * Get it
+     * @return array
+     */
     public function get_log() {
         return $this->log;
     }
@@ -316,6 +366,10 @@ class MemcacheSingleton {
         return $val;
     }
     
+    /**
+     * Get object
+     * @return Memcache|Memcached
+     */
     public function get_memcache() {
         return $this->memcache;
     }

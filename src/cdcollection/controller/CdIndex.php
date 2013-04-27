@@ -2,31 +2,29 @@
 
 namespace cdcollection\controller;
 
+/**
+ * CD collection module
+ */
 class CdIndex extends \cdcollection\CdController {
 
     /**
+     * Landing page
      * @Request("cdcollection")
      * @Template("cdcollection/index")
      */
     public function index() {
-        $this->view->page = "cdcollection";
-    }
-    
-    /**
-     * @Request("cdcollection/band)
-     * @Parameter(name="artist")
-     * @Template("cdcollection/band")
-     */
-    public function band() {
         //
     }
     
     /**
+     * Band page. Has parameter &#39;artist&#39; which must be a valid word.<br />
+     * Has an optional parameter &#39;album&#39; which if present must be a valid word
      * @Request("cdcollection/band)
-     * @Parameter(name="album")
-     * @Template("cdcollection/album")
+     * @Parameter(name="artist", validator="\xframe\validation\RegEx('/\D+/')")
+     * @Parameter(name="album", validator="\xframe\validation\RegEx('/\D+/')", required=false)
+     * @Template("cdcollection/band")
      */
-    public function album() {
+    public function band() {
         //
     }
 }

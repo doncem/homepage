@@ -4,11 +4,13 @@ namespace homepage\helpers;
 use Doctrine\ORM\EntityManager;
 
 /**
+ * Getting all required data for stats
  * @IgnoreAnnotation
  */
 class MoviesData {
     
     /**
+     * Entity manager
      * @var EntityManager
      */
     private $em;

@@ -1,0 +1,30 @@
+<phpunit
+    bootstrap="./bootstrap.php"
+    colors="true"
+    backupGlobals="false"
+    verbose="true"
+    stopOnError="true">
+
+    <testsuites>
+        <testsuite name="Script Testing">
+            <directory>script</directory>
+        </testsuite>
+        <testsuite name="Application Testing">
+            <directory>src</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../script</directory>
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+
+        <blacklist>
+            <directory suffix=".php">.</directory>
+            <directory suffix=".php">../lib</directory>
+            <file>./bootstrap.php</file>
+            <file>../www/index.php</file>
+        </blacklist>
+    </filter>
+</phpunit>

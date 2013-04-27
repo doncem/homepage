@@ -2,6 +2,9 @@
 
 namespace homepage\controller;
 
+/**
+ * Container of experiments
+ */
 class HomeExperiments extends \homepage\HomeController {
     
     /**
@@ -20,6 +23,8 @@ class HomeExperiments extends \homepage\HomeController {
     );
     
     /**
+     * Find out which experiment of available ones is enabled.<br />
+     * Run additional code if method is available
      * @Request("experiments")
      * @Template("homepage/experiments")
      */
