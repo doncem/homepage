@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Static page contents
+ * Static page
  */
 interface StaticPage {
-    
+
     /**
      * Get the page
      * @param string $link

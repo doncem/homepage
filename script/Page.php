@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Static page
+ * Webpage to deploy
  */
 class Page implements StaticPage {
     
@@ -10,12 +10,6 @@ class Page implements StaticPage {
      * @var string
      */
     private $url;
-    
-    /**
-     * Used to make symlinks after deployment
-     * @var array
-     */
-    private $public_resources;
     
     /**
      * Where to export static pages
@@ -44,13 +38,24 @@ class Page implements StaticPage {
     /**
      * Init
      * @param string $url
-     * @param array $public_resources 'source' => 'link_name'
      * @param string $static_url
      */
-    public function __construct($url, array $public_resources, $static_url) {
+    public function __construct($url, $static_url) {
         $this->url = $url;
-        $this->public_resources = $public_resources;
         $this->static_dir = $static_url;
+    }
+
+    /**
+     * Stores public resources linked by &#39;source&#39; => &#39;link_name&#39;
+     * @return array
+     */
+    public static function getSymlinks() {
+        return array(
+            __DIR__ . "/../www/css/" => "css",
+            __DIR__ . "/../www/docs/" => "docs",
+            __DIR__ . "/../www/img/" => "img",
+            __DIR__ . "/../www/js/" => "js"
+        );
     }
     
     /**
@@ -89,8 +94,8 @@ class Page implements StaticPage {
      * Create them if don't exist
      */
     public function checkSymlinks() {
-        foreach ($this->public_resources as $source => $link) {
-            if (!dir($this->static_dir . $link)) {
+        foreach (Page::getSymlinks() as $source => $link) {
+            if (!is_link($this->static_dir . $link)) {
                 exec("ln -s " . $source . " " . $this->static_dir . $link);
             }
         }

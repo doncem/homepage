@@ -5,7 +5,7 @@
     Author     : donatas <donatasmart@gmail.com>
     Description: Project deployment
 -->
-<project name="donatasmart-webpage" basedir="." default="deploy">
+<project name="donatasmart-webpage" basedir="." default="coverage">
     <if>
         <isset property="config"/>
         <then>
@@ -13,6 +13,15 @@
         </then>
         <else>
             <property name="config" value="dev" />
+        </else>
+    </if>
+    <if>
+        <isset property="test"/>
+        <then>
+            <property name="testPath" value="./test/${test}" />
+        </then>
+        <else>
+            <property name="testPath" value="" />
         </else>
     </if>
     <property name="configDir" value="./config/" />
@@ -76,34 +85,20 @@
     
     <!-- Run the unit tests -->
     <target name="test" description="Run the unit tests">
-        <exec passthru="true" command="phpunit -d session.name=${config} -c ./test/phpunit.xml ."/>
+        <exec passthru="true" command="phpunit -d session.name=${config} -c ./test/phpunit.xml ${testPath}"/>
     </target>
     
     <!-- Run the unit tests and generate the coverage report -->
     <target name="coverage" depends="clean" description="Run the unit tests and generate the coverage">
         <exec outputProperty="result"
               passthru="true"
-              command="phpunit -d session.name=${config} -c ./test/phpunit.xml --log-junit ${report}/logfile.xml --coverage-html ${report}/coverage-html/ ."/>
+              command="phpunit -d session.name=${config} -c ./test/phpunit.xml --log-junit ${report}/logfile.xml --coverage-html ${report}/coverage-html/ ${testPath}"/>
     </target>
 
     <!-- Build-->
     <target name="build" description="Build the project">
         <phingcall target="create-database" />
         <phingcall target="set-database" />
-    </target>
-    
-    <!-- Deploy-->
-    <target name="deploy" depends="minify-resources" description="Deploy the project">
-        <delete includeemptydirs="true" verbose="false">
-            <fileset dir="./static">
-                <exclude name=".gitignore" />
-                <exclude name="css" />
-                <exclude name="docs" />
-                <exclude name="img" />
-                <exclude name="js" />
-            </fileset>
-        </delete>
-        <exec command="php deployToStatic.php" dir="./script" checkreturn="true" passthru="true" />
     </target>
     
     <fileset dir="./static" id="files.app">

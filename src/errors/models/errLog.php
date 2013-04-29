@@ -50,7 +50,7 @@ class errLog {
      * Get the IP address
      */
     public function __construct() {
-        $this->ip = new \GetIP();
+        $this->ip = \GetIP::ip();
     }
     
     /**
