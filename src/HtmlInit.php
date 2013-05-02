@@ -5,6 +5,16 @@ use xframe\registry\Registry;
  * Iniate default html elements
  */
 class HtmlInit {
+
+    /**
+     * jQuery version in use
+     */
+    const JQUERY_VERSION = "2.0.0";
+
+    /**
+     * Hostname to check internet is alive
+     */
+    public static $JQUERY_HOSTNAME = "www.google.com";
     
     /**
      * &lt;html&gt; tag attribute
@@ -47,11 +57,12 @@ class HtmlInit {
                                 $title = null,
                                 $css = null,
                                 array $params = array()) {
-        if (!$sock = @fsockopen("www.google.com", 80, $num, $error, 5)) {
-            $js = "/js/jquery-2.0.0.min";
+        if (HtmlInit::doWeHaveGoogle()) {
+            $js = "/js/jquery-" . HtmlInit::JQUERY_VERSION . ".min";
         } else {
-            $js = "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min";
+            $js = "//ajax.googleapis.com/ajax/libs/jquery/" . HtmlInit::JQUERY_VERSION . "/jquery.min";
         }
+
         return array_merge(array(
             "lang" => $lang ? $lang : $this->lang,
             "title" => $title ? $title : $this->title,
@@ -59,5 +70,13 @@ class HtmlInit {
             "js" => $js),
             $params
         );
+    }
+
+    /**
+     * Checks whether apis for jQuery is available or not
+     * @return boolean
+     */
+    public static function doWeHaveGoogle() {
+        return (!$sock = @fsockopen(HtmlInit::$JQUERY_HOSTNAME, 80, $num, $error, 5));
     }
 }

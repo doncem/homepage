@@ -18,9 +18,6 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../script</directory>
             <directory suffix=".php">../src</directory>
-            <exlude>
-                <file>../script/deployToStatic.php</file>
-            </exlude>
         </whitelist>
 
         <blacklist>
