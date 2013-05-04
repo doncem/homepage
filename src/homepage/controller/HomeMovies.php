@@ -15,11 +15,11 @@ class HomeMovies extends \homepage\HomeController {
     public function movies() {
         $helper = new \homepage\helpers\MoviesData($this->dic->em);
         $counters = $helper->checkForUpdate();
-        $data = $this->memcache_instance->get(
+        $data = $this->cacheHandler->get(
             \MemcacheNamespaces::NAMESPACE_PAGE,
             \MemcacheNamespaces::KEY_MOVIES_DATA
         );
-        $script = $this->memcache_instance->get(
+        $script = $this->cacheHandler->get(
             \MemcacheNamespaces::NAMESPACE_PAGE,
             \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT
         );
@@ -28,30 +28,30 @@ class HomeMovies extends \homepage\HomeController {
                 (($data !== false) &&
                 ($counters["movies"] != array_sum($data["by_decades"])) ||
                 ($counters["series"] != $data["sum_series"])) ||
-                ($script === false)
+                ($data === false) || ($script === false)
             ) {
-                $this->memcache_instance->expire(
+                $this->cacheHandler->expire(
                     \MemcacheNamespaces::NAMESPACE_PAGE,
                     \MemcacheNamespaces::KEY_MOVIES_DATA
                 );
-                $this->memcache_instance->expire(
+                $this->cacheHandler->expire(
                     \MemcacheNamespaces::NAMESPACE_PAGE,
                     \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT
                 );
                 $data = false;
                 $script = false;
         }
-        
+
         if (($data === false) || ($script === false)) {
             $data = $helper->getMoviesPageStats();
             $script = "//CACHED-" . date("Y-m-d H:i:s") . "\n" . $this->getMoviesJavascript($data, "1961");
-            $this->memcache_instance->set(
+            $this->cacheHandler->set(
                 \MemcacheNamespaces::NAMESPACE_PAGE,
                 \MemcacheNamespaces::KEY_MOVIES_DATA,
                 $data,
                 \MemcacheNamespaces::EXPIRE_MOVIES
             );
-            $this->memcache_instance->set(
+            $this->cacheHandler->set(
                 \MemcacheNamespaces::NAMESPACE_PAGE,
                 \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT,
                 $script,
@@ -75,7 +75,7 @@ class HomeMovies extends \homepage\HomeController {
                                 "directed" => $data["by_directed"]);
         $this->view->dataScript = $script;
     }
-    
+
     /**
      * Get needed javascript variables for graphs to generate
      * @param array $data

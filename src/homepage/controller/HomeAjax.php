@@ -9,11 +9,6 @@ namespace homepage\controller;
 class HomeAjax extends \ControllerInit {
 
     /**
-     * Instance of MemcacheSingleton object
-     * @var \MemcacheSingleton
-     */
-    public $memcache_instance;
-    /**
      * Entity manager
      * @var \Doctrine\ORM\EntityManager
      */
@@ -25,15 +20,15 @@ class HomeAjax extends \ControllerInit {
      */
     public function init() {
         parent::init();
-        
-        $this->memcache_instance = \MemcacheSingleton::instance($this->dic);
+
         $this->em = $this->dic->em;
     }
+
     /**
      * Get movie model repository filtered by passed year parameter.<br />
-     * Year is available only between 1962 and current
+     * Year is available only between 1902 and current
      * @Request("ajax-movies-by-year")
-     * @Parameter(name="year", validator="\xframe\validation\Digit(1962,date('Y'))")
+     * @Parameter(name="year", validator="\xframe\validation\Digit(1902,date('Y'))")
      * @View("xframe\view\JSONView")
      */
     public function moviesByYear() {
@@ -45,7 +40,7 @@ class HomeAjax extends \ControllerInit {
         );
         $this->assignGeneralMoviesData($movies);
     }
-    
+
     /**
      * Get genre model repository filtered by passed genre parameter.<br />
      * Genre parameter must be a valid word.<br />
@@ -60,7 +55,7 @@ class HomeAjax extends \ControllerInit {
                 "genre" => $this->request->genre
             )
         ));
-        
+
         if (is_object($genre)) {
             $this->assignGeneralMoviesData($genre->getMovies());
             $this->assignGeneralSeriesData($genre->getSeries());
@@ -68,7 +63,7 @@ class HomeAjax extends \ControllerInit {
             $this->view->addParameter("error", "No such genre on the list. What are you doing?");
         }
     }
-    
+
     /**
      * Gets results depending on number of movies directors have.<br />
      * Parameter &#39;count&#39; must be between 1 and 100
@@ -85,14 +80,14 @@ class HomeAjax extends \ControllerInit {
             "ORDER BY d.director"
         )->setParameter(":counter", $this->request->count)
         ->getResult();
-        
+
         foreach ($directors as $key => $director) {
             $this->assignGeneralMoviesData($director->getMovies(), "_" . $key);
         }
-        
+
         $this->view->addParameter("directors", $directors);
     }
-    
+
     /**
      * Get country model repository filtered by passed country parameter.<br />
      * Country parameter must be a valid word.<br />
@@ -107,7 +102,7 @@ class HomeAjax extends \ControllerInit {
                 "country" => urldecode($this->request->country)
             )
         ));
-        
+
         if (is_object($country)) {
             $this->assignGeneralMoviesData($country->getMovies());
             $this->assignGeneralSeriesData($country->getSeries());
@@ -115,7 +110,7 @@ class HomeAjax extends \ControllerInit {
             $this->view->addParameter("error", "No such country on the list. What are you doing?");
         }
     }
-    
+
     /**
      * Parses given array of &#39;movies&#39; and adds variables to the response
      * @param array $movies
@@ -123,7 +118,7 @@ class HomeAjax extends \ControllerInit {
      */
     private function assignGeneralMoviesData($movies, $postFix = "") {
         $countries = $directors = $genres = array();
-        
+
         foreach ($movies as $key => $movie) {
             $countries[$key] = $movie->getCountries();
             $directors[$key] = $movie->getDirectors();
@@ -135,19 +130,19 @@ class HomeAjax extends \ControllerInit {
         $this->view->addParameter("directors" . $postFix, $directors);
         $this->view->addParameter("genres" . $postFix,    $genres);
     }
-    
+
     /**
      * Parses given array of &#39;series&#39; and adds variables to the response
      * @param array $series
      */
     private function assignGeneralSeriesData($series) {
         $countries = $genres = array();
-        
+
         foreach ($series as $key => $show) {
             $countries[$key] = $show->getCountries();
             $genres[$key]    = $show->getGenres();
         }
-        
+
         $this->view->addParameter("series",           $series);
         $this->view->addParameter("series_countries", $countries);
         $this->view->addParameter("series_genres",    $genres);

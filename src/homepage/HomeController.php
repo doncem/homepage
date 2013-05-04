@@ -8,21 +8,21 @@ namespace homepage;
 class HomeController extends \ControllerInit {
     
     /**
-     * Instance of MemcacheSingleton object
-     * @var \MemcacheSingleton
+     * Instance of MemcacheHandler object
+     * @var \MemcacheHandler
      */
-    public $memcache_instance;
-    
+    public $cacheHandler;
+
     /**
      * <ul>
      * <li>Setting default html values</li>
      * <li>Assigning requested resource to view template</li>
      * <li>Getting additional javascripts using plugin
-     * <li>Initiating MemcacheSingleton</li>
+     * <li>Initiating MemcacheHandler</li>
      * </ul>
      * @see \HtmlInit
      * @see homepage\plugins\SetJS
-     * @see \MemcacheSingleton
+     * @see \MemcacheHandler
      */
     public function init() {
         parent::init();
@@ -32,7 +32,8 @@ class HomeController extends \ControllerInit {
 
         $this->view->html = $html->getDefaults();
         $this->view->requested_page = $this->request->getRequestedResource();
-        $this->view->js = $plugin->getHomeJS(get_called_class(), $this->view->isLive);
-        $this->memcache_instance = \MemcacheSingleton::instance($this->dic);
+        $this->view->js = $plugin->getHomeJS($this->module, $this->controller, $this->view->isLive);
+        $this->cacheHandler = \MemcacheHandler::getHandler($this->dic);
+        $this->cacheHandler->set_prefix($this->module);
     }
 }

@@ -8,13 +8,13 @@ use xframe\plugin\Plugin;
  * So far only in homepage module
  */
 class SetJS extends Plugin {
-    
+
     /**
      * Mapped available JS files
      * @var array
      */
     private $available_js;
-    
+
     /**
      * Set available JS files
      * @return SetJS
@@ -41,32 +41,29 @@ class SetJS extends Plugin {
             "underscore"            => "/js/underscore",
             "underscore_min"        => "/js/underscore.min"
         );
-        
+
         return $this;
     }
-    
+
     /**
      * Return specific js for the certain home pages
-     * @param string $classname Class name with leading namespaces
+     * @param string $module Which module is running
+     * @param string $controller Which controller is accessed
      * @param boolean $isLive Allow includes of minified js only if it's for live deployment
      * @return null|array
      */
-    public function getHomeJS($classname, $isLive) {
-        $namespace = explode("\\", $classname);
-        
-        if ($namespace[1] != "controller") {
-            return null;
-        } else if ($namespace[0] == "jukebox") {
+    public function getHomeJS($module, $controller, $isLive) {
+        if ($module == "jukebox") {
             $array = array(file_exists($this->dic->root . "www" . $this->available_js["underscore_min"] . ".js") && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"]);
             $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"] . ".js") && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
             $array[] = file_exists($this->dic->root . "www" . $this->available_js["jukebox_me_min"] . ".js") && $isLive ? $this->available_js["jukebox_me_min"] : $this->available_js["jukebox_me"];
-            
+
             return $array;
-        } else if ($namespace[0] == "homepage") {
+        } else if ($module == "homepage") {
             $array = array(file_exists($this->dic->root . "www" . $this->available_js["general_min"] . ".js") && $isLive ? $this->available_js["general_min"] : $this->available_js["general"]);
             $array[] = file_exists($this->dic->root . "www" . $this->available_js["modernizr_min"] . ".js") && $isLive ? $this->available_js["modernizr_min"] : $this->available_js["modernizr"];
-            
-            switch ($namespace[2]) {
+
+            switch ($controller) {
                 case "HomeMovies":
                     $array[] = file_exists($this->dic->root . "www" . $this->available_js["underscore_min"] . ".js") && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"];
                     $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"] . ".js") && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
@@ -81,7 +78,7 @@ class SetJS extends Plugin {
                 default:
                     break;
             }
-            
+
             return $array;
         } else {
             return null;
