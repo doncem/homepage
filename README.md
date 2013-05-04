@@ -54,7 +54,7 @@ Phing
 * `phing init` - should create all libraries remotely into `source-libraries` folder and link them to checkout project
 * `phing update-libs` - updates all remote libraries
 * `phing document` - create default documentation into doc/ folder
-* `phing -Dconfig=test` - should pass all tests and create coverage inside report/ folder
-** note - without `-Dconfig=test` phing will assume you're running default (dev) configuration and will fail
+* `phing` - should pass all tests and create coverage inside report/ folder
+    * it also creates a static website insite static/ folder - because it runs test for deployment script as well ;)
 
 If you have your vhost configured with ALIASes of doc/ and report/ folders - you'll be able to see them within same domain :)
