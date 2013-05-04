@@ -41,6 +41,8 @@
         <chmod file="${documentation}" mode="0777" />
         <mkdir dir="${report}" />
         <chmod file="${report}" mode="0777" />
+        <mkdir dir="./static" />
+        <chmode file"./static" mode="0755" />
     </target>
 
     <!-- Update external libraries -->

@@ -12,4 +12,7 @@ matrix:
 env:
   - CONFIG=test
 
+before_script:
+  - ./script/test-combine-libraries.sh
+
 script: phpunit -d session.name=test -c ./test/phpunit.xml --log-junit ./report/logfile.xml --coverage-html ./report/coverage-html/
