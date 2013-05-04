@@ -47,3 +47,14 @@ Notes
 
 * There is no collation for the `SET NAMES UTF-8` query. You should configure your MySQL server correctly. In your `my.cnf`, you have to add the lines `character-set-server=utf8` and `skip-character-set-client-handshake` at the end of the `[mysqld]` section.
 * Section 'movies' will work only with PHP 5.4 because I'm using `JsonSerializable` interface
+
+Phing
+-----------
+
+* `phing init` - should create all libraries remotely into `source-libraries` folder and link them to checkout project
+* `phing update-libs` - updates all remote libraries
+* `phing document` - create default documentation into doc/ folder
+* `phing -Dconfig=test` - should pass all tests and create coverage inside report/ folder
+** note - without `-Dconfig=test` phing will assume you're running default (dev) configuration and will fail
+
+If you have your vhost configured with ALIASes of doc/ and report/ folders - you'll be able to see them within same domain :)
