@@ -46,7 +46,10 @@ var resizeMe = function() {
     var w = $(window).width();
     var h = $(window).height();
     $("#page").width(w);
-    $("#page").height(h);
+    $("#page").height(h - $("#results-container > ul").height());
+    $("#keyboard").width(w);
+    $("#results").css({marginTop:$("#results-container > ul").height()});
+    $("#results").height(h - $("#results-container > ul").height());
 };
 
 $(function() {
@@ -55,6 +58,26 @@ $(function() {
 
     $(window).resize(function() {
         resizeMe();
+    });
+
+    $("#search-clear").click(function() {
+        $("#search-q").val("");
+    });
+
+    $("#search-container").on("focus", "input", function() {
+        if ($("#keyboard-container").is(":hidden")) {
+            $("#keyboard-container").slideDown("slow");
+        }
+    });
+
+    $(window).click(function() {
+        if ($("#search-container input:focus,#keyboard button:focus").length === 0) {
+            $("#keyboard-container").slideUp("slow");
+        }
+    });
+
+    $("#results-container").on("scroll", "#results", function() {
+        $("#keyboard-container").slideUp("slow");
     });
     //keyboard clicks
     //var timeout = false;

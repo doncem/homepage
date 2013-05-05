@@ -34,7 +34,7 @@
     <!-- Initialize external libraries -->
     <target name="init" description="Clone external libraries from github (creates external 'source-libraries' folder)">
         <exec command="sh install-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
-        <exec command="sh combine-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
+        <exec command="sh combine-libraries.sh" dir="./script" checkreturn="true" passthru="true" />
         <exec command="ln -s ../libraries lib" dir="." checkreturn="true" passthru="true" />
         <chmod file="./tmp" mode="0777" />
         <mkdir dir="${documentation}" />
@@ -42,7 +42,7 @@
         <mkdir dir="${report}" />
         <chmod file="${report}" mode="0777" />
         <mkdir dir="./static" />
-        <chmode file"./static" mode="0755" />
+        <chmode file="./static" mode="0755" />
     </target>
 
     <!-- Update external libraries -->

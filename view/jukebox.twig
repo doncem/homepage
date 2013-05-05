@@ -13,9 +13,9 @@
 {% endspaceless %}</head>
 <body>{% spaceless %}
     <div id="page">
-        <div id="history">{% include "jukebox/history.twig" %}</div>
+        <div id="history" class="hidden">{% include "jukebox/history.twig" %}</div>
         <div id="content">{% block content %}{% endblock %}</div>
-        <div id="tops">{% include "jukebox/tops.twig" %}</div>
+        <div id="tops" class="hidder">{% include "jukebox/tops.twig" %}</div>
         <div id="keyboard">{% include "jukebox/keyboard.twig" %}</div>
     </div>
     {% if isLive == 1 %}

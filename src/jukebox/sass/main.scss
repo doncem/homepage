@@ -1,8 +1,38 @@
 @import "../../_sass-modules/variables";
 @import "../../_sass-modules/defaults";
 
+button {
+    border:solid thin darken($mainColour, 20%);
+    cursor:pointer;
+    &:focus {
+        background-color:darken($mainColour, 10%) !important;
+    }
+    &:hover {
+        background-color:darken($mainColour, 15%) !important;
+    }
+    &:active {
+        box-shadow:inset 0 0 2px 2px rgba(darken($mainColour, 20%), 0.8);
+    }
+}
+
 #keyboard {
+    bottom:0;
+    position:fixed;
+}
+#search-container {
+    text-align:center;
+    input,button {
+        font-size:1.6em;
+        line-height:1.6em;
+        padding:3px 5px;
+    }
+    button {
+        margin-left:10px;
+    }
+}
+#keyboard-container {
     background-color:darken($mainColour, 30%);
+    padding-top:5px;
     #input-1 {
         width:756px;
     }
@@ -13,27 +43,16 @@
         width:803px;
     }
     #input-1,#input-2,#input-3 {
-        height:70px;
+        height:68px;
         margin:0px auto;
         button {
             border-radius:6px;
-            border:solid thin darken($mainColour, 20%);
-            cursor:pointer;
             text-align:center;
             font-size:2.2em;
             padding:10px 15px;
-            margin-right:10px;
+            margin-right:5px;
             width:62px;
             height:64px;
-            &:focus {
-                background-color:darken($mainColour, 10%);
-            }
-            &:hover {
-                background-color:darken($mainColour, 15%);
-            }
-            &:active {
-                box-shadow:inset 0 0 2px 2px rgba(darken($mainColour, 20%), 0.8);
-            }
         }
         #backspace {
             width:81px;
@@ -43,6 +62,24 @@
         }
         #space {
             width:130px;
+        }
+    }
+}
+#results-container {
+    ul {
+        margin:0;
+        padding:0;
+        list-style:none;
+        position:fixed;
+        top:0px;
+        li {
+            display:inline-block;
+            margin-right:5px;
+            button {
+                background-color:darken($mainColour, 30%);
+                border-bottom-left-radius:10px;
+                border-bottom-right-radius:10px;
+            }
         }
     }
 }
