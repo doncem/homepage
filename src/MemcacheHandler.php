@@ -18,44 +18,44 @@ class MemcacheHandler {
      * @var Memcache|Memcached
      */
     private $cache;
-    
+
     /**
      * Framework registry
      * @var xframe\registry\Registry
      */
     private $registry;
-    
+
     /**
      * Type of memcache: memcached|xframe. xframe actually uses memcache
      * @var string
      */
     private $type;
-    
+
     /**
      * Is it connected
      * @var boolean
      */
     private $connected = false;
-    
+
     /**
      * Namespace prefix
      * @var string|null
      */
     private $prefix = null;
-    
+
     /**
      * Log container
      * @var array
      */
     private $log = array();
-    
+
     /**
      * Initialises the MemcacheHandler
      * @param DependencyInjectionContainer $dic
      */
     private function __construct(DependencyInjectionContainer $dic) {
         try {
-            if (class_exists("Memcached")) {
+            if (class_exists("Memcached", false)) {
                 $this->cache = new Memcached();
                 $this->type = "memcached";
             } else {
@@ -67,11 +67,11 @@ class MemcacheHandler {
                                 $ex->getCode(),
                                 $ex->getPrevious());
         }
-        
+
         $this->registry = $dic->registry;
         $this->log = array(
-            "get" => array("Namespace\tIdentifier\tKey"),
-            "set" => array("Namespace\tIdentifier\tKey\tMax Cache Time")
+            "get" => array(array("Namespace", "Identifier", "Key")),
+            "set" => array(array("Namespace", "Identifier", "Key", "Max Cache Time"))
         );
         $this->connect();
     }
@@ -304,7 +304,7 @@ class MemcacheHandler {
      * @param string $key 
      */
     private function log_get($namespace, $identifier, $key) {
-        $this->log['get'][] = "{$namespace}\t{$identifier}\t{$key}";
+        $this->log['get'][] = array($namespace, $identifier, $key);
     }
 
     /**
@@ -315,7 +315,7 @@ class MemcacheHandler {
      * @param int $max_cache_time 
      */
     private function log_set($namespace, $identifier, $key, $max_cache_time) {
-        $this->log['set'][] = "{$namespace}\t{$identifier}\t{$key}\t{$max_cache_time}";
+        $this->log['set'][] = array($namespace, $identifier, $key, $max_cache_time);
     }
 
     /**

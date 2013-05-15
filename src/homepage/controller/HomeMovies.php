@@ -49,13 +49,13 @@ class HomeMovies extends \homepage\HomeController {
                 \MemcacheNamespaces::NAMESPACE_PAGE,
                 \MemcacheNamespaces::KEY_MOVIES_DATA,
                 $data,
-                \MemcacheNamespaces::EXPIRE_MOVIES
+                \MemcacheNamespaces::EXPIRE_IN_30_DAYS
             );
             $this->cacheHandler->set(
                 \MemcacheNamespaces::NAMESPACE_PAGE,
                 \MemcacheNamespaces::KEY_MOVIES_JAVASCRIPT,
                 $script,
-                \MemcacheNamespaces::EXPIRE_MOVIES
+                \MemcacheNamespaces::EXPIRE_IN_30_DAYS
             );
         }
 

@@ -21,25 +21,25 @@ class SetJS extends Plugin {
      */
     public function init() {
         $this->available_js = array(
-            "backbone"              => "/js/backbone",
-            "backbone_min"          => "/js/backbone.min",
-            "bootstrap_min"         => "/js/bootstrap.min",
-            "general"               => "/js/general",
-            "general_min"           => "/js/general.min",
-            "home_experiments"      => "/js/homepage/experiments",
-            "home_experiments_min"  => "/js/homepage/experiments.min",
-            "home_movies"           => "/js/homepage/movies",
-            "home_movies_min"       => "/js/homepage/movies.min",
-            "jquery_color"          => "/js/jquery.color",
-            "jquery_color_min"      => "/js/jquery.color.min",
-            "jquery_flot"           => "/js/jquery.flot",
-            "jquery_flot_min"       => "/js/jquery.flot.min",
-            "jukebox_me"            => "/js/jukebox/me",
-            "jukebox_me_min"        => "/js/jukebox/me.min",
-            "modernizr"             => "/js/modernizr-2.6.2",
-            "modernizr_min"         => "/js/modernizr-2.6.2-min",
-            "underscore"            => "/js/underscore",
-            "underscore_min"        => "/js/underscore.min"
+            "backbone"              => "/js/backbone.js",
+            "backbone_min"          => "/js/backbone.min.js",
+            "bootstrap_min"         => "/js/bootstrap.min.js",
+            "general"               => "/js/general.js",
+            "general_min"           => "/js/general.min.js",
+            "home_experiments"      => "/js/homepage/experiments.js",
+            "home_experiments_min"  => "/js/homepage/experiments.min.js",
+            "home_movies"           => "/js/homepage/movies.js",
+            "home_movies_min"       => "/js/homepage/movies.min.js",
+            "jquery_color"          => "/js/jquery.color.js",
+            "jquery_color_min"      => "/js/jquery.color.min.js",
+            "jquery_flot"           => "/js/jquery.flot.js",
+            "jquery_flot_min"       => "/js/jquery.flot.min.js",
+            "jukebox_me"            => "/js/jukebox/me.js",
+            "jukebox_me_min"        => "/js/jukebox/me.min.js",
+            "modernizr"             => "/js/modernizr-2.6.2.js",
+            "modernizr_min"         => "/js/modernizr-2.6.2-min.js",
+            "underscore"            => "/js/underscore.js",
+            "underscore_min"        => "/js/underscore.min.js"
         );
 
         return $this;
@@ -54,25 +54,25 @@ class SetJS extends Plugin {
      */
     public function getHomeJS($module, $controller, $isLive) {
         if ($module == "jukebox") {
-            $array = array(file_exists($this->dic->root . "www" . $this->available_js["underscore_min"] . ".js") && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"]);
-            $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"] . ".js") && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
-            $array[] = file_exists($this->dic->root . "www" . $this->available_js["jukebox_me_min"] . ".js") && $isLive ? $this->available_js["jukebox_me_min"] : $this->available_js["jukebox_me"];
+            $array = array(file_exists($this->dic->root . "www" . $this->available_js["underscore_min"]) && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"]);
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"]) && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["jukebox_me_min"]) && $isLive ? $this->available_js["jukebox_me_min"] : $this->available_js["jukebox_me"];
 
             return $array;
         } else if ($module == "homepage") {
-            $array = array(file_exists($this->dic->root . "www" . $this->available_js["general_min"] . ".js") && $isLive ? $this->available_js["general_min"] : $this->available_js["general"]);
-            $array[] = file_exists($this->dic->root . "www" . $this->available_js["modernizr_min"] . ".js") && $isLive ? $this->available_js["modernizr_min"] : $this->available_js["modernizr"];
+            $array = array(file_exists($this->dic->root . "www" . $this->available_js["general_min"]) && $isLive ? $this->available_js["general_min"] : $this->available_js["general"]);
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["modernizr_min"]) && $isLive ? $this->available_js["modernizr_min"] : $this->available_js["modernizr"];
 
             switch ($controller) {
                 case "HomeMovies":
-                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["underscore_min"] . ".js") && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"];
-                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"] . ".js") && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
-                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_flot_min"] . ".js") && $isLive ? $this->available_js["jquery_flot_min"] : $this->available_js["jquery_flot"];
-                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_movies_min"] . ".js") && $isLive ? $this->available_js["home_movies_min"] : $this->available_js["home_movies"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["underscore_min"]) && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"]) && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_flot_min"]) && $isLive ? $this->available_js["jquery_flot_min"] : $this->available_js["jquery_flot"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_movies_min"]) && $isLive ? $this->available_js["home_movies_min"] : $this->available_js["home_movies"];
                     break;
                 case "HomeExperiments":
-                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_experiments_min"] . ".js") && $isLive ? $this->available_js["home_experiments_min"] : $this->available_js["home_experiments"];
-                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_color_min"] . ".js") && $isLive ? $this->available_js["jquery_color_min"] : $this->available_js["jquery_color"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["home_experiments_min"]) && $isLive ? $this->available_js["home_experiments_min"] : $this->available_js["home_experiments"];
+                    $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_color_min"]) && $isLive ? $this->available_js["jquery_color_min"] : $this->available_js["jquery_color"];
                     break;
                 case "HomeIndex":
                 default:

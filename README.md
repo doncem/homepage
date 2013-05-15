@@ -29,7 +29,7 @@ All libraries I use for dev are straight out of master branches. So, not 'stable
 * Doctrine ORM - 2.4.0-DEV
 * Doctrine Common - 2.4.0-DEV
 * Doctrine DBAL - 2.4.0-DEV
-* Twig - 1.13.0
+* Twig - 1.13.1
 * xFrame addendum - 2.1
 
 All tools are installed/cloned from available repositories

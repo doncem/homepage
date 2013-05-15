@@ -1,29 +1,12 @@
 <?php
-
 namespace homepage\helpers;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Getting all required data for stats
  * @IgnoreAnnotation
  */
-class MoviesData {
-    
-    /**
-     * Entity manager
-     * @var EntityManager
-     */
-    private $em;
+class MoviesData extends \Helper {
 
-    /**
-     * Instantiate helper by assigning EntityManager
-     * @param EntityManager $em
-     * @see EntityManager
-     */
-    public function __construct(EntityManager $em) {
-        $this->em = $em;
-    }
-    
     /**
      * Get count of current movies and series
      * @return array {

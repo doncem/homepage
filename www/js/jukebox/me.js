@@ -39,6 +39,32 @@ var space = function() {
     $("#search-q").val(arr.join(""));
 };
 /**
+ * Do the search
+ * @returns {void}
+ */
+var doSearch = function() {
+    if ($("#search-q").val().length > 0) {
+        $.getJSON(
+            "/jukebox/get-songs/" + encodeURI($("#search-q").val())
+            , function(json) {
+                if (json.error !== undefined) {
+                    $("#results").html("we received an error: " + json.error);
+                    return;
+                }
+            }
+        ).error(
+            function(){
+                $("#results").html("something went wrong - could complete search");
+            }
+        );
+        $.post("/jukebox/get-songs/", $("#search-q").serialize(),
+            function(response){
+                $("#results").html(response);
+            }
+        );
+    }
+};
+/**
  * Resize window metrics
  * @returns {void}
  */
@@ -80,7 +106,7 @@ $(function() {
         $("#keyboard-container").slideUp("slow");
     });
     //keyboard clicks
-    //var timeout = false;
+    var timeout = false;
     $("#keyboard button").click(function() {
         var id = $(this).attr("id");
 
@@ -89,12 +115,13 @@ $(function() {
         } else {
             $("#search-q").val($("#search-q").val() + $(this).html());
         }
-        
+
         if ($("#search-q").val().length > 2) {
-            //if ((timeout !== undefined) && (timeout !== false)) {
-            //    clearTimeout(timeout);
-            //}
-            //timeout = setTimeout("doSearch()", 500);
+            if ((timeout !== undefined) && (timeout !== false)) {
+                clearTimeout(timeout);
+            }
+
+            timeout = setTimeout("doSearch()", 500);
         }
     });
 });

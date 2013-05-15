@@ -51,12 +51,16 @@
     </target>
 
     <!-- Clean -->
-    <target name="clean" description="Clean documentation">
+    <target name="_clean-documentation" description="Clean documentation">
         <delete includeemptydirs="true" verbose="false">
             <fileset dir="${documentation}">
                 <exclude name=".gitignore" />
             </fileset>
         </delete>
+    </target>
+    
+    <!-- Clean -->
+    <target name="_clean-report" description="Clean unit test coverage report">
         <delete includeemptydirs="true" verbose="false">
             <fileset dir="${report}">
                 <exclude name=".gitignore" />
@@ -69,12 +73,12 @@
     </target>
     
     <!-- Run the PHP Documentor -->
-    <target name="_document-phpdoc" depends="clean" description="Generate documentation with phpDocumentator">
+    <target name="_document-phpdoc" depends="_clean-documentation" description="Generate documentation with phpDocumentator">
         <exec command="phpdoc -t ${documentation} -o HTML:Smarty:HandS -d ./src" dir="." checkreturn="true" />
     </target>
     
     <!-- Run the DocBlox -->
-    <target name="_document-docblox" depends="clean" description="Generate documentation with DocBlox">
+    <target name="_document-docblox" depends="_clean-documentation" description="Generate documentation with DocBlox">
         <docblox title="Application&amp;Script documentation" destdir="${documentation}" template="new_black">
             <fileset dir="./script">
                 <include name="**/*.php" />
@@ -91,7 +95,7 @@
     </target>
     
     <!-- Run the unit tests and generate the coverage report -->
-    <target name="coverage" depends="clean" description="Run the unit tests and generate the coverage">
+    <target name="coverage" depends="_clean-report" description="Run the unit tests and generate the coverage">
         <exec outputProperty="result"
               passthru="true"
               command="phpunit -d session.name=${config} -c ./test/phpunit.xml --log-junit ${report}/logfile.xml --coverage-html ${report}/coverage-html/ ${testPath}"/>
