@@ -19,14 +19,10 @@ class JukeboxIndex extends \homepage\HomeController {
     public function index() {
         // we want list of songs
         if ($this->request->source == self::SOURCE) {
-            //$this->getSongs();
-        } else {
-            //$this->view->js[] = "/jukebox/" . self::SOURCE . "/";
+            $this->getSongs();
         }
-        //so far doctrine fails to create proxy object by calling static method jsonSerialize
-        //whereas it is just a public function implemented from JsonSerializable interface
     }
-    
+
     /**
      * List of songs in json format
      */

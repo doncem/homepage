@@ -1,4 +1,14 @@
 /**
+ * Collection of artist models
+ * @type @exp;Backbone@pro;Collection@call;extend
+ */
+var artists;
+/**
+ * Collection of song models
+ * @type @exp;Backbone@pro;Collection@call;extend
+ */
+var songs;
+/**
  * Remove last carachter in the search input
  * @return {void}
  */
@@ -44,24 +54,7 @@ var space = function() {
  */
 var doSearch = function() {
     if ($("#search-q").val().length > 0) {
-        $.getJSON(
-            "/jukebox/get-songs/" + encodeURI($("#search-q").val())
-            , function(json) {
-                if (json.error !== undefined) {
-                    $("#results").html("we received an error: " + json.error);
-                    return;
-                }
-            }
-        ).error(
-            function(){
-                $("#results").html("something went wrong - could complete search");
-            }
-        );
-        $.post("/jukebox/get-songs/", $("#search-q").serialize(),
-            function(response){
-                $("#results").html(response);
-            }
-        );
+        //
     }
 };
 /**
@@ -77,8 +70,65 @@ var resizeMe = function() {
     $("#results").css({marginTop:$("#results-container > ul").height()});
     $("#results").height(h - $("#results-container > ul").height());
 };
+/**
+ * Initialize our data
+ * @returns {void}
+ */
+var initData = function() {
+    (function (root, factory) {
+        if (typeof define === "function" && define.amd) {
+           // AMD. Register as an anonymous module.
+           define(["underscore","backbone"], function(_, Backbone) {
+             // Use global variables if the locals are undefined.
+             return factory(_ || root._, Backbone || root.Backbone);
+           });
+        } else {
+           // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
+           factory(_, Backbone);
+        }
+     }(this, function(_, Backbone) {
+        var artist = new Backbone.Model.extend({
+            idAttribute:"_id",
+            name:"name"
+        });
+        artists = new Backbone.Collection.extend({
+            model:artist
+        });
+        artists.add(data.artists);
+        var song = new Backbone.Model.extend({
+            idAttribute:"_id",
+            artist_id:"artist_id",
+            name:"name",
+            filename:"filename",
+            counter:"counter"
+        });
+        songs = new Backbone.Collection.extend({
+            model:song
+        });
+        songs.add(data.songs);
+     }));
+};
 
 $(function() {
+    var data_ready = false;
+    $.getJSON(
+        "/jukebox/get-songs"
+        , function(json) {
+            if (json.error !== undefined) {
+                $("#results").html("unable to load songs library: " + json.error);
+                return;
+            }
+
+            data = json.data;
+            data_ready = true;
+            initData();
+        }
+    ).error(
+        function(){
+            data_ready = false;
+            $("#results").html("something went wrong on server side - we can't search for songs :(");
+        }
+    );
     //our display must be bounded in wXh rect
     resizeMe();
 
@@ -117,11 +167,13 @@ $(function() {
         }
 
         if ($("#search-q").val().length > 2) {
-            if ((timeout !== undefined) && (timeout !== false)) {
-                clearTimeout(timeout);
-            }
+            if (data_ready) {
+                if ((timeout !== undefined) && (timeout !== false)) {
+                    clearTimeout(timeout);
+                }
 
-            timeout = setTimeout("doSearch()", 500);
+                timeout = setTimeout("doSearch()", 500);
+            }
         }
     });
 });

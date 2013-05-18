@@ -10,11 +10,19 @@ abstract class SerializeMyVars implements JsonSerializable {
      * @return array
      */
     public function jsonSerialize() {
-        $vars = array_keys(get_class_vars(get_class($this)));
+        $vars = array_keys(get_object_vars($this));
         $array = array();
 
         foreach ($vars as $var) {
-            $array[$var] = $this->$var;
+            // we can't serialize closures. also disabling system vars
+            if (!($this->$var instanceof Closure) && substr($var, 0, 1) != "_") {
+                if ($var == "id") {
+                    // override ID variable
+                    $array["_" . $var] = $this->$var;
+                } else {
+                    $array[$var] = $this->$var;
+                }
+            }
         }
 
         return $array;

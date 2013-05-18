@@ -47,7 +47,7 @@ class jbSongs extends \SerializeMyVars {
 
     /**
      * Model of continent of this country
-     * @var jbArtist
+     * @var jbArtists
      * @ManyToOne(targetEntity="jbArtists", inversedBy="songs")
      * @JoinColumn(name="artist", referencedColumnName="id")
      */
