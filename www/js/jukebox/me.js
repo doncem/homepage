@@ -2,12 +2,12 @@
  * Collection of artist models
  * @type @exp;Backbone@pro;Collection@call;extend
  */
-var artists;
+window.artists = null;
 /**
  * Collection of song models
  * @type @exp;Backbone@pro;Collection@call;extend
  */
-var songs;
+window.songs = null;
 /**
  * Remove last carachter in the search input
  * @return {void}
@@ -49,15 +49,6 @@ var space = function() {
     $("#search-q").val(arr.join(""));
 };
 /**
- * Do the search
- * @returns {void}
- */
-var doSearch = function() {
-    if ($("#search-q").val().length > 0) {
-        //
-    }
-};
-/**
  * Resize window metrics
  * @returns {void}
  */
@@ -86,27 +77,42 @@ var initData = function() {
            // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
            factory(_, Backbone);
         }
-     }(this, function(_, Backbone) {
-        var artist = new Backbone.Model.extend({
+    }(this, function(_, Backbone) {
+        var Artist = Backbone.Model.extend({
             idAttribute:"_id",
             name:"name"
         });
-        artists = new Backbone.Collection.extend({
-            model:artist
+        var Artists = Backbone.Collection.extend({
+            model:Artist
         });
-        artists.add(data.artists);
-        var song = new Backbone.Model.extend({
+        window.artists = new Artists();
+        window.artists.add(data.artists);
+        var Song = Backbone.Model.extend({
             idAttribute:"_id",
             artist_id:"artist_id",
             name:"name",
             filename:"filename",
             counter:"counter"
         });
-        songs = new Backbone.Collection.extend({
-            model:song
+        var Songs = Backbone.Collection.extend({
+            model:Song
         });
-        songs.add(data.songs);
+        window.songs = new Songs();
+        window.songs.add(data.songs);
      }));
+};
+/**
+ * Do the search
+ * @returns {void}
+ */
+var doSearch = function() {
+    if ($("#search-q").val().length > 0) {
+        r = _.filter(window.songs.models, function(e) {
+            return e.get("name").toLowerCase().indexOf($("#search-q").val().toLowerCase()) !== -1;
+        });
+        $("#results").html(r.length);
+        console.log(r);
+    }
 };
 
 $(function() {
@@ -120,8 +126,8 @@ $(function() {
             }
 
             data = json.data;
-            data_ready = true;
             initData();
+            data_ready = true;
         }
     ).error(
         function(){
@@ -160,9 +166,9 @@ $(function() {
     $("#keyboard button").click(function() {
         var id = $(this).attr("id");
 
-        if ((id !== undefined) && (id !== false)) {
+        if ((id !== undefined) && (id !== false) && (id !== "search-clear")) {
             window[id]();
-        } else {
+        } else if (id !== "search-clear") {
             $("#search-q").val($("#search-q").val() + $(this).html());
         }
 
