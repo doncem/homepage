@@ -47,13 +47,7 @@ function getFunction(id) {
  */
 $.fn.attachExperiment = function() {
     var link = $(this).attr("id");
-    
-    if (link.substr(0, 6) === "jquery") {
-        $("#" + link).append("<p class=\"link-container\"><a href=\"#" + link + "\" class=\"launch-link\">Launch it</a></p>");
-    } else {
-        $("#" + link).append("<p class=\"link-container\"><a href=\"/" + link + "/\">Go there</a></p>");
-    }
-    
+
     $("#" + link).on("click", ".launch-link", function(e) {
         e.preventDefault();
         activateExperiment($("#" + link));

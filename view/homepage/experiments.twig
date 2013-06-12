@@ -13,6 +13,13 @@
     {% for link,title in availableExperiments %}
 <div id="{{ link }}" class="experiment{% if link == enabledExperiment.link %} active{% endif %}">
     {% include "homepage/experiments/%s.twig"|format(link) %}
+    <p class="link-container">
+    {% if link|slice(0, 6) == "jquery" %}
+        <a href="#{{ link }}" class="launch-link">Launch it</a>
+    {% else %}
+        <a href="/{{ link }}/">Go there</a>
+    {% endif %}
+    </p>
 </div>
     {% endfor %}
 {% else %}

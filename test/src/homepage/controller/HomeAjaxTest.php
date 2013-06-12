@@ -11,7 +11,7 @@ class HomeAjaxTest extends \ControllerTestCase {
      */
     public function testAjaxMoviesByYearPass() {
         $this->setUpController("/ajax-movies-by-year/1902", array());
-        $this->assertJsonStringEqualsJsonString('{"movies":[{"id":366,"title":"Le Voyage Dans La Lune","title_en":"A Trip To The Moon","year":1902,"link":"http://www.imdb.com/title/tt0000417/"}],"countries":[[{"id":11,"country":"France"}]],"directors":[[{"id":167,"director":"Georges M\u00e9li\u00e8s"}]],"genres":[[{"id":3,"genre":"Adventure"},{"id":11,"genre":"Fantasy"},{"id":19,"genre":"Sci-Fi"},{"id":20,"genre":"Short"}]]}', $this->response);
+        $this->assertJsonStringEqualsJsonString('{"movies":[{"title":"Le Voyage Dans La Lune","title_en":"A Trip To The Moon","year":1902,"link":"http://www.imdb.com/title/tt0000417/","_id":366}],"countries":[[{"country":"France","_id":11}]],"directors":[[{"director":"Georges M\u00e9li\u00e8s","_id":167}]],"genres":[[{"genre":"Adventure","_id":3},{"genre":"Fantasy","_id":11},{"genre":"Sci-Fi","_id":19},{"genre":"Short","_id":20}]]}', $this->response);
     }
 
     /**

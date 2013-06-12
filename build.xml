@@ -60,9 +60,12 @@
     </target>
     
     <!-- Clean -->
-    <target name="_clean-report" description="Clean unit test coverage report">
+    <target name="_clean" description="Clean unit test coverage report">
         <delete includeemptydirs="true" verbose="false">
             <fileset dir="${report}">
+                <exclude name=".gitignore" />
+            </fileset>
+            <fileset dir="./static/">
                 <exclude name=".gitignore" />
             </fileset>
         </delete>
@@ -95,7 +98,7 @@
     </target>
     
     <!-- Run the unit tests and generate the coverage report -->
-    <target name="coverage" depends="_clean-report" description="Run the unit tests and generate the coverage">
+    <target name="coverage" depends="_clean" description="Run the unit tests and generate the coverage">
         <exec outputProperty="result"
               passthru="true"
               command="phpunit -d session.name=${config} -c ./test/phpunit.xml --log-junit ${report}/logfile.xml --coverage-html ${report}/coverage-html/ ${testPath}"/>

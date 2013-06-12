@@ -35,7 +35,7 @@
         <section class="row-fluid">
             <div id="page-menu" class="span3">
                 <h2>Selection</h2>
-                {% include "common/artist-selection.html" %}
+                {% include "common/artist-selection.twig" %}
             </div>
             <div id="page-content" class="span9">
                 {% block content %}{% endblock %}
@@ -43,7 +43,7 @@
         </section>
     </div>
     {% if isLive == 1 %}
-    {% include "common/ga.html" %}
+    {% include "common/ga.twig" %}
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>

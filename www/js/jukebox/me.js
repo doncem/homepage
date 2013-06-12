@@ -78,6 +78,9 @@ var initData = function() {
            factory(_, Backbone);
         }
     }(this, function(_, Backbone) {
+        _.templateSettings = {
+            interpolate : /\{\{(.+?)\}\}/g
+        };
         var Artist = Backbone.Model.extend({
             idAttribute:"_id",
             name:"name"
@@ -99,6 +102,26 @@ var initData = function() {
         });
         window.songs = new Songs();
         window.songs.add(data.songs);
+        window.Row = Backbone.View.extend({
+            template: _.template($("#search-result-row").html()),
+            className: "search-result-row",
+            artist: null,
+            initialize: function(init) {
+                this.model = init.model;
+                this.id = init.id;
+                this.artist = window.artists.findWhere({_id:this.model.get("artist_id")});
+                _.bindAll(this, "render");
+            },
+            render: function() {
+                this.$el.append(this.template({
+                    song_id: this.model.get("_id"),
+                    song: this.model.get("name"),
+                    artist: this.artist.get("name")
+                }));
+
+                return this;
+            }
+        });
      }));
 };
 /**
@@ -111,7 +134,23 @@ var doSearch = function() {
             return e.get("name").toLowerCase().indexOf($("#search-q").val().toLowerCase()) !== -1;
         });
         $("#results").html(r.length);
-        console.log(r);
+        _.each(r, function(e, i, l) {
+            if ($("#search-result-row-" + e.get("_id")).length === 0) {
+                new window.Row({
+                    model: e,
+                    id: "search-result-row-" + e.get("_id")
+                });
+            } else {
+                $("#search-result-row-" + e.get("_id")).addClass("found");
+            }
+        });
+        $(".search-result-row").each(function(i, e) {
+            if ($(e).hasClass("found")) {
+                $(e).removeClass("found").fadeIn("fast");
+            } else {
+                $(e).fadeOut("slow");
+            }
+        });
     }
 };
 

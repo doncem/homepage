@@ -23,7 +23,7 @@
         {% endblock %}
     </div>
     {% if isLive == 1 %}
-    {% include "common/ga.html" %}
+    {% include "common/ga.twig" %}
     {% endif %}
     <script type="text/javascript" src="{{ html.js }}.js"></script>
     {% if js is defined %}

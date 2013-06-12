@@ -63,7 +63,7 @@ class Page implements StaticPage {
      * @param string $link
      */
     public function get($link = "") {
-        $this->current_resource = (substr($link, 0, 1) == "?") ?  "" : substr($link, 0, strpos($link, "?"));
+        $this->current_resource = trim((substr($link, 0, 1) == "?") ?  "" : substr($link, 0, strpos($link, "?")), "/");
         $this->contents = file_get_contents($this->url . $link);
     }
     
