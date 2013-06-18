@@ -103,23 +103,24 @@ var initData = function() {
         window.songs = new Songs();
         window.songs.add(data.songs);
         window.Row = Backbone.View.extend({
+            el:"#results",
             template: _.template($("#search-result-row").html()),
-            className: "search-result-row",
+            className: "search-result-row found",
             artist: null,
             initialize: function(init) {
                 this.model = init.model;
                 this.id = init.id;
                 this.artist = window.artists.findWhere({_id:this.model.get("artist_id")});
-                _.bindAll(this, "render");
+                this.render();
             },
             render: function() {
                 this.$el.append(this.template({
+                    el_id:this.id,
+                    el_class:this.className,
                     song_id: this.model.get("_id"),
                     song: this.model.get("name"),
                     artist: this.artist.get("name")
                 }));
-
-                return this;
             }
         });
      }));
@@ -133,10 +134,9 @@ var doSearch = function() {
         r = _.filter(window.songs.models, function(e) {
             return e.get("name").toLowerCase().indexOf($("#search-q").val().toLowerCase()) !== -1;
         });
-        $("#results").html(r.length);
         _.each(r, function(e, i, l) {
             if ($("#search-result-row-" + e.get("_id")).length === 0) {
-                new window.Row({
+                var row = new window.Row({
                     model: e,
                     id: "search-result-row-" + e.get("_id")
                 });
@@ -151,6 +151,46 @@ var doSearch = function() {
                 $(e).fadeOut("slow");
             }
         });
+    }
+};
+/**
+ * Filter results
+ * @param {string} by
+ * @returns {void}
+ */
+var doFilter = function(by) {
+    if (by === "") {
+        // it also shows previously hidden
+        $(".search-result-row").each(function(i, e) {
+            $(e).fadeIn("fast");
+        });
+    } else {
+        var arr = by.split("-");
+        var filter = false;
+        switch (arr[1]) {
+            case "artists":
+                filter = 1;
+                break;
+            case "songs":
+                filter = 0;
+                break;
+        }
+        if (filter !== false) {
+            var s_q = $("#search-q").val();
+            $(".search-result-row").filter(function(i) {
+                var found = $(this).children("li").filter(function(i2) {
+                    return i2 === filter;
+                }).html().toLowerCase().indexOf(s_q.toLowerCase());
+                if (found === -1) {
+                    return true;
+                } else {
+                    $(this).fadeIn("fast");
+                    return false;
+                }
+            }).each(function(i, e) {
+                $(e).fadeOut("slow");
+            });
+        }
     }
 };
 
@@ -179,6 +219,18 @@ $(function() {
 
     $(window).resize(function() {
         resizeMe();
+    });
+
+    // top filter
+    var previous_active_filter = "";
+    $("#results-container > ul button[disabled!='disabled']").click(function() {
+        if (previous_active_filter !== "" && previous_active_filter !== $(this).attr("id")) {
+            $("#" + previous_active_filter).toggleClass("active");
+        }
+
+        $(this).toggleClass("active");
+        previous_active_filter = $(this).hasClass("active") ? $(this).attr("id") : "";
+        doFilter(previous_active_filter);
     });
 
     $("#search-clear").click(function() {

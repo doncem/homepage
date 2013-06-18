@@ -66,12 +66,21 @@ button {
     }
 }
 #results-container {
+    & > ul {
+        position:fixed;
+        top:0px;
+        button.active {
+            border-bottom-width:2px;
+            border-left-width:2px;
+            border-right-width:2px;
+            font-size:0.81em;
+            font-weight:bold;
+        }
+    }
     ul {
         margin:0;
         padding:0;
         list-style:none;
-        position:fixed;
-        top:0px;
         li {
             display:inline-block;
             margin-right:5px;
