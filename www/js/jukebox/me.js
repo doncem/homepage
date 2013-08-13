@@ -9,6 +9,11 @@ window.artists = null;
  */
 window.songs = null;
 /**
+ * Default gaps
+ * @type Number
+ */
+var GAP = 10;
+/**
  * Remove last carachter in the search input
  * @return {void}
  */
@@ -55,11 +60,13 @@ var space = function() {
 var resizeMe = function() {
     var w = $(window).width();
     var h = $(window).height();
+    var filter = $("#results-container > ul").height();
     $("#page").width(w);
-    $("#page").height(h - $("#results-container > ul").height());
+    $("#page").height(h - filter -GAP);
+    $("#history").height(h);
     $("#keyboard").width(w);
-    $("#results").css({marginTop:$("#results-container > ul").height()});
-    $("#results").height(h - $("#results-container > ul").height());
+    $("#results").css({marginTop:filter + GAP});
+    $("#results").height(h - filter - GAP);
 };
 /**
  * Initialize our data
@@ -272,5 +279,38 @@ $(function() {
                 timeout = setTimeout("doSearch()", 500);
             }
         }
+    });
+    // ------------------------ TESTING -------------------------------
+    $(".test").draggable({
+        opacity: 0.7,
+        revert: "invalid",
+        stack: "#results > ul"
+    });
+    $("#history").droppable({
+        accept: "#results > ul",
+        hoverClass: "history-hovered",
+        drop: function (e, ui) {
+            $(".test").draggable("stop");
+        }
+    });
+    $(".test").on("dragstart", function (e, ui) {
+        $("#history-toggle").animate({
+            backgroundColor: "rgba(65, 131, 196, 0.8)"
+        }, "slow", function() {
+            $("#history").animate({
+                width: 200
+            }, "slow");
+        });
+    });
+    $(".test").on("dragstop", function (e, ui) {
+        $("history-toggle").animate({
+            backgroundColor: "#444444"
+        }, "fast", function() {
+            setTimeout(function() {
+                $("#history").animate({
+                    width: 0
+                }, "fast");
+            }, 4000);
+        });
     });
 });

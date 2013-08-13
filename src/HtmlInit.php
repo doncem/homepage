@@ -9,7 +9,7 @@ class HtmlInit {
     /**
      * jQuery version in use
      */
-    const JQUERY_VERSION = "2.0.0";
+    const JQUERY_VERSION = "2.0.3";
 
     /**
      * Hostname to check internet is alive

@@ -10,6 +10,11 @@ use xframe\plugin\Plugin;
 class SetJS extends Plugin {
 
     /**
+     * jQuery UI version in use
+     */
+    const JQUERY_UI_VERSION = "1.10.3";
+
+    /**
      * Mapped available JS files
      * @var array
      */
@@ -57,6 +62,8 @@ class SetJS extends Plugin {
             $array = array(file_exists($this->dic->root . "www" . $this->available_js["underscore_min"]) && $isLive ? $this->available_js["underscore_min"] : $this->available_js["underscore"]);
             $array[] = file_exists($this->dic->root . "www" . $this->available_js["backbone_min"]) && $isLive ? $this->available_js["backbone_min"] : $this->available_js["backbone"];
             $array[] = file_exists($this->dic->root . "www" . $this->available_js["jukebox_me_min"]) && $isLive ? $this->available_js["jukebox_me_min"] : $this->available_js["jukebox_me"];
+            $array[] = \HtmlInit::doWeHaveGoogle() ? $this->dic->root . "www/js/jquery-ui." . self::JQUERY_UI_VERSION . ".min.js" : "//ajax.googleapis.com/ajax/libs/jqueryui/" . self::JQUERY_UI_VERSION . "/jquery-ui.min.js";
+            $array[] = file_exists($this->dic->root . "www" . $this->available_js["jquery_color_min"]) && $isLive ? $this->available_js["jquery_color_min"] : $this->available_js["jquery_color"];
 
             return $array;
         } else if ($module == "homepage") {
