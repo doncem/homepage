@@ -290,27 +290,9 @@ $(function() {
         accept: "#results > ul",
         hoverClass: "history-hovered",
         drop: function (e, ui) {
-            $(".test").draggable("stop");
+            ui.draggable.draggable('disable');
+            $(this).append(ui.draggable);
+            ui.draggable.removeAttr("style");
         }
-    });
-    $(".test").on("dragstart", function (e, ui) {
-        $("#history-toggle").animate({
-            backgroundColor: "rgba(65, 131, 196, 0.8)"
-        }, "slow", function() {
-            $("#history").animate({
-                width: 200
-            }, "slow");
-        });
-    });
-    $(".test").on("dragstop", function (e, ui) {
-        $("history-toggle").animate({
-            backgroundColor: "#444444"
-        }, "fast", function() {
-            setTimeout(function() {
-                $("#history").animate({
-                    width: 0
-                }, "fast");
-            }, 4000);
-        });
     });
 });

@@ -14,10 +14,45 @@ button {
         box-shadow:inset 0 0 2px 2px rgba(darken($mainColour, 20%), 0.8);
     }
 }
+ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+    li {
+        display:inline-block;
+        margin-right:5px;
+        button {
+            background-color:darken($mainColour, 30%);
+            border-bottom-left-radius:10px;
+            border-bottom-right-radius:10px;
+        }
+    }
+    &.ui-draggable {
+        cursor:pointer;
+        float:left;
+        clear:left;
+        padding:3px 5px;
+        margin-bottom:5px;
+        border:solid 1px darken($mainColour, 30%);
+        border-radius:5px;
+        &:focus {
+            background-color:lighten($mainColour, 10%);
+            border-color:darken($mainColour, 10%);
+        }
+        &:hover {
+            background-color:lighten($mainColour, 5%);
+            border-color:darken($mainColour, 20%);
+            box-shadow:1px 1px rgba(darken($mainColour, 20%), 0.5);
+        }
+    }
+}
 #history {
     float:left;
     top:0;
     left:0;
+    padding:#{$contentPad}px;
+    width:200px;
+    border-right:1px solid darken($mainColour, 20%);
     & > button {
         width:#{$contentPad}px;
         height:100%;
@@ -100,38 +135,6 @@ button {
             border-right-width:2px;
             font-size:0.81em;
             font-weight:bold;
-        }
-    }
-    ul {
-        margin:0;
-        padding:0;
-        list-style:none;
-        li {
-            display:inline-block;
-            margin-right:5px;
-            button {
-                background-color:darken($mainColour, 30%);
-                border-bottom-left-radius:10px;
-                border-bottom-right-radius:10px;
-            }
-        }
-        &.ui-draggable {
-            cursor:pointer;
-            float:left;
-            clear:left;
-            padding:3px 5px;
-            margin-bottom:5px;
-            border:solid 1px darken($mainColour, 30%);
-            border-radius:5px;
-            &:focus {
-                background-color:lighten($mainColour, 10%);
-                border-color:darken($mainColour, 10%);
-            }
-            &:hover {
-                background-color:lighten($mainColour, 5%);
-                border-color:darken($mainColour, 20%);
-                box-shadow:1px 1px rgba(darken($mainColour, 20%), 0.5);
-            }
         }
     }
 }

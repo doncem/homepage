@@ -54,10 +54,18 @@ class jbSongs extends \SerializeMyVars {
     private $artist;
 
     /**
-     * Initiate default counter = 0
+     * Collection of history entries by this song
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @OneToMany(targetEntity="jbHistory", mappedBy="track")
+     */
+    private $history;
+
+    /**
+     * Initiate default counter = 0 and collection
      */
     public function __construct() {
         $this->counter = 0;
+        $this->history = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -70,5 +78,13 @@ class jbSongs extends \SerializeMyVars {
 
     public function setArtistId() {
         $this->artist_id = $this->artist->getId();
+    }
+
+    /**
+     * Get list of histories
+     * @return array
+     */
+    public function getHistory() {
+        return $this->history->getValues();
     }
 }

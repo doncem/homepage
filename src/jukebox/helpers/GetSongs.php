@@ -49,4 +49,26 @@ class GetSongs extends \Helper {
             );
         }
     }
+
+    /**
+     * Return history
+     * @param \DateTime $from [optional] Default null
+     * @param \DateTime $to [optional] Default null
+     * @return array { objects }
+     */
+    public function getHistory(\DateTime $from = null, \DateTime $to = null) {
+        $matching = Criteria::create()->where(
+            Criteria::expr()->gte(
+                "timestamp", is_null($from) ? new \DateTime("-2 months") : $from
+            )
+        )->andWhere(
+            Criteria::expr()->lte(
+                "timestamp", is_null($to) ? new \DateTime("+2 months") : $to
+            )
+        );
+
+        return $this->em->getRepository("\jukebox\models\jbHistory")
+                        ->matching($matching)
+                        ->toArray();
+    }
 }
