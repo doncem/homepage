@@ -293,6 +293,13 @@ $(function() {
             ui.draggable.draggable('disable');
             $(this).append(ui.draggable);
             ui.draggable.removeAttr("style");
+            $.post(
+                "/jukebox-gearman/",
+                {
+                    action:"set-queue",
+                    q:ui.draggable.data("song-id")
+                }
+            );
         }
     });
 });

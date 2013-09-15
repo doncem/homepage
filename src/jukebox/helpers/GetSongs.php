@@ -71,4 +71,23 @@ class GetSongs extends \Helper {
                         ->matching($matching)
                         ->toArray();
     }
+
+    /**
+     * Save tracks into queue
+     * @param array $tracks
+     */
+    public function setHistory(array $tracks) {
+        $date = new \DateTime();
+
+        foreach ($tracks as $track) {
+            $history = new \jukebox\models\jbHistory();
+
+            $history->setTimestamp($date)
+                    ->setTrack($this->em->getReference("\jukebox\models\jbSongs", $track));
+            $this->em->persist($history);
+        }
+ 
+        $this->em->flush();
+        $this->em->clear();
+    }
 }

@@ -20,6 +20,7 @@ include($root . "config/app.php");
 require("xframe/autoloader/Autoloader.php");
 
 $autoloader = new Autoloader($root);
+//$autoloader->addPath($root . "script");
 $autoloader->register();
 
 $system = new System($root, $_SERVER["CONFIG"]);

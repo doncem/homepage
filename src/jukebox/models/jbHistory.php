@@ -18,7 +18,7 @@ class jbHistory extends \SerializeMyVars {
 
     /**
      * Time it's added
-     * @var string
+     * @var \DateTime
      * @Column(type="datetime")
      */
     protected $timestamp;
@@ -37,5 +37,27 @@ class jbHistory extends \SerializeMyVars {
      */
     public function getTrack() {
         return $this->track;
+    }
+
+    /**
+     * Set it
+     * @param \DateTime $timestamp
+     * @return \jukebox\models\jbHistory
+     */
+    public function setTimestamp(\DateTime $timestamp) {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * Set it
+     * @param \jukebox\models\jbSongs $track
+     * @return \jukebox\models\jbHistory
+     */
+    public function setTrack(jbSongs $track) {
+        $this->track = $track;
+
+        return $this;
     }
 }
