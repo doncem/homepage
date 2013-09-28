@@ -294,11 +294,7 @@ $(function() {
             $(this).append(ui.draggable);
             ui.draggable.removeAttr("style");
             $.post(
-                "/jukebox-gearman/",
-                {
-                    action:"set-queue",
-                    q:ui.draggable.data("song-id")
-                }
+                "/serve-action/set-queue/" + ui.draggable.data("song-id")
             );
         }
     });

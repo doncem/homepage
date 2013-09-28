@@ -53,17 +53,12 @@ class GetSongs extends \Helper {
     /**
      * Return history
      * @param \DateTime $from [optional] Default null
-     * @param \DateTime $to [optional] Default null
      * @return array { objects }
      */
-    public function getHistory(\DateTime $from = null, \DateTime $to = null) {
+    public function getHistory(\DateTime $from = null) {
         $matching = Criteria::create()->where(
             Criteria::expr()->gte(
                 "timestamp", is_null($from) ? new \DateTime("-2 months") : $from
-            )
-        )->andWhere(
-            Criteria::expr()->lte(
-                "timestamp", is_null($to) ? new \DateTime("+2 months") : $to
             )
         );
 
@@ -73,18 +68,31 @@ class GetSongs extends \Helper {
     }
 
     /**
+     * Get all queue
+     * @return array
+     */
+    public function getQueue() {
+        return $this->em->getRepository("\jukebox\models\jbQueue")->findAll();
+    }
+
+    /**
      * Save tracks into queue
      * @param array $tracks
      */
-    public function setHistory(array $tracks) {
+    public function setQueue(array $tracks) {
         $date = new \DateTime();
 
         foreach ($tracks as $track) {
             $history = new \jukebox\models\jbHistory();
+            $queue = new \jukebox\models\jbQueue();
+            $track = $this->em->getReference("\jukebox\models\jbSongs", $track);
 
             $history->setTimestamp($date)
-                    ->setTrack($this->em->getReference("\jukebox\models\jbSongs", $track));
+                    ->setTrack($track);
+            $queue->setTrack($track);
+
             $this->em->persist($history);
+            $this->em->persist($queue);
         }
  
         $this->em->flush();

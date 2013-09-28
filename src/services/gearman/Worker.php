@@ -1,12 +1,24 @@
 <?php
-namespace jukebox\gearman;
+namespace services\gearman;
 
+use xframe\core\System;
 use jukebox\helpers\GetSongs;
 
 class Worker extends \script\gearman\Worker implements \script\daemon\Daemon {
 
     const FUNC_SET_QUEUE = "setQueued";
 
+    /**
+     * Framework core system
+     * @var System
+     */
+    private $system;
+
+    public function __construct(System $system, \GearmanWorker $worker, $host, $port = 4730) {
+        $this->system = $system;
+
+        parent::__construct($worker, $host, $port);
+    }
     public function getPidPath() {
         return "www/jukebox";
     }
@@ -15,11 +27,12 @@ class Worker extends \script\gearman\Worker implements \script\daemon\Daemon {
      * Registers the functions this worker can handle with the gearman server
      */
     protected function registerFunctions() {
-        $this->worker->addFunction(self::FUNC_SET_QUEUE, function(\GearmanJob $job) {
+        $system = $this->system;
+
+        $this->worker->addFunction(self::FUNC_SET_QUEUE, function(\GearmanJob $job) use($system) {
             echo "Received job: " . $job->handle() . " - doing " . __METHOD__ . "\n";
 
             $workload = json_decode($job->workload());
-            $system = new \xframe\core\System(__DIR__ . "/../../../", CONFIG);
             $helper = new GetSongs($system->em);
 
             $helper->setHistory($workload->tracks);

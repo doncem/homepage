@@ -1,6 +1,9 @@
 <?php
 namespace script\gearman;
 
+use services\gearman;
+use xframe\core\System;
+
 /**
  * Config class based on the registry pattern
  */
@@ -19,10 +22,14 @@ abstract class Config {
     public function __construct($host) {
         $this->items = array(
             "gearman_worker" => function() use($host) {
-                return new \jukebox\gearman\Worker(new \GearmanWorker(), $host);
+                return new gearman\Worker(
+                    new System(__DIR__ . "/../../", CONFIG),
+                    new \GearmanWorker(),
+                    $host
+                );
             },
             "gearman_client" => function() use($host) {
-                return new \jukebox\gearman\Client(new \GearmanClient(), $host);
+                return new gearman\Client(new \GearmanClient(), $host);
             }
         );
     }

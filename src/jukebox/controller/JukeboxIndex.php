@@ -34,7 +34,7 @@ class JukeboxIndex extends \homepage\HomeController {
     private function getQueue() {
         $helper = new GetSongs($this->dic->em);
 
-        $this->view->addParameter("history", $helper->getHistory());
+        $this->view->addParameter("queue", $helper->getQueue());
     }
 
     /**

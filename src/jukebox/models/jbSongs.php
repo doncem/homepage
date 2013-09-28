@@ -61,11 +61,19 @@ class jbSongs extends \SerializeMyVars {
     private $history;
 
     /**
-     * Initiate default counter = 0 and collection
+     * Collection of queue entries by this song
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @OneToMany(targetEntity="jbQueue", mappedBy="track")
+     */
+    private $queue;
+
+    /**
+     * Initiate default counter = 0 and collections
      */
     public function __construct() {
         $this->counter = 0;
         $this->history = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->queue = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -86,5 +94,9 @@ class jbSongs extends \SerializeMyVars {
      */
     public function getHistory() {
         return $this->history->getValues();
+    }
+
+    public function getQueue() {
+        return $this->queue->getValues();
     }
 }

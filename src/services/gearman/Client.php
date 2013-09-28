@@ -1,5 +1,5 @@
 <?php
-namespace jukebox\gearman;
+namespace services\gearman;
 
 class Client extends \script\gearman\Client {
 

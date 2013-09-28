@@ -1,11 +1,11 @@
 <?php
 namespace jukebox\models;
 /**
- * History model
+ * Queue model
  * @Entity
- * @Table(name="jb_history")
+ * @Table(name="jb_queue")
  */
-class jbHistory extends \SerializeMyVars {
+class jbQueue extends \SerializeMyVars {
 
     /**
      * Autoincrement table ID
@@ -17,16 +17,9 @@ class jbHistory extends \SerializeMyVars {
     protected $id;
 
     /**
-     * Time it's added
-     * @var \DateTime
-     * @Column(type="datetime")
-     */
-    protected $timestamp;
-
-    /**
-     * Model of song of this history
+     * Model of song of this queue
      * @var jbSongs
-     * @ManyToOne(targetEntity="jbSongs", inversedBy="history")
+     * @ManyToOne(targetEntity="jbSongs", inversedBy="queue")
      * @JoinColumn(name="track", referencedColumnName="id")
      */
     private $track;
@@ -37,17 +30,6 @@ class jbHistory extends \SerializeMyVars {
      */
     public function getTrack() {
         return $this->track;
-    }
-
-    /**
-     * Set it
-     * @param \DateTime $timestamp
-     * @return \jukebox\models\jbHistory
-     */
-    public function setTimestamp(\DateTime $timestamp) {
-        $this->timestamp = $timestamp;
-
-        return $this;
     }
 
     /**
