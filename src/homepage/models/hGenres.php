@@ -1,12 +1,13 @@
 <?php
 namespace homepage\models;
+
 /**
  * Genre model
  * @Entity
  * @Table(name="h_genres")
  */
 class hGenres extends \SerializeMyVars {
-    
+
     /**
      * Autoincrement table ID
      * @var int
@@ -15,7 +16,7 @@ class hGenres extends \SerializeMyVars {
      * @Column(type="integer")
      */
     protected $id;
-    
+
     /**
      * Name of genre
      * @var string
@@ -24,7 +25,7 @@ class hGenres extends \SerializeMyVars {
      * @Column(unique=true)
      */
     protected $genre;
-    
+
     /**
      * Collection of movies having this genre
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -36,7 +37,7 @@ class hGenres extends \SerializeMyVars {
      * @OrderBy({"title" = "ASC", "year" = "ASC"})
      */
     private $movies;
-    
+
     /**
      * Collection of tv shows having this genre
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -48,7 +49,7 @@ class hGenres extends \SerializeMyVars {
      * @OrderBy({"title" = "ASC", "year_from" = "ASC"})
      */
     private $series;
-    
+
     /**
      * Initiate collections
      */
@@ -56,7 +57,34 @@ class hGenres extends \SerializeMyVars {
         $this->movies = new \Doctrine\Common\Collections\ArrayCollection();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Get it
+     * @return string
+     */
+    public function getGenre() {
+        return $this->genre;
+    }
+
+    /**
+     * Set it
+     * @param string $genre
+     * @return hGenres
+     */
+    public function setGenre($genre) {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
     /**
      * Get list of movies
      * @return array
@@ -64,7 +92,7 @@ class hGenres extends \SerializeMyVars {
     public function getMovies() {
         return $this->movies->getValues();
     }
-    
+
     /**
      * Get list of tv shows
      * @return array

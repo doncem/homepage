@@ -1,12 +1,13 @@
 <?php
 namespace homepage\models;
+
 /**
  * Country model
  * @Entity
  * @Table(name="h_countries")
  */
 class hCountries extends \SerializeMyVars {
-    
+
     /**
      * Autoincrement table ID
      * @var int
@@ -15,7 +16,7 @@ class hCountries extends \SerializeMyVars {
      * @Column(type="integer")
      */
     protected $id;
-    
+
     /**
      * Name of country
      * @var string
@@ -24,7 +25,7 @@ class hCountries extends \SerializeMyVars {
      * @Column(unique=true)
      */
     protected $country;
-    
+
     /**
      * Collection of movies having this country
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -36,7 +37,7 @@ class hCountries extends \SerializeMyVars {
      * @OrderBy({"title" = "ASC", "year" = "ASC"})
      */
     private $movies;
-    
+
     /**
      * Collection of tv shows having this country
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -48,7 +49,7 @@ class hCountries extends \SerializeMyVars {
      * @OrderBy({"title" = "ASC", "year_from" = "ASC"})
      */
     private $series;
-    
+
     /**
      * Initiate collections
      */
@@ -56,7 +57,34 @@ class hCountries extends \SerializeMyVars {
         $this->movies = new \Doctrine\Common\Collections\ArrayCollection();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Get it
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+
+    /**
+     * Set it
+     * @param string $country
+     * @return hCountries
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+
+        return $this;
+    }
+
     /**
      * Get list of movies
      * @return array
@@ -64,7 +92,7 @@ class hCountries extends \SerializeMyVars {
     public function getMovies() {
         return $this->movies->getValues();
     }
-    
+
     /**
      * Get list of tv shows
      * @return array

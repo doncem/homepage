@@ -1,5 +1,6 @@
 <?php
 namespace jukebox\models;
+
 /**
  * Song model
  * @Entity
@@ -78,14 +79,93 @@ class jbSongs extends \SerializeMyVars {
 
     /**
      * Get it
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getArtistId() {
+        return $this->artist_id;
+    }
+
+    /**
+     * Set it
+     * @return jbSongs
+     */
+    public function setArtistId() {
+        $this->artist_id = $this->artist->getId();
+
+        return $this;
+    }
+
+    /**
+     * Get it
      * @return jbArtists
      */
     public function getArtist() {
         return $this->artist;
     }
 
-    public function setArtistId() {
-        $this->artist_id = $this->artist->getId();
+    /**
+     * Get it
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Set it
+     * @param string $name
+     * @return jbSongs
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get it
+     * @return string
+     */
+    public function getFilename() {
+        return $this->filename;
+    }
+
+    /**
+     * Set it
+     * @param string $filename
+     * @return jbSongs
+     */
+    public function setFilename($filename) {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getCounter() {
+        return $this->counter;
+    }
+
+    /**
+     * Set it
+     * @param int $counter
+     * @return jbSongs
+     */
+    public function setCounter($counter) {
+        $this->counter = $counter;
+
+        return $this;
     }
 
     /**

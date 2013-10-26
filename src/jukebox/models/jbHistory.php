@@ -1,5 +1,6 @@
 <?php
 namespace jukebox\models;
+
 /**
  * History model
  * @Entity
@@ -33,21 +34,37 @@ class jbHistory extends \SerializeMyVars {
 
     /**
      * Get it
-     * @return jbSongs
+     * @return int
      */
-    public function getTrack() {
-        return $this->track;
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Get it
+     * @return \DateTime
+     */
+    public function getTimestamp() {
+        return $this->timestamp;
     }
 
     /**
      * Set it
      * @param \DateTime $timestamp
-     * @return \jukebox\models\jbHistory
+     * @return jbHistory
      */
     public function setTimestamp(\DateTime $timestamp) {
         $this->timestamp = $timestamp;
 
         return $this;
+    }
+
+    /**
+     * Get it
+     * @return jbSongs
+     */
+    public function getTrack() {
+        return $this->track;
     }
 
     /**

@@ -1,12 +1,13 @@
 <?php
 namespace homepage\models;
+
 /**
  * Movie model
  * @Entity
  * @Table(name="h_movies")
  */
 class hMovies extends \SerializeMyVars {
-    
+
     /**
      * Autoincrement table ID
      * @var int
@@ -15,14 +16,14 @@ class hMovies extends \SerializeMyVars {
      * @Column(type="integer")
      */
     protected $id;
-    
+
     /**
      * Original title
      * @var string
      * @Column(type="string")
      */
     protected $title;
-    
+
     /**
      * English title
      * @var string|null
@@ -30,7 +31,7 @@ class hMovies extends \SerializeMyVars {
      * @Column(nullable=true)
      */
     protected $title_en;
-    
+
     /**
      * Year published
      * @var int
@@ -38,7 +39,7 @@ class hMovies extends \SerializeMyVars {
      * @Column(length=4)
      */
     protected $year;
-    
+
     /**
      * Link to imdb
      * @var string
@@ -46,7 +47,7 @@ class hMovies extends \SerializeMyVars {
      * @Column(length=36)
      */
     protected $link;
-    
+
     /**
      * Collection of countries this movie has
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -58,7 +59,7 @@ class hMovies extends \SerializeMyVars {
      * @OrderBy({"country" = "ASC"})
      */
     private $countries;
-    
+
     /**
      * Collection of directors this movie has
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -70,7 +71,7 @@ class hMovies extends \SerializeMyVars {
      * @OrderBy({"director" = "ASC"})
      */
     private $directors;
-    
+
     /**
      * Collection of genres this movie has
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -82,7 +83,7 @@ class hMovies extends \SerializeMyVars {
      * @OrderBy({"genre" = "ASC"})
      */
     private $genres;
-    
+
     /**
      * Initiate collections
      */
@@ -91,7 +92,91 @@ class hMovies extends \SerializeMyVars {
         $this->directors = new \Doctrine\Common\Collections\ArrayCollection();
         $this->genres = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Get it
+     * @return string
+     */
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+     * Set it
+     * @param string $title
+     * @return hMovies
+     */
+    public function setTitle($title) {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get it
+     * @return string|null
+     */
+    public function getTitleEn() {
+        return $this->title_en;
+    }
+
+    /**
+     * Set it
+     * @param string $title [optional] Default null
+     * @return hMovies
+     */
+    public function setTitleEn($title = null) {
+        $this->title_en = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getYear() {
+        return $this->year;
+    }
+
+    /**
+     * Set it
+     * @param int $year
+     * @return hMovies
+     */
+    public function setYear($year) {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * Get it
+     * @return string
+     */
+    public function getLink() {
+        return $this->link;
+    }
+
+    /**
+     * Set it
+     * @param string $link
+     * @return hMovies
+     */
+    public function setLink($link) {
+        $this->link = $link;
+
+        return $this;
+    }
+
     /**
      * List of countries
      * @return array

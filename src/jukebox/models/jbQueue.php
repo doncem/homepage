@@ -1,5 +1,6 @@
 <?php
 namespace jukebox\models;
+
 /**
  * Queue model
  * @Entity
@@ -23,6 +24,14 @@ class jbQueue extends \SerializeMyVars {
      * @JoinColumn(name="track", referencedColumnName="id")
      */
     private $track;
+
+    /**
+     * Get it
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
 
     /**
      * Get it

@@ -1,5 +1,6 @@
 <?php
 namespace jukebox\models;
+
 /**
  * Artist model
  * @Entity
@@ -15,7 +16,7 @@ class jbArtists extends \SerializeMyVars {
      * @Column(type="integer")
      */
     protected $id;
-    
+
     /**
      * Name of artist
      * @var string
@@ -45,6 +46,25 @@ class jbArtists extends \SerializeMyVars {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * Get it
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Set it
+     * @param string $name
+     * @return jbArtists
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
