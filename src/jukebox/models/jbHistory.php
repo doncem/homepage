@@ -52,8 +52,8 @@ class jbHistory extends \SerializeMyVars {
 
     /**
      * Set it
-     * @param \jukebox\models\jbSongs $track
-     * @return \jukebox\models\jbHistory
+     * @param jbSongs $track
+     * @return jbHistory
      */
     public function setTrack(jbSongs $track) {
         $this->track = $track;

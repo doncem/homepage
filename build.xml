@@ -32,10 +32,9 @@
     <property name="report" value="./report/" />
 
     <!-- Initialize external libraries -->
-    <target name="init" description="Clone external libraries from github (creates external 'source-libraries' folder)">
-        <exec command="sh install-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
-        <exec command="sh combine-libraries.sh" dir="./script" checkreturn="true" passthru="true" />
-        <exec command="ln -s ../libraries lib" dir="." checkreturn="true" passthru="true" />
+    <target name="init" description="Link external libraries (creates 'lib' and 'vendor' symlinks)">
+        <exec command="ln -s ../vendors/libraries lib" dir="." checkreturn="true" passthru="true" />
+        <exec command="ln -s ../vendors/vendor/ vendor" dir="." checkreturn="true" passthru="true" />
         <chmod file="./tmp" mode="0777" />
         <mkdir dir="${documentation}" />
         <chmod file="${documentation}" mode="0777" />
@@ -43,11 +42,6 @@
         <chmod file="${report}" mode="0777" />
         <mkdir dir="./static" />
         <chmode file="./static" mode="0755" />
-    </target>
-
-    <!-- Update external libraries -->
-    <target name="update-libs" description="Runs update script for external libraries update">
-        <exec command="sh update-repositories.sh" dir="./script" checkreturn="true" passthru="true" />
     </target>
 
     <!-- Clean -->
@@ -67,6 +61,10 @@
             </fileset>
             <fileset dir="./static/">
                 <exclude name=".gitignore" />
+                <exclude name="css" />
+                <exclude name="docs" />
+                <exclude name="img" />
+                <exclude name="js" />
             </fileset>
         </delete>
     </target>
@@ -162,7 +160,7 @@
             port="21"
             username="${FTP_USER}"
             password="${FTP_PASS}"
-            dir="${FTP_PUBLIC}"
+            dir="docs.donatasmart.lt/${FTP_PUBLIC}"
             mode="binary">
             <fileset refid="files.pdfs" />
         </ftpdeploy>

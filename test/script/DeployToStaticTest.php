@@ -40,7 +40,7 @@ class DeployToStaticTest extends \PHPUnit_Framework_TestCase {
                 if ($object != "." && $object != ".." && $object != ".gitignore") {
                     if (filetype($dir."/".$object) == "dir") {
                         $this->removeDir($dir."/".$object);
-                    } else {
+                    } else if (!is_link($dir."/".$object)) {
                         unlink($dir."/".$object);
                     }
                 }

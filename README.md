@@ -39,8 +39,8 @@ Notes
 Phing
 -----------
 
-* `phing init` - should create all libraries remotely into `source-libraries` folder and link them to checkout project
-* `phing update-libs` - updates all remote libraries
+* `phing init` - should link all libraries
+    * make sure you have cloned https://github.com/doncem/vendors.git in parent directory
 * `phing document` - create default documentation into doc/ folder
 * `phing` - should pass all tests and create coverage inside report/ folder
     * it also creates a static website insite static/ folder - because it runs test for deployment script as well ;)

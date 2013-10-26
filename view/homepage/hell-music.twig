@@ -7,6 +7,11 @@
 {% block page_title %}Works for Hell-Music{% endblock %}
 
 {% block content %}
+{% if isLive == 1 %}
+    {% set domain = "lt" %}
+{% else %}
+    {% set domain = "local" %}
+{% endif %}
 <p>All published documents are in Lithuanian language because hell-music is a Lithuanian site. All documents are formed like &#39;YYYYMMDD &lt;name&gt;&#39;</p>
 <p>Sadly, but Hell-Music had to go away :(. Yea, I know, - it's very sad. <a href="http://www.hell-music.lt/straipsniai/pasiskaitymai/364/">Here is</a> their &#39;Outro&#39;</p>
 <h2>News</h2>
@@ -22,7 +27,7 @@
         {% set i = i + 1 %}
         <td><ol start="{{ ((loop.index // amount) * amount) + 1 }}">
             {% endif %}
-                <li><a href="{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
+                <li><a href="//docs.donatasmart.{{ domain }}{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
             {% if loop.index is divisibleby(amount) %}
             </ol></td>
         {% endif %}
@@ -46,14 +51,14 @@
 <p>All &lt;name&gt; elements are short names - conclusions</p>
 <ol>
     {% for key, review in links.reviews %}
-    <li><a href="{{ review[0] }}{{ key }}">{{ review[1] }}</a></li>
+    <li><a href="//docs.donatasmart.{{ domain }}{{ review[0] }}{{ key }}">{{ review[1] }}</a></li>
     {% endfor %}
 </ol>
 <h2>Reports</h2>
 <p>All &lt;name&gt; elements are short names - conclusions. If you don't know the certain name, it might be group name or festival name</p>
 <ol>
     {% for key, report in links.reports %}
-    <li><a href="{{ report[0] }}{{ key }}">{{ report[1] }}</a></li>
+    <li><a href="//docs.donatasmart.{{ domain }}{{ report[0] }}{{ key }}">{{ report[1] }}</a></li>
     {% endfor %}
 </ol>
 {% endblock %}

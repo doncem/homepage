@@ -12,11 +12,7 @@ class HomeMoviesTest extends \ControllerTestCase {
      * Not good to expire anything anyway. But hey-ho - website is not super serious
      */
     public function testMovies() {
-        // dummy DependencyInjectionContainer
-        $dic = new \xframe\core\DependencyInjectionContainer();
-        $registry = parse_ini_file(__DIR__ . "/../../../../config/" . CONFIG . ".ini");
-
-        \MemcacheHandler::getHandler($dic)->expire(
+        \MemcacheHandler::getHandler($this->getDIC())->expire(
             \MemcacheNamespaces::NAMESPACE_PAGE,
             \MemcacheNamespaces::KEY_MOVIES_DATA
         );
@@ -24,12 +20,15 @@ class HomeMoviesTest extends \ControllerTestCase {
         $this->setUpController("/movies/");
         $this->assertNotEmpty($this->response);
 
-        $this->assertTrue(\MemcacheHandler::getHandler($dic)->isConnected());
+        $this->assertTrue(\MemcacheHandler::getHandler($this->getDIC())->isConnected());
 
         $this->setUpController("/movies");
         $this->assertNotEmpty($this->response);
 
-        $status = \MemcacheHandler::getHandler($dic)->get_status();
-        $this->assertArrayHasKey($registry["MEMCACHE_HOST"] . ":" . $registry["MEMCACHE_PORT"], $status);
+        $status = \MemcacheHandler::getHandler($this->getDIC())->get_status();
+        $this->assertArrayHasKey(
+            $this->getDIC()->registry->get("MEMCACHE_HOST") . ":" . $this->getDIC()->registry->get("MEMCACHE_PORT"),
+            $status
+        );
     }
 }

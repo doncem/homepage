@@ -4,37 +4,37 @@
  * Webpage to deploy
  */
 class Page implements StaticPage {
-    
+
     /**
      * What SERVER_NAME are we accessing
      * @var string
      */
     private $url;
-    
+
     /**
      * Where to export static pages
      * @var string
      */
     private $static_dir;
-    
+
     /**
      * Current accessed resource
      * @var string
      */
     private $current_resource;
-    
+
     /**
      * Page contents
      * @var string
      */
     private $contents;
-    
+
     /**
      * Store already deployed pages - resources
      * @var array
      */
     public $deployed = array();
-    
+
     /**
      * Init
      * @param string $url
@@ -57,7 +57,7 @@ class Page implements StaticPage {
             __DIR__ . "/../www/js/" => "js"
         );
     }
-    
+
     /**
      * Get it
      * @param string $link
@@ -66,7 +66,7 @@ class Page implements StaticPage {
         $this->current_resource = trim((substr($link, 0, 1) == "?") ?  "" : substr($link, 0, strpos($link, "?")), "/");
         $this->contents = file_get_contents($this->url . $link);
     }
-    
+
     /**
      * Save it
      */
@@ -74,22 +74,22 @@ class Page implements StaticPage {
         if (!file_exists($this->static_dir . $this->current_resource)) {
             $resource = explode("/", $this->current_resource);
             $current = "/";
-            
+
             foreach ($resource as $folder) {
                 if (!file_exists($this->static_dir .$current . $folder)) {
                     mkdir($this->static_dir . $current . $folder);
                 }
-                
+
                 $current .= $folder . "/";
             }
         }
-        
+
         $index = fopen($this->static_dir . $this->current_resource . "/index.html", "w");
         fwrite($index, $this->contents, strlen($this->contents));
         fclose($index);
         $this->deployed[] = $this->current_resource;
     }
-    
+
     /**
      * Create them if don't exist
      */
@@ -100,18 +100,20 @@ class Page implements StaticPage {
             }
         }
     }
-    
+
     /**
      * Get them
      * @return array
      */
     public function getPageHrefs() {
         $matches = array();
-        $found = preg_match_all("#\<a href=\"(.*?)\"#si", $this->contents, $found_mathces);
-        
+        $found_matches = array();
+        $found = preg_match_all('#\<a href="(.*?)"#si', $this->contents, $found_matches);
+
         if ($found > 0) {
-            foreach ($found_mathces[1] as $match) {
-                if ((substr($match, 0, 4) != "http") && ($match != "javascript:void(0);")) {
+            foreach ($found_matches[1] as $match) {
+                if ((substr($match, 0, 4) != "http") && (substr($match, 0, 1) != "#") &&
+                         !in_array($match, array("javascript:void(0);", "//"))) {
                     $matches[] = $match;
                 }
             }

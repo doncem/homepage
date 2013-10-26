@@ -40,14 +40,14 @@ class HomeIndex extends \homepage\HomeController {
             "reports" => "articles/reports/"
         );
         $links = array();
-        
+
         foreach ($dirs as $key => $dir) {
             $arr = array();
             $dirName = dir($base . $dir);
             while ($file = $dirName->read()) {
                 if ($file != "." && $file != "..") {
                     $temp = substr($file, 9, strlen($file) - 13);
-                    $arr[str_replace("+", "%20", urlencode($file))] = array("/docs/hell-music/" . $dir, $temp);
+                    $arr[str_replace("+", "%20", urlencode($file))] = array("/hell-music/" . $dir, $temp);
                 }
             }
             $dirName->close();

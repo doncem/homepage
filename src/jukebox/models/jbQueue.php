@@ -34,8 +34,8 @@ class jbQueue extends \SerializeMyVars {
 
     /**
      * Set it
-     * @param \jukebox\models\jbSongs $track
-     * @return \jukebox\models\jbHistory
+     * @param jbSongs $track
+     * @return jbQueue
      */
     public function setTrack(jbSongs $track) {
         $this->track = $track;

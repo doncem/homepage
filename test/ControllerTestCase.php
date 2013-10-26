@@ -39,4 +39,12 @@ class ControllerTestCase extends \PHPUnit_Framework_TestCase {
         $this->response = ob_get_contents();
         ob_end_clean();
     }
+
+    /**
+     * Get it
+     * @return xframe\core\DependencyInjectionContainer
+     */
+    protected function getDIC() {
+        return $this->system;
+    }
 }

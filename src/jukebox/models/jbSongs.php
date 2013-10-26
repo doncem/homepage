@@ -96,6 +96,10 @@ class jbSongs extends \SerializeMyVars {
         return $this->history->getValues();
     }
 
+    /**
+     * Get list of queues
+     * @return array
+     */
     public function getQueue() {
         return $this->queue->getValues();
     }

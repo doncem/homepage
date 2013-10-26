@@ -4,13 +4,13 @@
  * Class for deployment to /static/
  */
 class DeployToStatic {
-    
+
     /**
      * Webpage
      * @var StaticPage
      */
     private $page;
-    
+
     /**
      * Links to process
      * @var array
@@ -47,10 +47,10 @@ class DeployToStatic {
                 }
             }
         }
-        
+
         $this->finalize();
     }
-    
+
     /**
      * Store it
      * @param StaticPage $page
@@ -63,7 +63,7 @@ class DeployToStatic {
 
         return $page->getPageHrefs();
     }
-    
+
     /**
      * Check for symlinks
      */
