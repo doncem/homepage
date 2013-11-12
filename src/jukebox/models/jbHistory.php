@@ -5,6 +5,7 @@ namespace jukebox\models;
  * History model
  * @Entity
  * @Table(name="jb_history")
+ * @package jukebox_models
  */
 class jbHistory extends \SerializeMyVars {
 

@@ -5,6 +5,7 @@ namespace homepage\models;
  * Movie model
  * @Entity
  * @Table(name="h_movies")
+ * @package homepage_models
  */
 class hMovies extends \SerializeMyVars {
 

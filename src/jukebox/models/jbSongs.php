@@ -5,6 +5,7 @@ namespace jukebox\models;
  * Song model
  * @Entity
  * @Table(name="jb_songs")
+ * @package jukebox_models
  */
 class jbSongs extends \SerializeMyVars {
 

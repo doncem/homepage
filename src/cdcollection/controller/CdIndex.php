@@ -4,6 +4,7 @@ namespace cdcollection\controller;
 
 /**
  * CD collection module
+ * @package cdcollection_controllers
  */
 class CdIndex extends \cdcollection\CdController {
 

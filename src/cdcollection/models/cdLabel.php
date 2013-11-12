@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Label model
  * @Entity
  * @Table(name="cd_label")
+ * @package cdcollection_models
  */
 class cdLabel {
     

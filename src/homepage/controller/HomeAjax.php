@@ -5,6 +5,7 @@ namespace homepage\controller;
 /**
  * Ajax calls used in homepage module.<br />
  * All responses are json
+ * @package homepage_controllers
  */
 class HomeAjax extends \ControllerInit {
 

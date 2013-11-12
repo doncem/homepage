@@ -2,6 +2,7 @@
 
 /**
  * Webpage to deploy
+ * @package script_deployment
  */
 class Page implements StaticPage {
 
@@ -113,6 +114,7 @@ class Page implements StaticPage {
         if ($found > 0) {
             foreach ($found_matches[1] as $match) {
                 if ((substr($match, 0, 4) != "http") && (substr($match, 0, 1) != "#") &&
+                    (substr($match, 0, 7) != "mailto:") &&
                          !in_array($match, array("javascript:void(0);", "//"))) {
                     $matches[] = $match;
                 }

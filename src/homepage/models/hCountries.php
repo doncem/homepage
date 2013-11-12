@@ -5,6 +5,7 @@ namespace homepage\models;
  * Country model
  * @Entity
  * @Table(name="h_countries")
+ * @package homepage_models
  */
 class hCountries extends \SerializeMyVars {
 

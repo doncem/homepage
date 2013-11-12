@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/cdcollection/{{ html.css }}.css" />
     <link rel="shortcut icon" href="/img/favicon.ico" />
-    <title>{{ html.title }} - {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %} - {{ html.title }}</title>
 {% endspaceless %}</head>
 <body>{% spaceless %}
     <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>

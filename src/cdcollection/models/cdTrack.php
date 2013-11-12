@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Track model
  * @Entity
  * @Table(name="cd_track")
+ * @package cdcollection_models
  */
 class cdTrack {
     

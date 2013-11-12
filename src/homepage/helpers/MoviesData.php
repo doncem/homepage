@@ -4,6 +4,7 @@ namespace homepage\helpers;
 /**
  * Getting all required data for stats
  * @IgnoreAnnotation
+ * @package homepage_helpers
  */
 class MoviesData extends \Helper {
 

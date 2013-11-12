@@ -2,6 +2,7 @@
 
 /**
  * Simple user IP retrieval class
+ * @package common
  */
 abstract class GetIP {
 

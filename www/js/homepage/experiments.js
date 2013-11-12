@@ -11,7 +11,7 @@ var TOP_GAP_SCROLL = 20;
  */
 function activateExperiment(e) {
     var href = e.children(".link-container").children("a");
-    
+
     if (e.hasClass("active")) {
         scrollToTop(e, TOP_GAP_SCROLL);
         window[getFunction(href.attr("href").substr(1))]();
@@ -26,24 +26,27 @@ function activateExperiment(e) {
         }
     }
 }
+
 /**
  * Converts element id into camel case function name
  * @param {String} id
  * @return {String} Function name
  */
 function getFunction(id) {
-    arr = id.split("-");
-    s = arr[0];
-    
+    var arr = id.split("-"),
+        s = arr[0];
+
     for (i = 1; i < arr.length; i++) {
         s += arr[i].substr(0, 1).toUpperCase() + arr[i].substr(1);
     }
-    
+
     return s;
 }
+
 /**
  * Add activation links to each non-active experiment.<br />
  * Attach a click to it as well
+ * @return {void}
  */
 $.fn.attachExperiment = function() {
     var link = $(this).attr("id");
@@ -58,18 +61,18 @@ $(function() {
     $(".experiment").each(function(i, e) {
         $(e).attachExperiment();
     });
-    
+
     $(".development-history-link").click(function(e) {
         e.preventDefault();
         $(this).next(".development-history").slideToggle("fast");
     });
-    
+
     if ((window.location.pathname === $("#menu a.active").attr("href")) && ($(window.location.hash).length > 0)) {
         activateExperiment($(window.location.hash));
     } else if ($(".experiment.active").length > 0) {
         activateExperiment($(".experiment.active").first());
     }
-    
+
     $(window).bind("hashchange", function() {
         if ($(window.location.hash).length > 0) {
             activateExperiment($(window.location.hash));
@@ -77,21 +80,25 @@ $(function() {
     });
 });
 
+/**
+ * jQuery Window Grid Experiment
+ * @returns {void}
+ */
 var jqueryWindowGrid = function() {
-    var c = $("#jquery-window-grid-container");
-    var element = "<div id=\"grid-element-\" class=\"grid-element\" data-x=\"\" data-y=\"\"></div>";
-    var gap = 4;
-    var activeColour = "#012345";
-    var colour = "#543210";
-    
+    var c = $("#jquery-window-grid-container"),
+        element = "<div id=\"grid-element-\" class=\"grid-element\" data-x=\"\" data-y=\"\"></div>",
+        gap = 4,
+        activeColour = "#012345",
+        colour = "#543210";
+
     var calculateSize = function(wSize, k) {
         return Math.floor((wSize - gap) / k - gap - 2 * parseInt($(".grid-element").first().css("border-width")));
     };
-    
+
     var calculateMax = function(wSize) {
         return Math.floor((wSize - gap) / (3 + gap));
     };
-    
+
     /**
      * Add element to the grid
      * @param {string} type Where to add element: 'prepend' or 'append'
@@ -118,22 +125,23 @@ var jqueryWindowGrid = function() {
                                backgroundColor:activeColour
                            }, "fast");
     };
-    
+
     var close = function() {
         c.children("div").each(function(i, e) {
             setTimeout(function(e) { $(e).fadeOut("fast"); }, 400);
         }).parent().hide("slow");
+        $().toggleBrowserScrollbar(true);
     };
-    
+
     var moveLeft = function() {
         xCurrent--;
         $("#grid-element-" + (xCurrent + 1) + "-" + yCurrent).animate({backgroundColor:colour}, "fast");
-        
+
         if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
             $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
         } else {
-            var column = $(".grid-element[data-x='" + xCurrent + "']");
-            var line = $(".grid-element[data-y='" + yCurrent + "']");
+            var column = $(".grid-element[data-x='" + xCurrent + "']"),
+                line = $(".grid-element[data-y='" + yCurrent + "']");
 
             if (column.length > 0) {
                 addE("prepend", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
@@ -155,16 +163,16 @@ var jqueryWindowGrid = function() {
             }
         }
     };
-    
+
     var moveUp = function() {
         yCurrent--;
         $("#grid-element-" + xCurrent + "-" + (yCurrent + 1)).animate({backgroundColor:colour}, "fast");
-        
+
         if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
             $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
         } else {
-            var column = $(".grid-element[data-x='" + xCurrent + "']");
-            var line = $(".grid-element[data-y='" + yCurrent + "']");
+            var column = $(".grid-element[data-x='" + xCurrent + "']"),
+                line = $(".grid-element[data-y='" + yCurrent + "']");
 
             if (line.length > 0) {
                 addE("prepend", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
@@ -186,16 +194,16 @@ var jqueryWindowGrid = function() {
             }
         }
     };
-    
+
     var moveRight = function() {
         xCurrent++;
         $("#grid-element-" + (xCurrent - 1) + "-" + yCurrent).animate({backgroundColor:colour}, "fast");
-        
+
         if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
             $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
         } else {
-            var column = $(".grid-element[data-x='" + xCurrent + "']");
-            var line = $(".grid-element[data-y='" + yCurrent + "']");
+            var column = $(".grid-element[data-x='" + xCurrent + "']"),
+                line = $(".grid-element[data-y='" + yCurrent + "']");
 
             if (column.length > 0) {
                 addE("append", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
@@ -217,16 +225,16 @@ var jqueryWindowGrid = function() {
             }
         }
     };
-    
+
     var moveDown = function() {
         yCurrent++;
         $("#grid-element-" + xCurrent + "-" + (yCurrent - 1)).animate({backgroundColor:colour}, "fast");
-        
+
         if ($("#grid-element-" + xCurrent + "-" + yCurrent).length > 0) {
             $("#grid-element-" + xCurrent + "-" + yCurrent).animate({backgroundColor:activeColour}, "fast");
         } else {
-            var column = $(".grid-element[data-x='" + xCurrent + "']");
-            var line = $(".grid-element[data-y='" + yCurrent + "']");
+            var column = $(".grid-element[data-x='" + xCurrent + "']"),
+                line = $(".grid-element[data-y='" + yCurrent + "']");
 
             if (line.length > 0) {
                 addE("append", line.first().width(), line.first().height(), parseInt(line.first().css("top")), parseInt(column.first().css("left")));
@@ -248,20 +256,22 @@ var jqueryWindowGrid = function() {
             }
         }
     };
-    
+
+    $().toggleBrowserScrollbar(false);
+
     if (c.children("div").length > 1) {
         c.show("slow").children("div").each(function(i, e) {
             setTimeout(function(e) { $(e).fadeIn("fast"); }, 400);
         });
     } else {
-        var xCurrent = 1;
-        var yCurrent = 1;
-        var xMax = calculateMax($(window).width());
-        var yMax = calculateMax($(window).height());
-        var maxX = 1;
-        var maxY = 1;
-        var minX = 1;
-        var minY = 1;
+        var xCurrent = 1,
+            yCurrent = 1,
+            xMax = calculateMax($(window).width()),
+            yMax = calculateMax($(window).height()),
+            maxX = 1,
+            maxY = 1,
+            minX = 1,
+            minY = 1;
         c.sizeWrapper(gap, 0).show("slow", function() {
             $(this).children("div").css({
                 left: gap,
@@ -272,7 +282,7 @@ var jqueryWindowGrid = function() {
             }).fadeIn("fast");
         });
     }
-    
+
     var doKeyUp = function(key) {
         switch(key) {
             case 27:
@@ -292,19 +302,19 @@ var jqueryWindowGrid = function() {
                 break;
         }
     };
-    
+
     var timeout;
     $(window).keyup(function(e) {
         e.preventDefault();
         timeout = setTimeout(doKeyUp, timeout !== undefined ? 100 : 0, e.which);
     });
-    
+
     $(window).resize(function() {
         xMax = calculateMax($(window).width());
         yMax = calculateMax($(window).height());
-        var newX = calculateSize($(window).width(), maxX - minX + 1);
-        var newY = calculateSize($(window).height(), maxY - minY + 1);
-        
+        var newX = calculateSize($(window).width(), maxX - minX + 1),
+            newY = calculateSize($(window).height(), maxY - minY + 1);
+
         $(".grid-element").each(function(i, e) {
             $(e).animate({
                 top:(parseInt($(e).attr("data-y")) - minY + 1) * gap + (parseInt($(e).attr("data-y")) - minY) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY),

@@ -6,6 +6,7 @@ use xframe\core\System;
 
 /**
  * Config class based on the registry pattern
+ * @package script_gearman
  */
 abstract class Config {
 

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Criteria;
 /**
  * Getting all required data for stats
  * @IgnoreAnnotation
+ * @package jukebox_helpers
  */
 class GetSongs extends \Helper {
 

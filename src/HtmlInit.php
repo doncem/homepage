@@ -3,6 +3,7 @@ use xframe\registry\Registry;
 
 /**
  * Iniate default html elements
+ * @package common
  */
 class HtmlInit {
 

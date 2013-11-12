@@ -5,6 +5,7 @@ namespace homepage\models;
  * Genre model
  * @Entity
  * @Table(name="h_genres")
+ * @package homepage_models
  */
 class hGenres extends \SerializeMyVars {
 

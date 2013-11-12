@@ -2,8 +2,8 @@
 namespace script\gearman;
 
 /**
- * Abstract class to deal with the boiler plate code of creating a gearman
- * worker
+ * Abstract class to deal with the boiler plate code of creating a gearman worker
+ * @package script_gearman
  */
 abstract class Worker {
 
@@ -29,7 +29,7 @@ abstract class Worker {
      * Initiate
      * @param \GearmanWorker $worker
      * @param string $host
-     * @param int $port
+     * @param int $port [optional] Default 4730
      */
     public function __construct(\GearmanWorker $worker, $host, $port = 4730) {
         $this->worker = $worker;
@@ -101,5 +101,8 @@ abstract class Worker {
         }
     }
 
+    /**
+     * Individual worker has to register functions to handle jobs
+     */
     abstract protected function registerFunctions();
 }

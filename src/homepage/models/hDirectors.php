@@ -5,6 +5,7 @@ namespace homepage\models;
  * Director model
  * @Entity
  * @Table(name="h_directors")
+ * @package homepage_models
  */
 class hDirectors extends \SerializeMyVars {
 

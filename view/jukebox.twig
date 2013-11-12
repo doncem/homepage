@@ -9,7 +9,7 @@
     {#<meta name="author" content="Donatas Martinkus"/>#}
     <link rel="stylesheet" type="text/css" href="/css/jukebox/{{ html.css }}.css" />
     <link rel="shortcut icon" href="/img/favicon.ico" />
-    <title>{{ html.title }} - {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %} - {{ html.title }}</title>
 {% endspaceless %}</head>
 <body>{% spaceless %}
     <div id="page">

@@ -1,6 +1,10 @@
 <?php
 namespace services\gearman;
 
+/**
+ * Service client with collection of function available to pass to Gearman service
+ * @package services_gearman
+ */
 class Client extends \script\gearman\Client {
 
     /**

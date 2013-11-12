@@ -2,6 +2,7 @@
 
 /**
  * Class for deployment to /static/
+ * @package script_deployment
  */
 class DeployToStatic {
 

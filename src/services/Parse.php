@@ -4,6 +4,7 @@ namespace services;
 
 /**
  * Description of Parse
+ * @package services
  */
 class Parse extends \xframe\request\Controller {
 
@@ -40,6 +41,9 @@ class Parse extends \xframe\request\Controller {
         }
     }
 
+    /**
+     * Set the queue via available client
+     */
     private function setQueue() {
         if (count($this->request->q) > 0) {
             try {

@@ -3,6 +3,7 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Generic helper
+ * @package common
  */
 abstract class Helper {
 

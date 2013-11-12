@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Country model
  * @Entity
  * @Table(name="cd_country")
+ * @package cdcollection_models
  */
 class cdCountry {
     

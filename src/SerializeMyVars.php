@@ -1,6 +1,7 @@
 <?php
 /**
  * Converting parameters to array
+ * @package common
  */
 abstract class SerializeMyVars implements JsonSerializable {
 

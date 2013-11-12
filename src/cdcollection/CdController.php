@@ -4,6 +4,7 @@ namespace cdcollection;
 
 /**
  * Initializing controller
+ * @package cdcollection
  */
 class CdController extends \ControllerInit {
 

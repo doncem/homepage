@@ -1,9 +1,22 @@
 <?php
 namespace script\gearman;
 
-class Client {
+/**
+ * Gearman client class
+ * @package script_gearman
+ */
+abstract class Client {
 
+    /**
+     * Gearman server host
+     * @var strin
+     */
     protected $host;
+
+    /**
+     * Gearman server port
+     * @var int
+     */
     protected $port;
 
     /**

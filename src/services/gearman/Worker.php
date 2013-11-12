@@ -4,6 +4,10 @@ namespace services\gearman;
 use xframe\core\System;
 use jukebox\helpers\GetSongs;
 
+/**
+ * General worker. Currently not so general tbh
+ * @package services_gearman
+ */
 class Worker extends \script\gearman\Worker implements \script\daemon\Daemon {
 
     const FUNC_SET_QUEUE = "setQueued";
@@ -14,11 +18,23 @@ class Worker extends \script\gearman\Worker implements \script\daemon\Daemon {
      */
     private $system;
 
+    /**
+     * Assign <code>system</code> we are working with
+     * @param System $system
+     * @param \GearmanWorker $worker
+     * @param string $host
+     * @param int $port [optional] Default 4730
+     */
     public function __construct(System $system, \GearmanWorker $worker, $host, $port = 4730) {
         $this->system = $system;
 
         parent::__construct($worker, $host, $port);
     }
+
+    /**
+     * Path to PID file for Gearman
+     * @return string
+     */
     public function getPidPath() {
         return "www/jukebox";
     }

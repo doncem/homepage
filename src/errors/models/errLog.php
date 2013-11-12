@@ -5,6 +5,7 @@ namespace errors\models;
  * Log model
  * @Entity
  * @Table(name="err_log")
+ * @package errors_models
  */
 class errLog {
 

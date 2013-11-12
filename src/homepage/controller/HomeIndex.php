@@ -10,6 +10,7 @@ namespace homepage\controller;
  * <li>hell-music</li>
  * <li>links</li>
  * </ul>
+ * @package homepage_controllers
  */
 class HomeIndex extends \homepage\HomeController {
     

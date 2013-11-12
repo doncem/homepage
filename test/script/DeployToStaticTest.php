@@ -14,8 +14,7 @@ class DeployToStaticTest extends \PHPUnit_Framework_TestCase {
         "/about/",
         "/hell-music/",
         "/experiments/",
-        "/movies/",
-        "/links/"
+        "/movies/"
     );
 
     /**
@@ -38,16 +37,15 @@ class DeployToStaticTest extends \PHPUnit_Framework_TestCase {
 
             foreach ($objects as $object) {
                 if ($object != "." && $object != ".." && $object != ".gitignore") {
-                    if (filetype($dir."/".$object) == "dir") {
+                    if (filetype($dir . "/" . $object) == "dir") {
                         $this->removeDir($dir."/".$object);
-                    } else if (!is_link($dir."/".$object)) {
-                        unlink($dir."/".$object);
+                    } else if (!is_link($dir . "/" . $object)) {
+                        unlink($dir . "/" . $object);
                     }
                 }
             }
 
             reset($objects);
-            @rmdir($dir);
         }
     }
 

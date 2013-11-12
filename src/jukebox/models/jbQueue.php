@@ -5,6 +5,7 @@ namespace jukebox\models;
  * Queue model
  * @Entity
  * @Table(name="jb_queue")
+ * @package jukebox_models
  */
 class jbQueue extends \SerializeMyVars {
 

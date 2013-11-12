@@ -4,6 +4,7 @@ namespace homepage\controller;
 
 /**
  * Separate controller for movies - in order to minify controllers
+ * @package homepage_controllers
  */
 class HomeMovies extends \homepage\HomeController {
 

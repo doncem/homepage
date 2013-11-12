@@ -2,6 +2,7 @@
 
 /**
  * Static page
+ * @package script_deployment
  */
 interface StaticPage {
 

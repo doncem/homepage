@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Genre model
  * @Entity
  * @Table(name="cd_genre")
+ * @package cdcollection_models
  */
 class cdGenre {
     

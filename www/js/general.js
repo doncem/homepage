@@ -5,14 +5,15 @@
  */
 Array.prototype.clean = function(v) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i] == v) {         
+        if (this[i] === v) {
             this.splice(i, 1);
             i--;
         }
     }
-    
+
     return this;
 };
+
 /**
  * Scroll window to match top with with a top of element.<br />
  * Given 'topGap' is a required additional spacing from the top
@@ -21,7 +22,6 @@ Array.prototype.clean = function(v) {
  */
 function scrollToTop(e, topGap) {
     $(window).scrollTop(e.scrollTop() - topGap);
-    //e.children(".experiment-container").slideDown("slow");
 }
 
 /**
@@ -32,7 +32,7 @@ function scrollToTop(e, topGap) {
  */
 $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
     var options = {};
-    
+
     if (topLeftGap > 0) {
         options = $.extend({
             paddingTop: topLeftGap,
@@ -41,7 +41,7 @@ $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
     } else {
         topLeftGap = parseInt($(this).css("padding-top"));
     }
-    
+
     if (bottomRightGap > 0) {
         options = $.extend({
             paddingBottom: bottomRightGap,
@@ -50,12 +50,12 @@ $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
     } else {
         bottomRightGap = parseInt($(this).css("padding-bottom"));
     }
-    
+
     $(this).css($.extend({
         width: $(document).width() - topLeftGap - bottomRightGap,
         height: $(document).height() - topLeftGap - bottomRightGap
     }, options));
-    
+
     $(this).click(function(e) {
         if ($(e.target).hasClass($(this).attr("class"))) {
             $(this).children().each(function(i, e) { $(e).hide(); });
@@ -63,6 +63,30 @@ $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
         }
     });
     return $(this);
+};
+
+/**
+ * Enable/disable scrollbar in the browser
+ * @param {Boolean} enable
+ * @returns {void}
+ */
+$.fn.toggleBrowserScrollbar = function(enable) {
+    var scrollPosition = [
+        self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+        self.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop
+    ];
+    var html = $("body");
+
+    if (enable) {
+        scrollPosition = html.data("scroll-position");
+        html.css("overflow", html.data("previous-overflow"));
+        window.scrollTo(scrollPosition[0], scrollPosition[1]);
+    } else {
+        html.data("scroll-position", scrollPosition);
+        html.data("previous-overflow", html.css("overflow"));
+        html.css("overflow", "hidden");
+        window.scrollTo(scrollPosition[0], scrollPosition[1]);
+    }
 };
 
 $(function() {
@@ -81,7 +105,7 @@ $(function() {
             $(this).animate({"font-size":menuFontSize}, "slow", function() {$(this).removeAttr("style");});
         }
     );
-    
+
     $(window).resize(function() {
         $(".wrapper").sizeWrapper();
     });

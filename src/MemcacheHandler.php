@@ -4,6 +4,7 @@ use xframe\core\DependencyInjectionContainer;
 
 /**
  * Handle mamcache
+ * @package common
  */
 class MemcacheHandler {
 

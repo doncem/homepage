@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Album type model
  * @Entity
  * @Table(name="cd_album_type")
+ * @package cdcollection_models
  */
 class cdAlbumType {
     

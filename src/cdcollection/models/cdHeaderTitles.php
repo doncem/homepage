@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Header titles model
  * @Entity
  * @Table(name="cd_header_titles")
+ * @package cdcollection_models
  */
 class cdHeaderTitles {
     

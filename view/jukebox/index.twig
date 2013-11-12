@@ -1,6 +1,6 @@
 {% extends "jukebox.twig" %}
 
-{% block meta_description %}Fairly simple jukebox... or maybe just a load of c-rap{% endblock %}
+{% block meta_description %}Fairly simple jukebox... or more likely just a load of c-rap{% endblock %}
 
 {% block title %}Jukebox{% endblock %}
 
@@ -9,7 +9,7 @@
     <ul>
         <li><strong>Filter:</strong></li>
         <li><button type="button" id="by-artists">by artists</button></li>
-        <li><button type="button" id="by-albums" disabled="disabled">by albums</button></li>
+        {#<li><button type="button" id="by-albums" disabled="disabled">by albums</button></li>#}
         <li><button type="button" id="by-songs">by songs</button></li>
     </ul>
     <div id="results">

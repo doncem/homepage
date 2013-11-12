@@ -1,6 +1,7 @@
 <?php
 /**
  * Initializing controller
+ * @package common
  */
 class ControllerInit extends xframe\request\Controller {
 

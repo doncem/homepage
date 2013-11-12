@@ -6,6 +6,7 @@ use xframe\plugin\Plugin;
 /**
  * Deals with available JS files to load to page.<br />
  * So far only in homepage module
+ * @package homepage_plugins
  */
 class SetJS extends Plugin {
 

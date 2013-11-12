@@ -4,6 +4,7 @@ namespace cdcollection\models;
  * Is original model
  * @Entity
  * @Table(name="cd_is_original")
+ * @package cdcollection_models
  */
 class cdIsOriginal {
     

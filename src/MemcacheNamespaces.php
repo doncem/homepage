@@ -2,6 +2,7 @@
 /**
  * Namespace, key and expiry collector.<br />
  * Each element is distincted by key-string attached: 'NAMESPACE_', 'KEY_' and 'EXPIRE_'
+ * @package common
  */
 class MemcacheNamespaces {
     // namespaces

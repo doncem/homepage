@@ -9,7 +9,7 @@
     {#<meta name="author" content="Donatas Martinkus"/>#}
     <link rel="stylesheet" type="text/css" href="/css/errors/{{ html.css }}.css" />
     <link rel="shortcut icon" href="/img/favicon.ico" />
-    <title>{{ html.title }} - {% block title %}Oh Dear...{% endblock %}</title>
+    <title>{% block title %}Oh Dear...{% endblock %} - {{ html.title }}</title>
 {% endspaceless %}</head>
 <body>{% spaceless %}
     <div id="ie-sucks">You are using IE. Get a life - download proper browser</div>

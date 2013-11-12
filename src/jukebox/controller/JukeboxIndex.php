@@ -5,6 +5,7 @@ use jukebox\helpers\GetSongs;
 
 /**
  * Jukebox experiment controller
+ * @package jukebox_controllers
  */
 class JukeboxIndex extends \homepage\HomeController {
 

@@ -3,6 +3,7 @@ namespace script\daemon;
 
 /**
  * Use this class to daemonize your php script. Used for gearman workers
+ * @package script_daemon
  */
 class PHPDaemon {
 

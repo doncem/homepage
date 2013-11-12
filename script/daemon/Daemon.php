@@ -3,6 +3,7 @@ namespace script\daemon;
 
 /**
  * 
+ * @package script_daemon
  */
 interface Daemon {
 
@@ -12,5 +13,8 @@ interface Daemon {
      */
     public function getPidPath();
 
+    /**
+     * Every daemon must be running ]:)
+     */
     public function run();
 }

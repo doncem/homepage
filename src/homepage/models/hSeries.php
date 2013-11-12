@@ -5,6 +5,7 @@ namespace homepage\models;
  * Tv show model
  * @Entity
  * @Table(name="h_series")
+ * @package homepage_models
  */
 class hSeries extends \SerializeMyVars {
 

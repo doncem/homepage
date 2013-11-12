@@ -4,6 +4,7 @@ namespace homepage;
 
 /**
  * Initializing controller
+ * @package homepage
  */
 class HomeController extends \ControllerInit {
     

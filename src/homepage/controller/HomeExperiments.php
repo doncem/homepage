@@ -4,6 +4,7 @@ namespace homepage\controller;
 
 /**
  * Container of experiments
+ * @package homepage_controllers
  */
 class HomeExperiments extends \homepage\HomeController {
     
