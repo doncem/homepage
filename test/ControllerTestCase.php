@@ -11,7 +11,7 @@ class ControllerTestCase extends \PHPUnit_Framework_TestCase {
      * Our test system
      * @var System
      */
-    private $system;
+    private static $system = null;
 
     /**
      * Our test response
@@ -23,8 +23,10 @@ class ControllerTestCase extends \PHPUnit_Framework_TestCase {
      * Initiate Registry object
      */
     protected function setUp() {
-        $this->system = new System(__DIR__ . "/../", CONFIG);
-        $this->system->boot();
+        if (is_null(self::$system)) {
+            self::$system = new System(__DIR__ . "/../", CONFIG);
+            self::$system->boot();
+        }
     }
 
     /**
@@ -35,7 +37,7 @@ class ControllerTestCase extends \PHPUnit_Framework_TestCase {
     protected function setUpController($url, array $params = array()) {
         $request = new Request($url, $params);
         ob_start();
-        $this->system->getFrontController()->dispatch($request);
+        self::$system->getFrontController()->dispatch($request);
         $this->response = ob_get_contents();
         ob_end_clean();
     }
@@ -45,6 +47,6 @@ class ControllerTestCase extends \PHPUnit_Framework_TestCase {
      * @return xframe\core\DependencyInjectionContainer
      */
     protected function getDIC() {
-        return $this->system;
+        return self::$system;
     }
 }

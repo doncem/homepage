@@ -1,1 +1,1 @@
-../../lib/underscore.js
+../../lib/underscore/underscore.js

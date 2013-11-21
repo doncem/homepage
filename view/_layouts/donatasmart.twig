@@ -1,0 +1,39 @@
+{% extends "_layouts/bootstrap-v3.twig" %}
+
+{% block favicon %}/img/favicon{{ is_admin?"-admin" }}.ico{% endblock %}
+
+{% block body_class %} class="navbar-fixed"{% endblock %}
+
+{% block header %}
+{% if is_admin %}
+{% include "admin/menu.twig" with {
+    "navbar_inverse"        : true,
+    "navbar_fixed_top"      : true,
+    "navbar_fixed_bottom"   : false,
+    "navbar_static"         : false,
+    "navbar_id"             : "navbar-donatasmart",
+    "navbar_include_right"  : true,
+    "navbar_right_container": "div"
+} %}
+{% else %}
+{% include "homepage/menu.twig" with {
+    "navbar_inverse"        : true,
+    "navbar_fixed_top"      : true,
+    "navbar_fixed_bottom"   : false,
+    "navbar_static"         : false,
+    "navbar_id"             : "navbar-donatasmart",
+    "navbar_include_right"  : false,
+    "navbar_right_container": "ul"
+} %}
+{% endif%}
+{% endblock %}
+
+{% block contents %}
+<div class="well">{% block page_contents %}{% endblock %}</div>
+{% endblock %}
+
+{% block footer %}
+{% if isLive == 1 and lastDeploy|length > 0 %}
+<div class="well well-sm pull-right">Last deploy: {{ lastDeploy }}</div>
+{% endif %}
+{% endblock %}

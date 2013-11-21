@@ -168,18 +168,16 @@
 
     <!-- Minify public resources -->
     <target name="minify-resources" description="Minify public JSs">
-        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/backbone.js -o ${public}js/backbone.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/general.js -o ${public}js/general.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/experiments.js -o ${public}js/homepage/experiments.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/homepage/movies.js -o ${public}js/homepage/movies.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.color.js -o ${public}js/jquery.color.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jquery.flot.js -o ${public}js/jquery.flot.min.js" dir="." checkreturn="true" passthru="true" />
         <exec command="java -jar ./lib/yuicompressor.jar ${public}js/jukebox/me.js -o ${public}js/jukebox/me.min.js" dir="." checkreturn="true" passthru="true" />
-        <exec command="java -jar ./lib/yuicompressor.jar ${public}js/underscore.js -o ${public}js/underscore.min.js" dir="." checkreturn="true" passthru="true" />
     </target>
     
     <target name="watch-sass" description="Generate CSS">
-        <exec command="sass --line-comments --style compressed --watch ./src/cdcollection/sass:${public}css/cdcollection ./src/errors/sass:${public}css/errors ./src/homepage/sass:${public}css/homepage ./src/jukebox/sass:${public}css/jukebox" dir="." checkreturn="true" passthru="true" />
+        <exec command="sass --line-comments --style compressed --watch ./src/_sass:${public}css ./src/jukebox/sass:${public}css/jukebox" dir="." checkreturn="true" passthru="true" />
     </target>
 
     <!-- Following three targets are DB related -->

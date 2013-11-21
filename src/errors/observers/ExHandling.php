@@ -31,9 +31,14 @@ class ExHandling implements SplObserver {
                                           ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
                                           ROOT_DIR . "view" . DIRECTORY_SEPARATOR);
         $html = new \HtmlInit($registry);
+        $plugin = new \SetStatics(new \xframe\core\DependencyInjectionContainer(array("root" => ROOT_DIR)));
+        $plugin->init();
 
-        $view->html = $html->getDefaults(null, "Error");
-        $view->showGA = CONFIG == "live" ? 1 : 0;
+        $view->isLive = CONFIG == "live" ? 1 : 0;
+        $view->html = $html->getDefaults();
+        $view->css = $plugin->getCSS("error", "", $view->isLive);
+        $view->js = $plugin->getJS("error", "", $view->isLive);
+        $view->title = "Oh Dear... Error";
         $view->setTemplate("errors");
         $view->errorMessage = $subject->getLastException()->getMessage();
         $view->errorStack = $subject->getLastException()->getTraceAsString();

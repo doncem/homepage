@@ -1,0 +1,51 @@
+@import "../../_sass-modules/variables";
+@import "../../_sass-modules/functions";
+@import "../../_sass-modules/common";
+
+body {
+    background-color: $mainColour;
+    &.navbar-fixed {
+        padding-top: 50px;
+    }
+}
+
+.navbar-form .form-group {
+    margin-right: 10px;
+}
+
+/* experiments */
+.experiment {
+    @include b-radius(5, 5, 5, 5);
+    &:hover {
+        background-color:lighten($mainColour, 40%);
+    }
+    &.active {
+        background-color:lighten($mainColour, 30%);
+        padding-left:5px;
+        padding-right:5px;
+    }
+}
+.experiment .development-history {
+    display:none;
+    span {
+        font-weight:bold;
+    }
+    ul {
+        margin-top:0px;
+        margin-bottom:0px;
+    }
+}
+.experiment-container {
+    display:none;
+}
+//jquery-grid
+#jquery-window-grid-container {
+    .grid-element {
+        @include b-radius(5, 5, 5, 5);
+        border:thin solid darken($mainColour, 50%);
+        opacity:0.7;
+        position:absolute;
+        z-index:1032;
+    }
+}
+/* end experiments */

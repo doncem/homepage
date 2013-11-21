@@ -1,14 +1,8 @@
-{% extends "homepage.twig" %}
+{% extends "_layouts/donatasmart.twig" %}
 
 {% block meta_description %}Something to bug around, waste some time{% endblock %}
 
-{% block title %}Experiment
-{%- if enabledExperiment is defined %} - {{ enabledExperiment.title }}{% else %}s{% endif %}
-{% endblock %}
-
-{% block page_title %}Experiments{% endblock %}
-
-{% block content %}
+{% block page_contents %}
 <ul>
     <li><a href="#">Development log</a> - is more like historical approach, steps of achievements</li>
     <li><a href="#">Launch it</a> - will be loaded on this screen</li>
@@ -17,13 +11,14 @@
 </ul>
 {% if availableExperiments|length > 0 %}
     {% for link,title in availableExperiments %}
-<div id="{{ link }}" class="experiment{% if link == enabledExperiment.link %} active{% endif %}">
+<div id="{{ link }}" class="experiment{% if link == enabledExperiment %} active{% endif %}">
     {% include "homepage/experiments/%s.twig"|format(link) %}
     <p class="link-container">
     {% if link|slice(0, 6) == "jquery" %}
         <a href="#{{ link }}" class="launch-link">Launch it</a>
     {% else %}
-        <a href="/{{ link }}/">Go there</a>
+        {#<a href="/{{ link }}/">Go there</a>#}
+        <div class="alert alert-info">not yet converted to bootstrap or probably will not be at all</div>
     {% endif %}
     </p>
 </div>

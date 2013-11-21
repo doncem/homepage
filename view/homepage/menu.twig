@@ -1,0 +1,18 @@
+{% extends "_layouts/components/navbar.twig" %}
+
+{% block navbar_brand_link %}/{% endblock %}
+
+{% block navbar_brand %}Index{% endblock %}
+
+{% block navbar_main_menu %}
+<li{% if requested_page == "about" %} class="active"{% endif %}><a href="/about">About site</a></li>
+<li{% if requested_page == "hell-music" %} class="active"{% endif %}><a href="/hell-music">Hell-Music</a></li>
+{% if isLive != 1 %}
+<li><a href="/cdcollection">CD collection</a></li>
+{% endif %}
+<li{% if requested_page == "experiments" %} class="active"{% endif %}><a href="/experiments">Experiments</a></li>
+<li{% if requested_page == "movies" %} class="active"{% endif %}><a href="/movies">Movies</a></li>
+{% if isLive != 1 %}
+<li{% if requested_page == "links" %} class="active"{% endif %}><a href="/links">Links</a></li>
+{% endif %}
+{% endblock %}

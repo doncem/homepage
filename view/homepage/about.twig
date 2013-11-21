@@ -1,12 +1,8 @@
-{% extends "homepage.twig" %}
+{% extends "_layouts/donatasmart.twig" %}
 
-{% block meta_description %}Web page is made with xFrame - small and fast PHP framework, Twig - flexible, fast, and secure template engine for PHP, Doctrine2 for database, jQuery - javascript library, Sass - syntactically awesome stylesheets and flot - javascript tool displaying graphs{% endblock %}
+{% block meta_description %}Web page is made with xFrame - small and fast PHP framework, Twig - flexible, fast, and secure template engine for PHP, Twitter Bootstrap v3!, Doctrine2 for database, jQuery - javascript library, Sass - syntactically awesome stylesheets and flot - javascript tool displaying graphs{% endblock %}
 
-{% block title %}About Page{% endblock %}
-
-{% block page_title %}About site{% endblock %}
-
-{% block content %}
+{% block page_contents %}
 <p>This web site:</p>
 <ul>
     <li>was not designed</li>
@@ -15,6 +11,7 @@
         <ul>
             <li><a href="https://github.com/linusnorton/xFrame" target="_blank">xFrame</a></li>
             <li><a href="http://twig.sensiolabs.org/" target="_blank">Twig</a></li>
+            <li><a href="http://getbootstrap.com/">Twitter Bootstrap v3</a></li>
             <li><a href="http://www.doctrine-project.org/" target="_blank">Doctrine2</a> (movies{% if isLive != 1 %}/cdcollection{% endif %})</li>
             <li><a href="http://jquery.com/" target="_blank">jQuery</a></li>
             <li><a href="https://github.com/jquery/jquery-color" target="_blank">jQuery Color plugin</a> (in experiments only)</li>

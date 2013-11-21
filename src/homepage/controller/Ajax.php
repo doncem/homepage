@@ -7,23 +7,7 @@ namespace homepage\controller;
  * All responses are json
  * @package homepage_controllers
  */
-class HomeAjax extends \ControllerInit {
-
-    /**
-     * Entity manager
-     * @var \Doctrine\ORM\EntityManager
-     */
-    public $em;
-
-    /**
-     * Set up controller: init extended class, assign class variables
-     * @see \ControllerInit
-     */
-    public function init() {
-        parent::init();
-
-        $this->em = $this->dic->em;
-    }
+class Ajax extends \ControllerInit {
 
     /**
      * Get movie model repository filtered by passed year parameter.<br />
@@ -33,7 +17,7 @@ class HomeAjax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByYear() {
-        $movies = $this->em->getRepository("\homepage\models\hMovies")->findBy(
+        $movies = $this->dic->em->getRepository("\homepage\models\hMovies")->findBy(
             array(
                 "year" => $this->request->year
             ),
@@ -51,7 +35,7 @@ class HomeAjax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByGenre() {
-        $genre = current($this->em->getRepository("\homepage\models\hGenres")->findBy(
+        $genre = current($this->dic->em->getRepository("\homepage\models\hGenres")->findBy(
             array(
                 "genre" => $this->request->genre
             )
@@ -73,7 +57,7 @@ class HomeAjax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByDirectorCount() {
-        $directors = $this->em->createQuery(
+        $directors = $this->dic->em->createQuery(
             "SELECT d FROM \homepage\models\hDirectors d " .
             "JOIN d.movies m " .
             "GROUP BY d.id " .
@@ -98,7 +82,7 @@ class HomeAjax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByCountry() {
-        $country = current($this->em->getRepository("\homepage\models\hCountries")->findBy(
+        $country = current($this->dic->em->getRepository("\homepage\models\hCountries")->findBy(
             array(
                 "country" => urldecode($this->request->country)
             )

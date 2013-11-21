@@ -1,0 +1,60 @@
+<!DOCTYPE>
+<html lang="{{ html.lang }}">
+    <head>{% spaceless %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    {% if isLive == 1 %}
+    <meta name="google-site-verification" content="gND_iyudJzru_kmf-YSstX8_FFr7vXAFV8ajx-KbuaM" />
+    <meta name="google-translate-customization" content="2910aef06f3ad9b0-76fbf884ea53b730-g17bf41f1127893fd-12" />
+    {% endif %}
+    <meta name="description" content="{% block meta_description %}{% endblock %}"/>
+    <link rel="shortcut icon" href="{% block favicon %}/img/favicon.ico{% endblock %}" />
+    <title>{% block title %}{{ title }}{% endblock %} - {{ html.title }}</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap{% if isLive == 1 %}.min{% endif %}.css" />
+    {% if css is defined and css is iterable %}
+    {% for c in css %}
+    <link rel="stylesheet" type="text/css" href="{{ c }}" />
+    {% endfor %}
+    {% endif %}
+    {% block extra_styles %}{% endblock %}
+{% endspaceless %}</head>
+<body{% block body_class %}{% endblock %}>{% spaceless %}
+    <header>{% block header %}{% endblock %}</header>
+    <section>{% block contents %}{% endblock %}</section>
+    <footer>{% block footer %}{% endblock %}</footer>
+    {% if isLive == 1 %}
+    {% include "common/ga.twig" %}
+    {% endif %}
+    <script type="text/javascript" src="{{ html.jquery }}"></script>
+    <script type="text/javascript" src="/js/bootstrap{% if isLive == 1 %}.min{% endif %}.js"></script>
+    {% if js is defined and js is iterable %}
+    {% for j in js %}
+    <script type="text/javascript" src="{{ j }}"></script>
+    {% endfor %}
+    {% endif %}
+    {% endspaceless %}
+    {% block script %}{% endblock %}
+</body>
+</html>
+{#
+------------ USAGE --------------
+{% extends "_layouts/bootstrap-v3.twig" %}
+
+{% block meta_description %}{% endblock %}
+
+{% block extra_styles %}{% endblock %}
+
+{% block favicon %}/img/favicon.ico{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block body_class %}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block contents %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block script %}{% endblock %}
+------------- END ---------------
+#}

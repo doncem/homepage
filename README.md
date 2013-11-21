@@ -20,6 +20,7 @@ Tools
 * [jQuery Color Plugin](https://github.com/jquery/jquery-color)
 * [Memcached](http://www.memcached.org/)
 * [Sass](http://sass-lang.com/)
+* [Twitter Bootstrap v3](http://getbootstrap.com/)
 * [underscore](https://github.com/documentcloud/underscore)
 
 Versions of libraries and tools
@@ -43,4 +44,4 @@ Phing
     * make sure you have cloned https://github.com/doncem/vendors.git in parent directory
 * `phing document` - create default documentation into doc/ folder
 * `phing` - should pass all tests and create coverage inside report/ folder
-    * it also creates a static website insite static/ folder - because it runs test for deployment script as well ;)
+    * it also creates a static website inside static/ folder - because it runs test for deployment script as well ;)

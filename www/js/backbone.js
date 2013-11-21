@@ -1,1 +1,1 @@
-../../lib/backbone.js
+../../lib/backbone/backbone.js
