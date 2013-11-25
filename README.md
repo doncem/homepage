@@ -15,10 +15,11 @@ Tools
 -----
 
 * [backbone](https://github.com/documentcloud/backbone)
-* [flot](https://github.com/flot/flot)
+* [flot](https://github.com/flot/flot) [legacy. moved to Raphaël. Although - flot is a lot easier ;)]
 * [jQuery](http://jquery.com/)
 * [jQuery Color Plugin](https://github.com/jquery/jquery-color)
 * [Memcached](http://www.memcached.org/)
+* [Raphaël](https://github.com/DmitryBaranovskiy/raphael)
 * [Sass](http://sass-lang.com/)
 * [Twitter Bootstrap v3](http://getbootstrap.com/)
 * [underscore](https://github.com/documentcloud/underscore)

@@ -4,7 +4,7 @@ namespace homepage\controller;
 /**
  * Landing page test
  */
-class HomeIndexTest extends \ControllerTestCase {
+class IndexTest extends \ControllerTestCase {
 
     /**
      * Main page test

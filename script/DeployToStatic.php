@@ -36,9 +36,15 @@ class DeployToStatic {
         while (count($this->resources) > 0) {
             $resource = array_shift($this->resources);
             $processed[] = $resource;
+            $is_remote = strpos($resource, "http://") === 0 ||
+                strpos($resource, "https://") === 0 ||
+                strpos($resource, "//") === 0;
+            $extention = explode(".", $resource);
+            // extendable list
+            $not_extentions = array("doc", "docx", "pdf", "csv", "xls", "xlsx");
 
-            if (!in_array(trim($resource, "/"), $this->page->deployed)
-                    && (end(explode(".", $resource)) != "pdf")) {
+            if (!in_array(trim($resource, "/"), $this->page->deployed) && !$is_remote
+                    && !in_array(end($extention), $not_extentions)) {
                 $another_resources = $this->storePage($this->page, trim($resource, "/") . "/?DEPLOY");
 
                 foreach ($another_resources as $another) {
@@ -72,6 +78,3 @@ class DeployToStatic {
         $this->page->checkSymlinks();
     }
 }
-
-$deployment = new DeployToStatic();
-$deployment->run();

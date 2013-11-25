@@ -11,10 +11,10 @@ class DeployToStaticTest extends \PHPUnit_Framework_TestCase {
      */
     private $live_menu = array(
         "/",
-        "/about/",
-        "/hell-music/",
-        "/experiments/",
-        "/movies/"
+        "/about",
+        "/hell-music",
+        "/experiments",
+        "/movies"
     );
 
     /**
@@ -54,7 +54,7 @@ class DeployToStaticTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDeployment() {
         foreach ($this->live_menu as $link) {
-            $this->assertFileExists(__DIR__ . "/../../static" . $link . "index.html");
+            $this->assertFileExists(__DIR__ . "/../../static" . $link . "/index.html");
         }
 
         foreach (Page::getSymlinks() as $link) {

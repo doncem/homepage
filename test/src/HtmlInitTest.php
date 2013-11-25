@@ -31,26 +31,22 @@ class HtmlInitTest extends \PHPUnit_Framework_TestCase {
         $this->html = new HtmlInit($this->registry);
         $defaults = $this->html->getDefaults();
         
-        $this->assertCount(4, $defaults);
+        $this->assertCount(3, $defaults);
         $this->assertArrayHasKey("lang", $defaults);
         $this->assertArrayHasKey("title", $defaults);
-        $this->assertArrayHasKey("css", $defaults);
-        $this->assertArrayHasKey("js", $defaults);
+        $this->assertArrayHasKey("jquery", $defaults);
         $this->assertEquals("en", $defaults["lang"]);
         $this->assertEquals("Donatas Martinkus", $defaults["title"]);
-        $this->assertEquals("main", $defaults["css"]);
 
-        $alters = $this->html->getDefaults("lt", "Mockup Test", "test", array("life" => "time"));
+        $alters = $this->html->getDefaults("lt", "Mockup Test", array("life" => "time"));
 
-        $this->assertCount(5, $alters);
+        $this->assertCount(4, $alters);
         $this->assertArrayHasKey("lang", $alters);
         $this->assertArrayHasKey("title", $alters);
-        $this->assertArrayHasKey("css", $alters);
-        $this->assertArrayHasKey("js", $alters);
+        $this->assertArrayHasKey("jquery", $alters);
         $this->assertArrayHasKey("life", $alters);
         $this->assertEquals("lt", $alters["lang"]);
         $this->assertEquals("Mockup Test", $alters["title"]);
-        $this->assertEquals("test", $alters["css"]);
         $this->assertEquals("time", $alters["life"]);
     }
 
@@ -61,15 +57,15 @@ class HtmlInitTest extends \PHPUnit_Framework_TestCase {
         $this->html = new HtmlInit($this->registry);
         $yes = $this->html->getDefaults();
 
-        $this->assertRegExp('/\/' . HtmlInit::JQUERY_VERSION . '\//', $yes["js"]);
-        $this->assertRegExp('/ajax.googleapis.com/', $yes["js"]);
+        $this->assertRegExp('/\/' . HtmlInit::JQUERY_VERSION . '\//', $yes["jquery"]);
+        $this->assertRegExp('/ajax.googleapis.com/', $yes["jquery"]);
 
         $this->html = new HtmlInit($this->registry);
         HtmlInit::$JQUERY_HOSTNAME = "";
         $no = $this->html->getDefaults();
 
-        $this->assertRegExp('/\/js\/jquery-' . HtmlInit::JQUERY_VERSION . '.min/', $no["js"]);
-        $this->assertFileExists(__DIR__ . "/../../www" . $no["js"] . ".js");
+        $this->assertRegExp('/\/js\/jquery-' . HtmlInit::JQUERY_VERSION . '.min/', $no["jquery"]);
+        $this->assertFileExists(__DIR__ . "/../../www" . $no["jquery"]);
     }
 
     /**
@@ -82,8 +78,7 @@ class HtmlInitTest extends \PHPUnit_Framework_TestCase {
                 ->will($this->returnValueMap(
                         array(
                             "lang" => "en",
-                            "title" => "Donatas Martinkus",
-                            "css" => "main"
+                            "title" => "Donatas Martinkus"
                         )
                     )
                 );
@@ -95,7 +90,6 @@ class HtmlInitTest extends \PHPUnit_Framework_TestCase {
                 ->with(
                     "lt",
                     "Mockup Test",
-                    "test",
                     array(
                         "life" => "time"
                     )
@@ -104,11 +98,10 @@ class HtmlInitTest extends \PHPUnit_Framework_TestCase {
                     array(
                         "lang" => "lt",
                         "title" => "Mockup Test",
-                        "css" => "test",
                         "life" => "time"
                     )
                 ));
 
-        $htmlInit->getDefaults("lt", "Mockup Test", "test", array("life" => "time"));
+        $htmlInit->getDefaults("lt", "Mockup Test", array("life" => "time"));
     }
 }

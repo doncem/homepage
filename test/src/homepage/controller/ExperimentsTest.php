@@ -4,7 +4,7 @@ namespace homepage\controller;
 /**
  * Experiments controller test
  */
-class HomeExperimentsTest extends \ControllerTestCase {
+class ExperimentsTest extends \ControllerTestCase {
 
     /**
      * Test first experiment

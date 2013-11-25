@@ -10,6 +10,18 @@ namespace homepage\controller;
 class Ajax extends \ControllerInit {
 
     /**
+     * Helper for movies
+     * @var \homepage\helpers\MoviesData
+     */
+    private $model;
+
+    protected function init() {
+        parent::init();
+
+        $this->model = new \homepage\helpers\MoviesData($this->dic->database);
+    }
+
+    /**
      * Get movie model repository filtered by passed year parameter.<br />
      * Year is available only between 1902 and current
      * @Request("ajax-movies-by-year")
@@ -17,35 +29,26 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByYear() {
-        $movies = $this->dic->em->getRepository("\homepage\models\hMovies")->findBy(
-            array(
-                "year" => $this->request->year
-            ),
-            array("title" => "ASC")
-        );
-        $this->assignGeneralMoviesData($movies);
+        $movies = $this->model->getMoviesByYear($this->request->year);
+        $this->view->addParameter("movies", $movies);
     }
 
     /**
      * Get genre model repository filtered by passed genre parameter.<br />
      * Genre parameter must be a valid word.<br />
-     * If no such genre found response contains error message
+     * If no results found response contains error message
      * @Request("ajax-movies-and-series-by-genre")
      * @Parameter(name="genre", validator="\xframe\validation\RegEx('/\D+/')")
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByGenre() {
-        $genre = current($this->dic->em->getRepository("\homepage\models\hGenres")->findBy(
-            array(
-                "genre" => $this->request->genre
-            )
-        ));
+        $genre = $this->model->getByGenre($this->request->genre);
 
-        if (is_object($genre)) {
-            $this->assignGeneralMoviesData($genre->getMovies());
-            $this->assignGeneralSeriesData($genre->getSeries());
+        if (count($genre["movie"]) + count($genre["serie"]) > 0) {
+            $this->view->addParameter("movies", $genre["movie"]);
+            $this->view->addParameter("series", $genre["serie"]);
         } else {
-            $this->view->addParameter("error", "No such genre on the list. What are you doing?");
+            $this->view->addParameter("error", "Nothing found :/");
         }
     }
 
@@ -57,42 +60,26 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByDirectorCount() {
-        $directors = $this->dic->em->createQuery(
-            "SELECT d FROM \homepage\models\hDirectors d " .
-            "JOIN d.movies m " .
-            "GROUP BY d.id " .
-            "HAVING COUNT(m.id) = :counter " .
-            "ORDER BY d.director"
-        )->setParameter(":counter", $this->request->count)
-        ->getResult();
-
-        foreach ($directors as $key => $director) {
-            $this->assignGeneralMoviesData($director->getMovies(), "_" . $key);
-        }
-
-        $this->view->addParameter("directors", $directors);
+        $movies = $this->model->getMoviesByDirectorCount($this->request->count);
+        $this->view->addParameter("movies", $movies);
     }
 
     /**
      * Get country model repository filtered by passed country parameter.<br />
      * Country parameter must be a valid word.<br />
-     * If no such country found response contains error message
+     * If no results found response contains error message
      * @Request("ajax-movies-and-series-by-country")
      * @Parameter(name="country", validator="\xframe\validation\RegEx('/\D+/')")
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByCountry() {
-        $country = current($this->dic->em->getRepository("\homepage\models\hCountries")->findBy(
-            array(
-                "country" => urldecode($this->request->country)
-            )
-        ));
+        $country = $this->model->getByCountry($this->request->country);
 
-        if (is_object($country)) {
-            $this->assignGeneralMoviesData($country->getMovies());
-            $this->assignGeneralSeriesData($country->getSeries());
+        if (count($country["movie"]) + count($country["serie"]) > 0) {
+            $this->view->addParameter("movies", $country["movie"]);
+            $this->view->addParameter("series", $country["serie"]);
         } else {
-            $this->view->addParameter("error", "No such country on the list. What are you doing?");
+            $this->view->addParameter("error", "Nothing found :/");
         }
     }
 

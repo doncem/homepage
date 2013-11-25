@@ -17,16 +17,16 @@ class MoviesData extends \Helper {
      * <br />}
      */
     public function checkForUpdate() {
-        $this->em->beginTransaction();
+        $this->pdo->beginTransaction();
         $counters = array();
-        
+
         foreach (array("movies", "series") as $type) {
-            $query = $this->em->createQuery("SELECT COUNT(t.id) FROM \homepage\models\h" . ucfirst($type) . " t");
-            $counters[$type] = $query->getSingleScalarResult();
+            $query = $this->pdo->query("SELECT COUNT(t.id) AS 'counter' FROM h_{$type} t");
+            $counters[$type] = $this->gatherResults($query)["counter"];
         }
-        
-        $this->em->commit();
-        
+
+        $this->pdo->commit();
+
         return $counters;
     }
 
@@ -140,5 +140,76 @@ class MoviesData extends \Helper {
             "sum_series" => $sum_series["counter"],
             "sum_directors" => array_sum($directed)
         );
+    }
+
+    public function getMoviesByYear($year) {
+        $this->pdo->beginTransaction();
+        $query = $this->pdo->prepare("SELECT * FROM h_movies m WHERE m.year = :y");
+        $query->bindParam(":y", $year);
+        $results = $this->gatherResults($query);
+        $this->pdo->commit();
+
+        return $results;
+    }
+
+    public function getByGenre($genre) {
+        $this->pdo->beginTransaction();
+        $results = array();
+
+        foreach (array("movie", "serie") as $type) {
+            $query = $this->pdo->prepare("
+                SELECT t.* FROM h_{$type}s t
+                INNER JOIN h_{$type}s_genres tg ON tg.{$type} = t.id
+                INNER JOIN h_genres g ON g.id = tg.genre
+                WHERE g.genre = :g"
+            );
+            $query->bindParam(":g", $genre);
+            $results[$type] = $this->gatherResults($query);
+        }
+
+        $this->pdo->commit();
+
+        return $results;
+    }
+
+    public function getMoviesByDirectorCount($counter) {
+        // slow :(
+        $this->pdo->beginTransaction();
+        $query = $this->pdo->prepare("
+            SELECT m.*,md.director FROM h_movies m
+            INNER JOIN h_movies_directors md ON md.movie = m.id
+            WHERE md.director IN (
+                SELECT d.id FROM h_directors d
+                INNER JOIN h_movies_directors md ON md.director = d.id
+                GROUP BY d.id
+                HAVING COUNT(md.movie) = :c
+            )
+            ORDER BY m.year,m.title"
+        );
+        $query->bindParam(":c", $counter);
+        $results = $this->gatherResults($query);
+        $this->pdo->commit();
+
+        return $results;
+    }
+
+    public function getByCountry($country) {
+        $this->pdo->beginTransaction();
+        $results = array();
+
+        foreach (array("movie", "serie") as $type) {
+            $query = $this->pdo->prepare("
+                SELECT t.* FROM h_{$type}s t
+                INNER JOIN h_{$type}s_countries tc ON tc.{$type} = t.id
+                INNER JOIN h_countries c ON c.id = tc.country
+                WHERE c.country = :c"
+            );
+            $query->bindParam(":c", $country);
+            $results[$type] = $this->gatherResults($query);
+        }
+
+        $this->pdo->commit();
+
+        return $results;
     }
 }
