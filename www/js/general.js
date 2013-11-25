@@ -20,8 +20,24 @@ Array.prototype.clean = function(v) {
  * @param {jQuery} e
  * @param {int} topGap
  */
-function scrollToTop(e, topGap) {
+var scrollToTop = function(e, topGap) {
     $(window).scrollTop(e.scrollTop() - topGap);
+};
+
+/**
+ * Pad number with 'count' amount of zeroes from the beginning
+ * @param {Integer} num
+ * @param {Integer} count
+ * @returns {zeroPad.numZeropad|String}
+ */
+function zeroPad(num, count) { 
+    var numZeropad = num + '';
+
+    while(numZeropad.length < count) {
+        numZeropad = "0" + numZeropad; 
+    }
+
+    return numZeropad;
 }
 
 /**
@@ -89,24 +105,13 @@ $.fn.toggleBrowserScrollbar = function(enable) {
     }
 };
 
-$(function() {
+(function($) {
     //depricated
     //if ($.browser.msie) {
         //$("#ie-sucks").slideDown("slow");
     //}
 
-    var menuFontSize = $("#menu a").first().css("font-size");
-    $("#menu a").hover(
-        function() {
-            $(this).css("font-size", parseInt(menuFontSize) + parseInt(menuFontSize) * 0.2);
-        },
-        function() {
-            $(this).stop();
-            $(this).animate({"font-size":menuFontSize}, "slow", function() {$(this).removeAttr("style");});
-        }
-    );
-
     $(window).resize(function() {
         $(".wrapper").sizeWrapper();
     });
-});
+})(jQuery);

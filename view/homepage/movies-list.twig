@@ -1,0 +1,14 @@
+{% extends "_layouts/components/modal.twig" %}
+
+{% block modal_title %}List of movies/TV shows{% endblock %}
+
+{% block modal_body %}
+<div class="alert alert-danger ajax-movies-data">Something went wrong here :( - couldn't get what you requested. We have an error saying: <span></span></div>
+<div class="progress progress-striped active ajax-movies-data">
+    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width:100%">
+        <span class="sr-only">Loading</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block modal_footer %}{% endblock %}

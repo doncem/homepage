@@ -160,11 +160,11 @@ class SetStatics extends Plugin {
 
             switch ($controller) {
                 case "Movies":
-//                    $array[] = $this->getJSfilename(self::$js_underscore, $isLive);
-//                    $array[] = $this->getJSfilename(self::$js_backbone, $isLive);
+                    $array[] = $this->getJSfilename(self::$js_underscore, $isLive);
+                    $array[] = $this->getJSfilename(self::$js_backbone, $isLive);
 //                    $array[] = $this->getJSfilename(self::$js_jquery_flot, $isLive);
                     $array[] = $this->getJSfilename(self::$js_raphael, $isLive);
-//                    $array[] = $this->getJSfilename(self::$js_movies, $isLive);
+                    $array[] = $this->getJSfilename(self::$js_movies, $isLive);
                     break;
                 case "Experiments":
                     $array[] = $this->getJSfilename(self::$js_experiments, $isLive);

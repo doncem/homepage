@@ -2,17 +2,6 @@
 @import "../../_sass-modules/functions";
 @import "../../_sass-modules/common";
 
-body {
-    background-color: $mainColour;
-    &.navbar-fixed {
-        padding-top: 50px;
-    }
-}
-
-.navbar-form .form-group {
-    margin-right: 10px;
-}
-
 /* experiments */
 .experiment {
     @include b-radius(5, 5, 5, 5);
@@ -49,3 +38,8 @@ body {
     }
 }
 /* end experiments */
+/* movies */
+.ajax-movies-data {
+    display: none;
+}
+/* end movies */
