@@ -118,8 +118,8 @@ var jqueryWindowGrid = function() {
                            .attr("data-x", xCurrent)
                            .attr("data-y", yCurrent)
                            .animate({
-                               width:w,
-                               height:h,
+                               width:w + 2,
+                               height:h + 2,
                                top:t,
                                left:l,
                                backgroundColor:activeColour
@@ -148,7 +148,7 @@ var jqueryWindowGrid = function() {
             } else {
                 if (line.length < xMax) {
                     minX--;
-                    var newX = calculateSize($(window).width(), maxX - minX + 1);
+                    var newX = calculateSize(c.width(), maxX - minX + 1);
                     $(".grid-element").each(function(i, e) {
                         $(e).animate({
                             left:(parseInt($(e).attr("data-x")) - xCurrent + 1) * gap + (parseInt($(e).attr("data-x")) - xCurrent) * (2 * parseInt($(".grid-element").first().css("border-width")) + newX),
@@ -179,7 +179,7 @@ var jqueryWindowGrid = function() {
             } else {
                 if (column.length < yMax) {
                     minY--;
-                    var newY = calculateSize($(window).height(), maxY - minY + 1);
+                    var newY = calculateSize(c.height(), maxY - minY + 1);
                     $(".grid-element").each(function(i, e) {
                         $(e).animate({
                             top:(parseInt($(e).attr("data-y")) - yCurrent + 1) * gap + (parseInt($(e).attr("data-y")) - yCurrent) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY),
@@ -210,7 +210,7 @@ var jqueryWindowGrid = function() {
             } else {
                 if (line.length < xMax) {
                     maxX++;
-                    var newX = calculateSize($(window).width(), maxX - minX + 1);
+                    var newX = calculateSize(c.width(), maxX - minX + 1);
                     $(".grid-element").each(function(i, e) {
                         $(e).animate({
                             left:(maxX - minX - xCurrent + parseInt($(e).attr("data-x")) + 1) * gap + (maxX - minX - xCurrent + parseInt($(e).attr("data-x"))) * (2 * parseInt($(".grid-element").first().css("border-width")) + newX),
@@ -241,7 +241,7 @@ var jqueryWindowGrid = function() {
             } else {
                 if (column.length < yMax) {
                     maxY++;
-                    var newY = calculateSize($(window).height(), maxY - minY + 1);
+                    var newY = calculateSize(c.height(), maxY - minY + 1);
                     $(".grid-element").each(function(i, e) {
                         $(e).animate({
                             top:(maxY - minY - yCurrent + parseInt($(e).attr("data-y")) + 1) * gap + (maxY - minY - yCurrent + parseInt($(e).attr("data-y"))) * (2 * parseInt($(".grid-element").first().css("border-width")) + newY),
@@ -267,17 +267,17 @@ var jqueryWindowGrid = function() {
         var xCurrent = 1,
             yCurrent = 1,
             xMax = calculateMax($(window).width()),
-            yMax = calculateMax($(window).height()),
+            yMax = calculateMax($(window).height() - parseInt($("body").css("padding-top"))),
             maxX = 1,
             maxY = 1,
             minX = 1,
             minY = 1;
-        c.sizeWrapper(gap, 0).show("slow", function() {
+        c.sizeWrapper(gap).show("slow", function() {
             $(this).children("div").css({
                 left: gap,
                 top: gap,
-                width: $(window).width() - 2 * (gap + 1),
-                height: $(window).height() - 2 * (gap + 1),
+                width: c.width() - (gap + 1),
+                height: c.height() - (gap + 1),
                 backgroundColor: activeColour
             }).fadeIn("fast");
         });
@@ -310,10 +310,10 @@ var jqueryWindowGrid = function() {
     });
 
     $(window).resize(function() {
-        xMax = calculateMax($(window).width());
-        yMax = calculateMax($(window).height());
-        var newX = calculateSize($(window).width(), maxX - minX + 1),
-            newY = calculateSize($(window).height(), maxY - minY + 1);
+        xMax = calculateMax(c.width());
+        yMax = calculateMax(c.height());
+        var newX = calculateSize(c.width(), maxX - minX + 1),
+            newY = calculateSize(c.height(), maxY - minY + 1);
 
         $(".grid-element").each(function(i, e) {
             $(e).animate({

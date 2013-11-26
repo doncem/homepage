@@ -42,35 +42,16 @@ function zeroPad(num, count) {
 
 /**
  * Set wrapper to window size with required gaps
- * @param {int} topLeftGap
- * @param {int} bottomRightGap
+ * @param {int} gap
  * @returns {Object} jQuery selected object
  */
-$.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
-    var options = {};
-
-    if (topLeftGap > 0) {
-        options = $.extend({
-            paddingTop: topLeftGap,
-            paddingLeft: topLeftGap
-        }, options);
-    } else {
-        topLeftGap = parseInt($(this).css("padding-top"));
-    }
-
-    if (bottomRightGap > 0) {
-        options = $.extend({
-            paddingBottom: bottomRightGap,
-            paddingRight: bottomRightGap
-        }, options);
-    } else {
-        bottomRightGap = parseInt($(this).css("padding-bottom"));
-    }
-
-    $(this).css($.extend({
-        width: $(document).width() - topLeftGap - bottomRightGap,
-        height: $(document).height() - topLeftGap - bottomRightGap
-    }, options));
+$.fn.sizeWrapper = function(gap) {
+    $(this).css({
+        width: $(window).width(),
+        height: $(window).height() - parseInt($("body").css("padding-top")) + 1,// couldn't think of any border. there is a nav one, but..
+        paddingLeft: gap,
+        paddingTop: gap
+    });
 
     $(this).click(function(e) {
         if ($(e.target).hasClass($(this).attr("class"))) {
@@ -78,6 +59,7 @@ $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
             $(this).hide("fast");
         }
     });
+
     return $(this);
 };
 
@@ -89,7 +71,7 @@ $.fn.sizeWrapper = function(topLeftGap, bottomRightGap) {
 $.fn.toggleBrowserScrollbar = function(enable) {
     var scrollPosition = [
         self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
-        self.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop
+        self.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
     ];
     var html = $("body");
 

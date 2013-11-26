@@ -18,8 +18,8 @@
     {% block extra_styles %}{% endblock %}
 {% endspaceless %}</head>
 <body{% block body_class %}{% endblock %}>{% spaceless %}
-    <header>{% block header %}{% endblock %}</header>
-    <section>{% block contents %}{% endblock %}</section>
+    {% block header %}{% endblock %}
+    {% block contents %}{% endblock %}
     <footer>{% block footer %}{% endblock %}</footer>
     {% if isLive == 1 %}
     {% include "common/ga.twig" %}

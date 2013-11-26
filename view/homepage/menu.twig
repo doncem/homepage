@@ -5,14 +5,25 @@
 {% block navbar_brand %}Index{% endblock %}
 
 {% block navbar_main_menu %}
-<li{% if requested_page == "about" %} class="active"{% endif %}><a href="/about">About site</a></li>
-<li{% if requested_page == "hell-music" %} class="active"{% endif %}><a href="/hell-music">Hell-Music</a></li>
+<li{% if requestedPage == "about" %} class="active"{% endif %}><a href="/about">About site</a></li>
+<li{% if requestedPage == "hell-music" %} class="active"{% endif %}><a href="/hell-music">Hell-Music</a></li>
 {% if isLive != 1 %}
 <li><a href="/cdcollection">CD collection</a></li>
 {% endif %}
-<li{% if requested_page == "experiments" %} class="active"{% endif %}><a href="/experiments">Experiments</a></li>
-<li{% if requested_page == "movies" %} class="active"{% endif %}><a href="/movies">Movies</a></li>
+{% if requestedPage == "experiments" %}
+<li class="dropdown active">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Experiments<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        {% for link,title in availableExperiments %}
+        <li{% if link == enabledExperiment %} class="active"{% endif %}><a href="/experiments/{{ link }}">{{ title }}</a></li>
+        {% endfor %}
+    </ul>
+</li>
+{% else %}
+<li><a href="/experiments">Experiments</a></li>
+{% endif %}
+<li{% if requestedPage == "movies" %} class="active"{% endif %}><a href="/movies">Movies</a></li>
 {% if isLive != 1 %}
-<li{% if requested_page == "links" %} class="active"{% endif %}><a href="/links">Links</a></li>
+<li{% if requestedPage == "links" %} class="active"{% endif %}><a href="/links">Links</a></li>
 {% endif %}
 {% endblock %}
