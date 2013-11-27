@@ -1,4 +1,6 @@
 nbproject
 /.sass-cache/
+
+config/*.ini
 lib
 vendor

@@ -1,5 +1,63 @@
 @import "../../_sass-modules/variables";
-@import "../../_sass-modules/defaults";
+@import "../../_sass-modules/functions";
+@import "../../_sass-modules/common";
+
+// from _variables
+$contentPad: 10;
+$linkColour: #4183c4;
+$errorColour: red;
+
+// from _defaults
+body {
+    margin:0px;
+    padding:0px;
+    background-color:$mainColour;
+    font-family:/*"HelveticaNeue-Light", "Helvetica Neue Light", */"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size:1.0em;
+    font-weight:normal;
+    line-height:1.4em;
+}
+
+a {
+    color:$linkColour;
+    text-decoration:none;
+    &:hover {
+        color:darken($linkColour, 5%);
+    }
+}
+
+input,textarea,select,button{
+    font-family:inherit;
+}
+
+#ie-sucks {
+    width:100%;
+    height:20px;
+    padding:8px 0px;
+    position:absolute;
+    top:0px;
+    text-align:center;
+    background-color:darken($errorColour, 20%);
+    color:lighten($mainColour, 80%);
+    font-weight:bold;
+    display:none;
+}
+
+.clear {
+    clear:both;
+}
+.bold {
+    font-weight:bold;
+}
+.error {
+    color:$errorColour;
+}
+.hidden {
+    display:none;
+}
+
+
+
 
 button {
     border:solid thin darken($mainColour, 20%);

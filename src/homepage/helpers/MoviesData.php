@@ -7,7 +7,7 @@ namespace homepage\helpers;
  * @IgnoreAnnotation
  * @package homepage_helpers
  */
-class MoviesData extends \Helper {
+class MoviesData extends \DbPdoHelper {
 
     /**
      * Get count of current movies and series

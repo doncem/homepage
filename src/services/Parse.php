@@ -23,7 +23,7 @@ class Parse extends \xframe\request\Controller {
      */
     public function action() {
         if (class_exists("GearmanClient", false)) {
-            $config = "\\script\\gearman\\config\\" . ucfirst(CONFIG);
+            $config = "\\script\\gearman\\config\\" . ucfirst(filter_input(INPUT_SERVER, "CONFIG"));
             $config = new $config();
             $this->client = $config->gearman_client;
         } else {

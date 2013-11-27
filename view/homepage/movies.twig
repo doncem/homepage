@@ -65,7 +65,7 @@
 {% block script %}
 {% if data is defined %}
 <script type="text/javascript">
-//<!--
+//<!-- last access for data: {{ dataAccessed }}
 {% spaceless %}
 {% autoescape false %}
 var year_labels = [{{ data.years|slice(19,null,true)|keys|join(",") }}],

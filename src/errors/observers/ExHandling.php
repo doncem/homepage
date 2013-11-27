@@ -20,12 +20,13 @@ class ExHandling implements SplObserver {
      * @param SplSubject $subject
      */
     public function update(SplSubject $subject) {
+        $config = filter_input(INPUT_SERVER, "CONFIG");
         $registry = new \xframe\registry\Registry(array(
             'root' => ROOT_DIR,
             'tmp' => ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
-            'configFilename' => "config" . DIRECTORY_SEPARATOR . CONFIG . ".ini",
+            'configFilename' => "config" . DIRECTORY_SEPARATOR . $config . ".ini",
         ));
-        $registry->load(ROOT_DIR . "config" . DIRECTORY_SEPARATOR . CONFIG . ".ini", ROOT_DIR);
+        $registry->load(ROOT_DIR . "config" . DIRECTORY_SEPARATOR . $config . ".ini", ROOT_DIR);
         $view = new \xframe\view\TwigView($registry,
                                           ROOT_DIR,
                                           ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
@@ -34,7 +35,7 @@ class ExHandling implements SplObserver {
         $plugin = new \SetStatics(new \xframe\core\DependencyInjectionContainer(array("root" => ROOT_DIR)));
         $plugin->init();
 
-        $view->isLive = CONFIG == "live" ? 1 : 0;
+        $view->isLive = $config == "live" ? 1 : 0;
         $view->html = $html->getDefaults();
         $view->css = $plugin->getCSS("error", "", $view->isLive);
         $view->js = $plugin->getJS("error", "", $view->isLive);

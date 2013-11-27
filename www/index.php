@@ -7,14 +7,14 @@ $loader = require($root . "vendor" . DIRECTORY_SEPARATOR . "autoload.php");
  * It registers the autoloader, boots the framework and dispatches the request.
  */
 define("ROOT_DIR", $root);
-// Since I don"t have server to modify apache freely, have to do some hacks
-include($root . "config/app.php");
-// Here we go...
 
 $autoloader = new \xframe\autoloader\Autoloader($root);
 $autoloader->register();
 
-$system = new \xframe\core\System($root, $_SERVER["CONFIG"]);
+$system = new \xframe\core\System(
+    $root,
+    (strpos(filter_input(INPUT_SERVER, "REQUEST_URI"), "?DEPLOY") !== false ? "test" : filter_input(INPUT_SERVER, "CONFIG"))
+);
 $system->boot();
 
 $request = new \xframe\request\Request(filter_input(INPUT_SERVER, "REQUEST_URI"), $_REQUEST);

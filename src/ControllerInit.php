@@ -6,6 +6,12 @@
 class ControllerInit extends xframe\request\Controller {
 
     /**
+     * Is cache enabled?
+     * @var boolean
+     */
+    protected $cacheEnabled = false;
+
+    /**
      * Which module is executed
      * @var string|null
      */
@@ -39,10 +45,12 @@ class ControllerInit extends xframe\request\Controller {
             $this->module = $namespace[0];
             $this->controller = $namespace[2];
         }
+
+        $this->cacheEnabled = (bool)$this->dic->registry->get("CACHE_ENABLED");
     }
 
     protected function postDispatch() {
-        $this->view->isLive = (CONFIG == "live" || isset($this->request->DEPLOY)) ? 1 : 0;
+        $this->view->isLive = (filter_input(INPUT_SERVER, "CONFIG") == "live" || isset($this->request->DEPLOY)) ? 1 : 0;
         $this->view->lastDeploy = isset($this->request->DEPLOY) ? date("Y-m-d H") . "h" : "";
 
         $arr = explode("/", $this->request->getRequestedResource());
@@ -56,5 +64,52 @@ class ControllerInit extends xframe\request\Controller {
         $this->view->css = $plugin->getCSS($this->module, $this->controller, $this->view->isLive);
         $this->view->js = $plugin->getJS($this->module, $this->controller, $this->view->isLive);
         $this->view->requestedPage = $this->request->getRequestedResource();
+    }
+
+    /**
+     * Get it and update on miss. Call this method directly without checking if cache is enabled - it's done here
+     * @param string $namespace
+     * @param string $identifier
+     * @param Closure $code
+     * @param int $expire_time [optional] Default CacheVars::EXPIRE_IN_30_DAYS
+     * @return mixed
+     */
+    protected function getAndSetCache($namespace, $identifier, Closure $code, $expire_time = CacheVars::EXPIRE_IN_30_DAYS) {
+        if ($this->cacheEnabled) {
+            return CacheHandler::getHandler($this->dic)->get_and_set($namespace, $identifier, $code, $expire_time);
+        } else {
+            return $code();
+        }
+    }
+
+    /**
+     * Get it
+     * @param string $namespace
+     * @param string $identifier
+     * @return mixed false on cache miss
+     */
+    protected function getFromCache($namespace, $identifier) {
+        return CacheHandler::getHandler($this->dic)->get($namespace, $identifier);
+    }
+
+    /**
+     * Set it
+     * @param string $namespace
+     * @param string $identifier
+     * @param mixed $content
+     * @param int $expire_time [optional] Default CacheVars::EXPIRE_IN_30_DAYS
+     * @see CacheVars
+     */
+    protected function setToCache($namespace, $identifier, $content, $expire_time = CacheVars::EXPIRE_IN_30_DAYS) {
+        CacheHandler::getHandler($this->dic)->set($namespace, $identifier, $content, $expire_time);
+    }
+
+    /**
+     * Expire given namespace
+     * @param string $namespace
+     * @param string $identifier [optional] Default null
+     */
+    protected function expireCache($namespace, $identifier = null) {
+        CacheHandler::getHandler($this->dic)->expire($namespace, $identifier);
     }
 }

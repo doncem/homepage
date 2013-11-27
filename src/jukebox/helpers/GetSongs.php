@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Criteria;
  * @IgnoreAnnotation
  * @package jukebox_helpers
  */
-class GetSongs extends \Helper {
+class GetSongs extends \DbDoctrineHelper {
 
     /**
      * Return search results or all if search query is empty

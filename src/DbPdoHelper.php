@@ -4,7 +4,7 @@
  * Generic helper
  * @package common
  */
-abstract class Helper {
+abstract class DbPdoHelper {
 
     /**
      * DB

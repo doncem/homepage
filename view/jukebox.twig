@@ -7,7 +7,7 @@
     {% endif %}
     <meta name="description" content="{% block meta_description %}{% endblock %}"/>
     {#<meta name="author" content="Donatas Martinkus"/>#}
-    <link rel="stylesheet" type="text/css" href="/css/jukebox/{{ html.css }}.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jukebox/main.css" />
     <link rel="shortcut icon" href="/img/favicon.ico" />
     <title>{% block title %}{% endblock %} - {{ html.title }}</title>
 {% endspaceless %}</head>
@@ -21,7 +21,7 @@
     {% if isLive == 1 %}
     {% include "common/ga.twig" %}
     {% endif %}
-    <script type="text/javascript" src="{{ html.js }}.js"></script>
+    <script type="text/javascript" src="{{ html.jquery }}"></script>
     {% if js is defined %}
     {% for j in js %}
     <script type="text/javascript" src="{{ j }}"></script>

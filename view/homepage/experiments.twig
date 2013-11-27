@@ -17,8 +17,7 @@
     {% if link|slice(0, 6) == "jquery" %}
         <a href="#{{ link }}" class="launch-link">Launch it</a>
     {% else %}
-        {#<a href="/{{ link }}/">Go there</a>#}
-        <div class="alert alert-info">not yet converted to bootstrap or probably will not be at all</div>
+        <a href="/{{ link }}/">Go there</a>
     {% endif %}
     </p>
 </div>

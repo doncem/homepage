@@ -19,6 +19,10 @@ class Ajax extends \ControllerInit {
         parent::init();
 
         $this->model = new \homepage\helpers\MoviesData($this->dic->database);
+
+        if ($this->cacheEnabled) {
+            \CacheHandler::getHandler($this->dic)->set_prefix("ajax");
+        }
     }
 
     /**
@@ -29,7 +33,13 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByYear() {
-        $movies = $this->model->getMoviesByYear($this->request->year);
+        $movies = $this->getAndSetCache(
+            \CacheVars::NAMESPACE_PAGE,
+            \CacheVars::KEY_MOVIES_DATA . "_by_year_{$this->request->year}",
+            function() {
+                return $this->model->getMoviesByYear($this->request->year);
+            }
+        );
         $this->view->addParameter("movies", $movies);
     }
 
@@ -42,7 +52,13 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByGenre() {
-        $genre = $this->model->getByGenre($this->request->genre);
+        $genre = $this->getAndSetCache(
+            \CacheVars::NAMESPACE_PAGE,
+            \CacheVars::KEY_MOVIES_DATA . "_by_genre_{$this->request->genre}",
+            function() {
+                return $this->model->getByGenre($this->request->genre);
+            }
+        );
 
         if (count($genre["movie"]) + count($genre["serie"]) > 0) {
             $this->view->addParameter("movies", $genre["movie"]);
@@ -60,7 +76,13 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByDirectorCount() {
-        $movies = $this->model->getMoviesByDirectorCount($this->request->count);
+        $movies = $this->getAndSetCache(
+            \CacheVars::NAMESPACE_PAGE,
+            \CacheVars::KEY_MOVIES_DATA . "_by_director_count_{$this->request->count}",
+            function() {
+                return $this->model->getMoviesByDirectorCount($this->request->count);
+            }
+        );
         $this->view->addParameter("movies", $movies);
     }
 
@@ -73,7 +95,13 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByCountry() {
-        $country = $this->model->getByCountry($this->request->country);
+        $country = $this->getAndSetCache(
+            \CacheVars::NAMESPACE_PAGE,
+            \CacheVars::KEY_MOVIES_DATA . "_by_country_{$this->request->country}",
+            function() {
+                return $this->model->getByCountry($this->request->country);
+            }
+        );
 
         if (count($country["movie"]) + count($country["serie"]) > 0) {
             $this->view->addParameter("movies", $country["movie"]);
@@ -81,42 +109,5 @@ class Ajax extends \ControllerInit {
         } else {
             $this->view->addParameter("error", "Nothing found :/");
         }
-    }
-
-    /**
-     * Parses given array of &#39;movies&#39; and adds variables to the response
-     * @param array $movies
-     * @param string $postFix [optional] Default &#39;&#39;
-     */
-    private function assignGeneralMoviesData($movies, $postFix = "") {
-        $countries = $directors = $genres = array();
-
-        foreach ($movies as $key => $movie) {
-            $countries[$key] = $movie->getCountries();
-            $directors[$key] = $movie->getDirectors();
-            $genres[$key]    = $movie->getGenres();
-        }
-
-        $this->view->addParameter("movies" . $postFix,    $movies);
-        $this->view->addParameter("countries" . $postFix, $countries);
-        $this->view->addParameter("directors" . $postFix, $directors);
-        $this->view->addParameter("genres" . $postFix,    $genres);
-    }
-
-    /**
-     * Parses given array of &#39;series&#39; and adds variables to the response
-     * @param array $series
-     */
-    private function assignGeneralSeriesData($series) {
-        $countries = $genres = array();
-
-        foreach ($series as $key => $show) {
-            $countries[$key] = $show->getCountries();
-            $genres[$key]    = $show->getGenres();
-        }
-
-        $this->view->addParameter("series",           $series);
-        $this->view->addParameter("series_countries", $countries);
-        $this->view->addParameter("series_genres",    $genres);
     }
 }
