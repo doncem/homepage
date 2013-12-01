@@ -39,6 +39,45 @@
 }
 /* end experiments */
 /* movies */
+.placeholder {
+    width: 800px;
+    height: 400px;
+}
+.legend > div {
+    background-color:darken($mainColour, 7%) !important;
+    .legendColorBox, .legendLabel {
+        padding: 5px;
+    }
+}
+// rotation is not implemented in flot
+#flot-p-year .xAxis .tickLabel, #flot-p-genre .xAxis .tickLabel {
+    @include do-rotate(270);
+}
+#flot-p-year .xAxis .tickLabel {
+    padding-top: 16px;
+}
+#flot-p-decade .xAxis .tickLabel {
+    padding-left: 47px;
+}
+#flot-p-genre .xAxis .tickLabel {
+    width: 72px !important;
+    max-width: 72px !important;
+    text-align: right !important;
+    margin-top: 13px;
+    padding-top: 30px;
+}
+#flot-p-directed .xAxis .tickLabel {
+    padding-left: 45px;
+}
+#tooltip {
+    position: absolute;
+    display: none;
+    border-width: thin;
+    border-style: solid;
+    @include b-radius(5, 5, 5, 5);
+    padding: 2px 3px;
+    opacity: 0.7;
+}
 .ajax-movies-data {
     display: none;
 }

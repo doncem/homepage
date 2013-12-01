@@ -19,7 +19,7 @@ var drawFlot = function(p, d) {
             color:colours.flot[i]
         });
     }
-    $.plot($("#" + p), source,
+    $.plot($("#flot-" + p + " .placeholder"), source,
         {
             legend:{position:d.legend.position,backgroundOpacity:0.6},
             grid:{clickable:d.grid.clickable,hoverable:true},
@@ -234,10 +234,10 @@ var wrongParamsInRouter = function(error) {
     // flot before rewrite
     if ($.fn.plot !== undefined) {
         g = {
-            p_year : {grid:{clickable:true},graphs : [{data:d_y,label:"movies ("+Math.ceil(d_y_m[0][1]*d_y_x.length)+")",bars:true,lines:false,y:1},{data:d_y_m,label:"mean",bars:false,lines:true,y:1},{data:d_y_s,label:"standard deviation",bars:false,lines:true,y:1}],legend:{position:"nw"},x:{data:d_y_x,angle:270},y:{align:null,position:"left"}},
-            p_decade : {grid:{clickable:false},graphs : [{data:d_yd,label:"movies",bars:true,lines:false,y:1},{data:d_yd_m,label:"mean",bars:false,lines:true,y:1},{data:d_yd_s,label:"standard deviation",bars:false,lines:true,y:1}],legend:{position:"nw"},x:{data:d_yd_x,angle:0},y:{align:null,position:"left"}},
-            p_genre : {grid:{clickable:true},graphs:[{data:d_g_m,label:"movies",bars:true,lines:false,y:1},{data:d_g_s,label:"tv shows",bars:true,lines:false,y:1},{data:d_g_c,label:"correlation",bars:false,lines:true,y:2}],legend:{position:"nw"},x:{data:d_g_x,angle:270},y:{align:1,position:"right"}},
-            p_directed : {grid:{clickable:true},graphs:[{data:d_d,label:"#movies by directors",bars:true,lines:false,y:1}],legend:{position:"ne"},x:{data:d_d_x,angle:0},"y":{align:null,position:"left"}}
+            "p-year" : {grid:{clickable:true},graphs : [{data:year_data,label:"movies",bars:true,lines:false,y:1}],legend:{position:"nw"},x:{data:year_labels,angle:270},y:{align:null,position:"left"}},
+            "p-decade" : {grid:{clickable:false},graphs : [{data:decade_data,label:"movies",bars:true,lines:false,y:1}],legend:{position:"nw"},x:{data:decade_labels,angle:0},y:{align:null,position:"left"}},
+            "p-genre" : {grid:{clickable:true},graphs:[{data:genre_movies_data,label:"movies",bars:true,lines:false,y:1},{data:genre_series_data,label:"tv shows",bars:true,lines:false,y:1}],legend:{position:"nw"},x:{data:genre_labels,angle:270},y:{align:1,position:"right"}},
+            "p-directed" : {grid:{clickable:true},graphs:[{data:directed_data,label:"#movies by directors",bars:true,lines:false,y:1}],legend:{position:"ne"},x:{data:directed_labels,angle:0},"y":{align:null,position:"left"}}
         };
 
         for (i in g) {
@@ -253,7 +253,7 @@ var wrongParamsInRouter = function(error) {
                     previousPoint = item.dataIndex;
                     previousLabel = item.series.label;
                     $("#tooltip").remove();
-                    showFlotTooltip(item.pageX, item.pageY, item.datapoint[1], item.series.color, !(($(this).attr("id") === "p_year") || ($(this).attr("id") === "p_decade") || (item.series.label === "correlation")));
+                    showFlotTooltip(item.pageX, item.pageY, item.datapoint[1], item.series.color, !(($(this).parent().parent().attr("id") === "flot-p-year") || ($(this).parent().parent().attr("id") === "flot-p-decade")));
                 }
             } else {
                 $(this).css("cursor", "default");
@@ -267,13 +267,13 @@ var wrongParamsInRouter = function(error) {
                 if (item.series.bars.show) {
                     var label = encodeURI(item.series.xaxis.ticks[item.dataIndex].label);
                     switch (event.currentTarget.id) {
-                        case "p_year":
+                        case "flot-p-year":
                             window.location.hash = "#by-year/" + label;
                             break;
-                        case "p_genre":
+                        case "flot-p-genre":
                             window.location.hash = "#by-genre/" + label;
                             break;
-                        case "p_directed":
+                        case "flot-p-directed":
                             window.location.hash = "#by-director-count/" + label;
                             break;
                         default:
@@ -446,7 +446,7 @@ var wrongParamsInRouter = function(error) {
                 height = 400,
                 leftgutter = 30,
                 topgutter = 20,
-                r = Raphael(_placement, width, height),
+                r = Raphael(document.getElementById("raphael-" + _placement).getElementsByClassName("placeholder")[0], width, height),
                 X = (width - leftgutter) / _labels.d.length,
                 max = [],
                 Y = 0;
@@ -460,7 +460,9 @@ var wrongParamsInRouter = function(error) {
                 blanket = r.set(),
                 dot = r.set();
             $.each(_data, function(data_i, data_e) {
-                max.push(Math.max.apply(null, data_e.d));
+                $.each(data_e.d, function() {
+                    max.push(this[1]);
+                });
                 label.push(r.text(60, 12 + 15 * data_i, data_e.label + " 0").attr({fill: "#ffffff"}));
             });
             Y = (height - bottomgutter - topgutter) / Math.max.apply(null, max);
@@ -476,17 +478,17 @@ var wrongParamsInRouter = function(error) {
                 bgps.push(bgp);
                 dot[data_i] = r.set();
                 for (var i = 0, ii = _labels.d.length; i < ii; i++) {
-                    var y = Math.round(height - bottomgutter - Y * data_e.d[i]),
+                    var y = Math.round(height - bottomgutter - Y * data_e.d[i][1]),
                         x = Math.round(leftgutter + X * (i + .5)),
-                        t = r.text(x, height - bottomgutter + bottomadditive, _labels.d[i]).transform("r" + _labels.a).toBack();
+                        t = r.text(x, height - bottomgutter + bottomadditive, _labels.d[i][1]).transform("r" + _labels.a).toBack();
                     if (!i) {
                         p = ["M", x, y, "C", x, y];
                         bgpp = ["M", leftgutter + X * .5, height - bottomgutter, "L", x, y, "C", x, y];
                     }
                     if (i && i < ii - 1) {
-                        var Y0 = Math.round(height - bottomgutter - Y * data_e.d[i - 1]),
+                        var Y0 = Math.round(height - bottomgutter - Y * data_e.d[i - 1][1]),
                             X0 = Math.round(leftgutter + X * (i - .5)),
-                            Y2 = Math.round(height - bottomgutter - Y * data_e.d[i + 1]),
+                            Y2 = Math.round(height - bottomgutter - Y * data_e.d[i + 1][1]),
                             X2 = Math.round(leftgutter + X * (i + 1.5));
                         var a = getAnchors(X0, Y0, x, y, X2, Y2);
                         p = p.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
@@ -514,7 +516,7 @@ var wrongParamsInRouter = function(error) {
                             ly = label[0].transform()[0][2] + ppp.dy;
                             frame.show().stop().animate(anim);
                             $.each(_data, function(data_ii, data_ee) {
-                                label[data_ii].attr({text:data_ee.label + lbl + ": " + data_ee.d[data_index]}).show().stop().animateWith(frame, anim, {transform:["t", lx, ly]}, 200 * is_label_visible);
+                                label[data_ii].attr({text:data_ee.label + lbl + ": " + data_ee.d[data_index][1]}).show().stop().animateWith(frame, anim, {transform:["t", lx, ly]}, 200 * is_label_visible);
                                 dot[data_ii][data_index].attr("r", 6);
                             });
                             is_label_visible = true;
@@ -530,7 +532,7 @@ var wrongParamsInRouter = function(error) {
                                 is_label_visible = false;
                             }, 1);
                         });
-                    })(x, y, i, _labels.d[i], dot);
+                    })(x, y, i, _labels.d[i][1], dot);
                 }
                 p = p.concat([x, y, x, y]);
                 bgpp = bgpp.concat([x, y, x, y, "L", x, height - bottomgutter, "z"]);

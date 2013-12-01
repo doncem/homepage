@@ -35,13 +35,113 @@
 {% endif %}
 {% if data is defined %}
 <p>Numbers per years</p>
-<div id="p-year" class="placeholder"></div>
+<div class="panel-group" id="accordion-year">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-year" href="#flot-p-year">Flot</a>
+            </h4>
+        </div>
+        <div id="flot-p-year" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-year" href="#raphael-p-year">Raphaël</a>
+            </h4>
+        </div>
+        <div id="raphael-p-year" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <p>Numbers per decades</p>
-<div id="p-decade" class="placeholder"></div>
+<div class="panel-group" id="accordion-decade">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-decade" href="#flot-p-decade">Flot</a>
+            </h4>
+        </div>
+        <div id="flot-p-decade" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-decade" href="#raphael-p-decade">Raphaël</a>
+            </h4>
+        </div>
+        <div id="raphael-p-decade" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <p>Percentages of items having particular genre</p>
-<div id="p-genre" class="placeholder"></div>
+<div class="panel-group" id="accordion-genre">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-genre" href="#flot-p-genre">Flot</a>
+            </h4>
+        </div>
+        <div id="flot-p-genre" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-genre" href="#raphael-p-genre">Raphaël</a>
+            </h4>
+        </div>
+        <div id="raphael-p-genre" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <p>Percentage of directors who made a certain number of movies</p>
-<div id="p-directed" class="placeholder"></div>
+<div class="panel-group" id="accordion-directed">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-directed" href="#flot-p-directed">Flot</a>
+            </h4>
+        </div>
+        <div id="flot-p-directed" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion-directed" href="#raphael-p-directed">Raphaël</a>
+            </h4>
+        </div>
+        <div id="raphael-p-directed" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="movies">
     <table>
         <tr><th></th><th>#movies</th></tr>
@@ -68,15 +168,15 @@
 //<!-- last access for data: {{ dataAccessed }}
 {% spaceless %}
 {% autoescape false %}
-var year_labels = [{{ data.years|slice(19,null,true)|keys|join(",") }}],
-    year_data = [{{ data.years|slice(19,null,true)|join(",") }}],
-    decade_labels = ['{{ data.decades|keys|join("0-9','") }}0-9'],
-    decade_data = [{{ data.decades|join(",") }}],
-    genre_labels = ['{{ data.genre_list|join("','") }}'],
-    genre_movies_data = [{{ data.genres|join(",") }}],
-    genre_series_data = [{{ data.genres_series|join(",") }}],
-    directed_labels = [{{ data.directed|keys|join(",") }}],
-    directed_data = [{{ data.directed|join(",") }}];
+var year_labels = [{% for d in data.years|slice(19, null, true)|keys %}[{{ loop.index0 }},{{ d }}],{% endfor %}],
+    year_data = [{% for d in data.years|slice(19, null, true) %}[{{ loop.index0 }},{{ d }}],{% endfor %}],
+    decade_labels = [{% for d in data.decades|keys %}[{{ loop.index0 }},'{{ d }}0-9'],{% endfor %}],
+    decade_data = [{% for d in data.decades %}[{{ loop.index0 }},{{ d }}],{% endfor %}],
+    genre_labels = [{% for d in data.genre_list %}[{{ loop.index0 }},'{{ d }}'],{% endfor %}],
+    genre_movies_data = [{% for d in data.genres %}[{{ loop.index0 }},{{ d }}],{% endfor %}],
+    genre_series_data = [{% for d in data.genres_series %}[{{ loop.index0 }},{{ d }}],{% endfor %}],
+    directed_labels = [{% for d in data.directed|keys %}[{{ loop.index0 }},{{ d }}],{% endfor %}],
+    directed_data = [{% for d in data.directed %}[{{ loop.index0 }},{{ d }}],{% endfor %}];
 {% endautoescape %}
 {% endspaceless %}
 //--!>
