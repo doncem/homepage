@@ -35,7 +35,9 @@ Notes
 
 * There is no collation for the `SET NAMES UTF-8` query. You should configure your MySQL server correctly. If you are lazy or don't know how to configure, you can simply follow this:
     * in your `my.cnf`, you have to add the lines `character-set-server=utf8` and `skip-character-set-client-handshake` at the end of the `[mysqld]` section.
-* Section 'movies' and 'jukebox' in 'experiments' will work only with PHP 5.4 because I'm using `JsonSerializable` interface
+* You will definitely gonna need PHP 5.4 for these features:
+    * `JsonSerializable` interface
+    * `$this` being able to use inside closures
 * If you have your vhost configured with ALIASes of doc/ and report/ folders - you'll be able to see them within same domain :)
 
 Phing

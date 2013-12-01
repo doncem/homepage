@@ -110,6 +110,8 @@ class ControllerInit extends xframe\request\Controller {
      * @param string $identifier [optional] Default null
      */
     protected function expireCache($namespace, $identifier = null) {
-        CacheHandler::getHandler($this->dic)->expire($namespace, $identifier);
+        if ($this->cacheEnabled) {
+            CacheHandler::getHandler($this->dic)->expire($namespace, $identifier);
+        }
     }
 }

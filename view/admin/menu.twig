@@ -28,11 +28,16 @@
 <a href="/admin/logout" class="btn btn-default navbar-btn">Logout</a>
 {% else %}
 <form class="navbar-form" role="form" action="/admin/login">
-    <div class="form-group">
+    {% if errorMessage is defined %}
+    <div class="form-group has-error">
+        <span class="help-block">{{ errorMessage }}</span>
+    </div>
+    {% endif %}
+    <div class="form-group{% if errorMessage is defined %} has-error{% endif %}">
         <label class="sr-only" for="navbar-form-username">Username</label>
         <input type="text" id="navbar-form-username" name="username" class="form-control" placeholder="Username">
     </div>
-    <div class="form-group">
+    <div class="form-group{% if errorMessage is defined %} has-error{% endif %}">
         <label class="sr-only" for="navbar-form-password">Password</label>
         <input type="password" id="navbar-form-password" name="password" class="form-control" placeholder="Password">
     </div>

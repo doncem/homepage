@@ -24,20 +24,24 @@ abstract class Base {
 
     /**
      * Requested params
-     * @var array
+     * @var \xframe\request\Request
      */
-    protected $params = array();
+    protected $request = array();
 
     public function __construct(DIC $dic, $action) {
         $this->dic = $dic;
         $this->action = $action;
     }
 
-    public function setParams(array $params) {
-        $this->params = $params;
+    public function setRequest(\xframe\request\Request $params) {
+        $this->request = $params;
     }
 
     abstract public function getTemplateName();
 
+    /**
+     * Contains 'error' key with message if something went wrong, and 'data' key if anything must be passed
+     * @return array
+     */
     abstract public function process();
 }

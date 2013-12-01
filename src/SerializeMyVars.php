@@ -28,4 +28,36 @@ abstract class SerializeMyVars implements JsonSerializable {
 
         return $array;
     }
+
+    /**
+     * Magical getter
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name) {
+        $name_parts = explode("_", $name);
+        $method = implode("_", ucwords($name_parts));
+
+        if (method_exists($this, "get{$method}")) {
+            return $this->{"get{$method}"}();
+        }
+
+        return $this->{$name};
+    }
+
+    /**
+     * Magical setter
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value) {
+        $name_parts = explode("_", $name);
+        $method = implode("_", ucwords($name_parts));
+
+        if (method_exists($this, "set{$method}")) {
+            $this->{"set{$method}"}($value);
+        } else {
+            $this->{$name} = $value;
+        }
+    }
 }

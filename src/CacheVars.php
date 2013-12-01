@@ -6,9 +6,11 @@
  */
 class CacheVars {
     // namespaces
+    const NAMESPACE_ADMIN       = "admin";
     const NAMESPACE_JUKEBOX     = "jukebox_data";
     const NAMESPACE_PAGE        = "page_data";
     // keys
+    const KEY_ADMIN_USER        = "user";
     const KEY_JUKEBOX_SEARCH    = "search";
     const KEY_MOVIES_DATA       = "movies";
     // expiry time
