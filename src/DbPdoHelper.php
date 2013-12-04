@@ -29,25 +29,21 @@ abstract class DbPdoHelper {
     protected function gatherResults(\PDOStatement $statement) {
         if ($statement->execute()) {
             $columns = $statement->columnCount();
-            $fix_results = false;
 
             if ($columns == 1) {
                 $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
                 if (count($results) == 1) {
                     $results = current($results);
+                } else {
+                    $results = array_map(function($item) {
+                        return current($item);
+                    }, $results);
                 }
             } else if ($columns == 2) {
                 $results = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
             } else {
                 $results = $statement->fetchAll(\PDO::FETCH_GROUP | \PDO::FETCH_ASSOC);
-                $fix_results = true;
-            }
-
-            if ($fix_results) {
-                $results = array_map(function($item) {
-                    return current($item);
-                }, $results);
             }
 
             return $results;

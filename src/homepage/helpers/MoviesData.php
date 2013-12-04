@@ -177,24 +177,32 @@ class MoviesData extends \DbPdoHelper {
     }
 
     public function getMoviesByDirectorCount($counter) {
-        // slow :(
         $this->pdo->beginTransaction();
         $query = $this->pdo->prepare("
-            SELECT m.*,md.director FROM h_movies m
-            INNER JOIN h_movies_directors md ON md.movie = m.id
-            WHERE md.director IN (
-                SELECT d.id FROM h_directors d
-                INNER JOIN h_movies_directors md ON md.director = d.id
-                GROUP BY d.id
-                HAVING COUNT(md.movie) = :c
-            )
-            ORDER BY m.year,m.title"
+            SELECT d.id FROM h_directors d
+            INNER JOIN h_movies_directors md ON md.director = d.id
+            GROUP BY d.id
+            HAVING COUNT(md.movie) = :c"
         );
         $query->bindParam(":c", $counter);
-        $results = $this->gatherResults($query);
-        $this->pdo->commit();
+        $directors = $this->gatherResults($query);
 
-        return $results;
+        if (count($directors) > 0) {
+            $query = $this->pdo->query("
+                SELECT d.director,m.*
+                FROM h_movies m
+                INNER JOIN h_movies_directors md ON md.movie = m.id
+                INNER JOIN h_directors d ON d.id = md.director
+                WHERE md.director IN (" . implode(",", $directors) . ")
+                ORDER BY d.director,m.year,m.title"
+            );
+            $results = $this->gatherResults($query);
+            $this->pdo->commit();
+
+            return $results;
+        }
+
+        return array();
     }
 
     public function getByCountry($country) {

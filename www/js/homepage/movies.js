@@ -89,16 +89,16 @@ var wrongParamsInRouter = function(error) {
                                 contents.append(
                                     $("<li />").append(
                                         $("<a />").attr({
-                                            "href": e.link,
+                                            "href": e[0].link,
                                             "target": "_blank"
-                                        }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : ""))
+                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year + "]")
                                     )
                                 );
                             });
                             container.append(contents);
                         }
                     );
-                    checkJqxhr(jqxhr);
+                    checkJqxhr(jqxhr, "p-year-" + formatted);
                 }
                 lists.modal("show");
             },
@@ -121,9 +121,9 @@ var wrongParamsInRouter = function(error) {
                                 contents.append(
                                     $("<li />").append(
                                         $("<a />").attr({
-                                            "href": e.link,
+                                            "href": e[0].link,
                                             "target": "_blank"
-                                        }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year + "]")
+                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year + "]")
                                     )
                                 );
                             });
@@ -132,16 +132,16 @@ var wrongParamsInRouter = function(error) {
                                 contents.append(
                                     $("<li />").append(
                                         $("<a />").attr({
-                                            "href": e.link,
+                                            "href": e[0].link,
                                             "target": "_blank"
-                                        }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year_from + " - " + e.year_until + "]")
+                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year_from + " - " + e[0].year_until + "]")
                                     )
                                 );
                             });
                             container.append(contents);
                         }
                     );
-                    checkJqxhr(jqxhr);
+                    checkJqxhr(jqxhr, "p-genre-" + formatted);
                 }
                 lists.modal("show");
             },
@@ -159,18 +159,18 @@ var wrongParamsInRouter = function(error) {
                                 return;
                             }
                             var contents = $("<ul />").attr("id", "p-directed-" + formatted).addClass("ajax-movies-data");
-                            $.each(json.directors, function(i, e) {
+                            $.each(json.directors, function(director, movies) {
                                 contents.append(
-                                    $("<li />").html("<strong>" + e.director + "</strong>").append(
+                                    $("<li />").html("<strong>" + director + "</strong>").append(
                                         $("<ul />").append(
-                                            $.map(json["movies_" + i], function(movie, movie_i) {
-                                                return $("<li />").append(
+                                            $.map(movies, function(movie, movie_i) {
+                                                return $("<ul />").append($("<li />").append(
                                                     $("<a />").attr({
                                                         "href": movie.link,
                                                         "target": "_blank"
                                                     }).html(movie.title + (movie.title_en !== null ? " (" + movie.title_en + ")" : "") + " [" + movie.year + "]")
-                                                ).html();
-                                            }).join()
+                                                )).html();
+                                            }).join("")
                                         )
                                     )
                                 );
@@ -178,7 +178,7 @@ var wrongParamsInRouter = function(error) {
                             container.append(contents);
                         }
                     );
-                    checkJqxhr(jqxhr);
+                    checkJqxhr(jqxhr, "p-directed-" + formatted);
                 }
                 lists.modal("show");
             },
@@ -200,9 +200,9 @@ var wrongParamsInRouter = function(error) {
                                 contents.append(
                                     $("<li />").append(
                                         $("<a />").attr({
-                                            "href": e.link,
+                                            "href": e[0].link,
                                             "target": "_blank"
-                                        }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year + "]")
+                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year + "]")
                                     )
                                 );
                             });
@@ -212,9 +212,9 @@ var wrongParamsInRouter = function(error) {
                                 contents.append(
                                     $("<li />").append(
                                         $("<a />").attr({
-                                            "href": e.link,
+                                            "href": e[0].link,
                                             "target": "_blank"
-                                        }).html(e.title + (e.title_en !== null ? " (" + e.title_en + ")" : "") + " [" + e.year_from + " - " + e.year_until + "]")
+                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year_from + " - " + e[0].year_until + "]")
                                     )
                                 );
                             });
@@ -266,7 +266,7 @@ var wrongParamsInRouter = function(error) {
             if (item) {
                 if (item.series.bars.show) {
                     var label = encodeURI(item.series.xaxis.ticks[item.dataIndex].label);
-                    switch (event.currentTarget.id) {
+                    switch (event.currentTarget.parentNode.parentNode.id) {
                         case "flot-p-year":
                             window.location.hash = "#by-year/" + label;
                             break;

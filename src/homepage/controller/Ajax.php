@@ -83,7 +83,7 @@ class Ajax extends \ControllerInit {
                 return $this->model->getMoviesByDirectorCount($this->request->count);
             }
         );
-        $this->view->addParameter("movies", $movies);
+        $this->view->addParameter("directors", $movies);
     }
 
     /**
