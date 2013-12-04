@@ -135,8 +135,8 @@ class MoviesData extends \DbPdoHelper {
         return array(
             "by_years" => $years,
             "by_decades" => $decades,
-            "by_genres" => array_map(function($item) { return $item["mg_counter"]; }, $genre_list),
-            "by_genres_series" => array_map(function($item) { return $item["sg_counter"]; }, $genre_list),
+            "by_genres" => array_map(function($item) { return $item[0]["mg_counter"]; }, $genre_list),
+            "by_genres_series" => array_map(function($item) { return $item[0]["sg_counter"]; }, $genre_list),
             "by_countries" => $countries,
             "by_countries_series" => $countries_series,
             "by_directed" => $directed,

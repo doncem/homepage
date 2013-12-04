@@ -16,6 +16,8 @@ class Ajax extends \ControllerInit {
     private $model;
 
     protected function init() {
+        $this->checkPHP54();
+
         parent::init();
 
         $this->model = new \homepage\helpers\MoviesData($this->dic->database);
