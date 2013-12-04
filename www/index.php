@@ -1,6 +1,7 @@
 <?php
 $root = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
 $loader = require($root . "vendor" . DIRECTORY_SEPARATOR . "autoload.php");
+$config = filter_input(INPUT_SERVER, "CONFIG") ? filter_input(INPUT_SERVER, "CONFIG") : "live";
 
 /**
  * Welcome to xFrame. This file is the entry point for the front controller.
@@ -13,7 +14,7 @@ $autoloader->register();
 
 $system = new \xframe\core\System(
     $root,
-    (strpos(filter_input(INPUT_SERVER, "REQUEST_URI"), "?DEPLOY") !== false ? "test" : filter_input(INPUT_SERVER, "CONFIG"))
+    (strpos(filter_input(INPUT_SERVER, "REQUEST_URI"), "?DEPLOY") !== false ? "test" : $config)
 );
 $system->boot();
 

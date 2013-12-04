@@ -4,3 +4,4 @@ nbproject
 config/*.ini
 lib
 vendor
+www/sitemap.xml

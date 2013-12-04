@@ -19,6 +19,8 @@ class JukeboxIndex extends \ControllerInit {
      * @Template("jukebox/index")
      */
     public function index() {
+        $this->checkPHP54();
+
         switch ($this->request->source) {
             case self::SOURCE:
                 $this->getSongs();

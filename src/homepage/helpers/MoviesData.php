@@ -22,7 +22,11 @@ class MoviesData extends \DbPdoHelper {
 
         foreach (array("movies", "series") as $type) {
             $query = $this->pdo->query("SELECT COUNT(t.id) AS 'counter' FROM h_{$type} t");
-            $counters[$type] = $this->gatherResults($query)["counter"];
+            // < php 5.4 :|
+            $result = $this->gatherResults($query);
+            $counters[$type] = $result["counter"];
+            // >= php 5.4 :)
+            //$counters[$type] = $this->gatherResults($query)["counter"];
         }
 
         $this->pdo->commit();

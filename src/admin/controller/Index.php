@@ -19,6 +19,8 @@ class Index extends \ControllerInit {
     private $user;
 
     protected function init() {
+        $this->checkPHP54();
+
         parent::init();
 
         $this->package = "admin" . DIRECTORY_SEPARATOR;

@@ -20,7 +20,7 @@ class ExHandling implements SplObserver {
      * @param SplSubject $subject
      */
     public function update(SplSubject $subject) {
-        $config = filter_input(INPUT_SERVER, "CONFIG");
+        $config = filter_input(INPUT_SERVER, "CONFIG") ? filter_input(INPUT_SERVER, "CONFIG") : "live";
         $registry = new \xframe\registry\Registry(array(
             'root' => ROOT_DIR,
             'tmp' => ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
@@ -32,7 +32,10 @@ class ExHandling implements SplObserver {
                                           ROOT_DIR . "tmp" . DIRECTORY_SEPARATOR,
                                           ROOT_DIR . "view" . DIRECTORY_SEPARATOR);
         $html = new \HtmlInit($registry);
-        $plugin = new \SetStatics(new \xframe\core\DependencyInjectionContainer(array("root" => ROOT_DIR)));
+        $plugin = new \SetStatics(new \xframe\core\DependencyInjectionContainer(array(
+            "root" => ROOT_DIR,
+            "registry" => $registry
+        )));
         $plugin->init();
 
         $view->isLive = $config == "live" ? 1 : 0;
@@ -42,7 +45,7 @@ class ExHandling implements SplObserver {
         $view->title = "Oh Dear... Error";
         $view->setTemplate("errors");
         $view->errorMessage = $subject->getLastException()->getMessage();
-        $view->errorStack = $subject->getLastException()->getTraceAsString();
+        $view->errorStack = $config == "live" ? "Sorry, trace is not available for public :p" : $subject->getLastException()->getTraceAsString();
         echo $view->execute();
     }
 }

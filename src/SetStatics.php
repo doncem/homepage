@@ -15,6 +15,12 @@ class SetStatics extends Plugin {
     const JQUERY_UI_VERSION = "1.10.3";
 
     /**
+     * Public docroot
+     * @var string
+     */
+    private $html_public;
+
+    /**
      * Identifier for main layout CSS
      * @var string
      */
@@ -98,6 +104,7 @@ class SetStatics extends Plugin {
      * @return SetJS
      */
     public function init() {
+        $this->html_public = $this->dic->registry->get("HTML_PUBLIC");
         $this->available_css = array(
             self::$css_main => "/css/main.css"
         );
@@ -150,7 +157,7 @@ class SetStatics extends Plugin {
             $array = array($this->getJSfilename(self::$js_underscore, $isLive));
             $array[] = $this->getJSfilename(self::$js_backbone, $isLive);
             $array[] = $this->getJSfilename(self::$js_jukebox, $isLive);
-            $array[] = \HtmlInit::doWeHaveGoogle() ? $this->dic->root . "www/js/jquery-ui." . self::JQUERY_UI_VERSION . ".min.js" : "//ajax.googleapis.com/ajax/libs/jqueryui/" . self::JQUERY_UI_VERSION . "/jquery-ui.min.js";
+            $array[] = \HtmlInit::doWeHaveGoogle() ? $this->dic->root . $this->html_public . "/js/jquery-ui." . self::JQUERY_UI_VERSION . ".min.js" : "//ajax.googleapis.com/ajax/libs/jqueryui/" . self::JQUERY_UI_VERSION . "/jquery-ui.min.js";
             $array[] = $this->getJSfilename(self::$js_jquery_colour, $isLive);
 
             return $array;
@@ -187,7 +194,7 @@ class SetStatics extends Plugin {
      * @throws Exception
      */
     private function getCSSfilename($identifier) {
-        if (file_exists($this->dic->root . "www" . $this->available_css[$identifier])) {
+        if (file_exists($this->dic->root . $this->html_public . $this->available_css[$identifier])) {
             return $this->available_css[$identifier];
         } else {
             throw new Exception("Could not find '{$identifier}' styles. Aren't you forgetting something? :p'", 0, null);
@@ -201,7 +208,7 @@ class SetStatics extends Plugin {
      * @return string
      */
     private function getJSfilename($identifier, $isLive) {
-        if (file_exists($this->dic->root . "www" . $this->available_js[$identifier . "_min"]) && $isLive) {
+        if (file_exists($this->dic->root . $this->html_public . $this->available_js[$identifier . "_min"]) && $isLive) {
             return $this->available_js[$identifier . "_min"];
         } else {
             return $this->available_js[$identifier];

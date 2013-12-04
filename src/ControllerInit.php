@@ -50,7 +50,8 @@ class ControllerInit extends xframe\request\Controller {
     }
 
     protected function postDispatch() {
-        $this->view->isLive = (filter_input(INPUT_SERVER, "CONFIG") == "live" || isset($this->request->DEPLOY)) ? 1 : 0;
+        $config = filter_input(INPUT_SERVER, "CONFIG") ? filter_input(INPUT_SERVER, "CONFIG") : "live";
+        $this->view->isLive = ($config == "live" || isset($this->request->DEPLOY)) ? 1 : 0;
         $this->view->lastDeploy = isset($this->request->DEPLOY) ? date("Y-m-d H") . "h" : "";
 
         $arr = explode("/", $this->request->getRequestedResource());
@@ -112,6 +113,16 @@ class ControllerInit extends xframe\request\Controller {
     protected function expireCache($namespace, $identifier = null) {
         if ($this->cacheEnabled) {
             CacheHandler::getHandler($this->dic)->expire($namespace, $identifier);
+        }
+    }
+
+    /**
+     * Check if PHP is above or equel 5.4
+     * @throws Exception
+     */
+    protected function checkPHP54() {
+        if (PHP_VERSION_ID < 50400) {
+            throw new \Exception("This page needs PHP 5.4 at least. Current: " . phpversion(), -1, null);
         }
     }
 }

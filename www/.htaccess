@@ -16,6 +16,8 @@ RewriteRule ^.*$ index.php [NC,L]
 RewriteCond %{HTTP_HOST} ^donatasmart\.lt [NC]
 RewriteRule ^(.*)$ http://www.donatasmart.lt/$1 [L,R=301]
 
+DirectoryIndex index.php index.html
+
 ErrorDocument 400 /
 ErrorDocument 401 /
 ErrorDocument 403 /
