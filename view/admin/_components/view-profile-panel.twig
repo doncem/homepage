@@ -1,0 +1,26 @@
+{% extends "_layouts/components/panel.twig" %}
+
+{% block panel_title %}{{ user.username }}{% endblock %}
+
+{% block panel_body %}
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+        <th>Registered</th>
+        <td>{{ user.registered.date }}</td>
+    </tr>
+    <tr>
+        <th>Your last session</th>
+        <td>{{ user.last_session }}</td>
+    </tr>
+    <tr>
+        <th>Last login</th>
+        <td>{{ user.last_login.date }}</td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block panel_footer %}So far you look awesome!{% endblock %}

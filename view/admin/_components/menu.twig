@@ -24,7 +24,7 @@
 
 {% block navbar_secondary_menu %}
 {% if is_admin_logged_in %}
-<p class="navbar-text">Welcome, <a href="#" class="navbar-link">Mark Otto</a></p>
+<p class="navbar-text">Welcome, <a href="/admin/my-profile" class="navbar-link">{{ user.username }}</a></p>
 <a href="/admin/logout" class="btn btn-default navbar-btn">Logout</a>
 {% else %}
 <form class="navbar-form" role="form" action="/admin/login">

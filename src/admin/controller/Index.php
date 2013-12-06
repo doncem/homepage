@@ -14,7 +14,7 @@ class Index extends \ControllerInit {
 
     /**
      * Current user
-     * @var \admin\models\admUser
+     * @var array
      */
     private $user;
 
@@ -30,11 +30,34 @@ class Index extends \ControllerInit {
             \CacheVars::KEY_ADMIN_USER,
             function() {
                 $model = new helpers\db\User($this->dic->em);
+                $user = $model->getBySessionID(filter_input(INPUT_COOKIE, "session_id"));
 
-                return $model->getBySessionID(filter_input(INPUT_COOKIE, "session_id"));
+                if ($user instanceof \admin\models\admUser) {
+                    $model->updateUserLastLogin($user);
+                    helpers\Auth::updateCookie($user->last_session);
+
+                    return $user->jsonSerialize();
+                }
+
+                return null;
             },
             helpers\Auth::COOKIE_LIFETIME / 2
         );
+    }
+
+    protected function postDispatch() {
+        parent::postDispatch();
+
+        $this->view->is_admin = true;
+
+        if (is_array($this->user)) {
+            $this->view->is_admin_logged_in = helpers\Auth::isLoggedIn(
+                array_key_exists("last_session", $this->user) ? $this->user["last_session"] : ""
+            );
+            $this->view->user = $this->user;
+        } else {
+            $this->view->is_admin_logged_in = false;
+        }
     }
 
     /**
@@ -53,16 +76,14 @@ class Index extends \ControllerInit {
                 $helper = "Auth";
                 $this->expireCache(\CacheVars::NAMESPACE_ADMIN, \CacheVars::KEY_ADMIN_USER);
                 break;
+            case "my-profile":
+                $helper = "Profile";
+                break;
             default:
                 break;
         }
 
         $this->runHelper($helper, $action);
-
-        $this->view->is_admin = true;
-        $this->view->is_admin_logged_in = helpers\Auth::isLoggedIn(
-            $this->user instanceof \admin\models\admUser ? $this->user->last_session : ""
-        );
     }
 
     /**
@@ -74,7 +95,7 @@ class Index extends \ControllerInit {
         if (strlen($helper) > 0) {
             $classname = "admin\\helpers\\{$helper}";
             /* @var $helper helpers\Base */
-            $helper = new $classname($this->dic, $action);
+            $helper = new $classname($this->dic, $action, $this->user);
             $helper->setRequest($this->request);
             $result = $helper->process();
             $this->view->setTemplate($this->package . $helper->getTemplateName());

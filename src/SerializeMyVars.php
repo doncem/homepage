@@ -36,7 +36,8 @@ abstract class SerializeMyVars implements JsonSerializable {
      */
     public function __get($name) {
         $name_parts = explode("_", $name);
-        $method = implode("_", ucwords($name_parts));
+        $tmp = implode(" ", $name_parts);
+        $method = str_replace(" ", "", ucwords($tmp));
 
         if (method_exists($this, "get{$method}")) {
             return $this->{"get{$method}"}();
@@ -52,7 +53,8 @@ abstract class SerializeMyVars implements JsonSerializable {
      */
     public function __set($name, $value) {
         $name_parts = explode("_", $name);
-        $method = implode("_", ucwords($name_parts));
+        $tmp = implode(" ", $name_parts);
+        $method = str_replace(" ", "", ucwords($tmp));
 
         if (method_exists($this, "set{$method}")) {
             $this->{"set{$method}"}($value);

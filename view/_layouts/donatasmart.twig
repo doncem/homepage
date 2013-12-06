@@ -6,7 +6,7 @@
 
 {% block header %}
 {% if is_admin %}
-{% include "admin/menu.twig" with {
+{% include "admin/_components/menu.twig" with {
     "navbar_inverse"        : true,
     "navbar_fixed_top"      : true,
     "navbar_fixed_bottom"   : false,
@@ -16,7 +16,7 @@
     "navbar_right_container": "div"
 } %}
 {% else %}
-{% include "homepage/menu.twig" with {
+{% include "homepage/_components/menu.twig" with {
     "navbar_inverse"        : true,
     "navbar_fixed_top"      : true,
     "navbar_fixed_bottom"   : false,

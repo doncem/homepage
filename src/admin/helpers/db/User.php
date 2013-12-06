@@ -38,6 +38,17 @@ class User extends \DbDoctrineHelper {
     }
 
     /**
+     * Set new timing for user. For keeping him not logged out unless he keeps page inactive for longer than allowed
+     * @param admUser $user
+     */
+    public function updateUserLastLogin(admUser $user) {
+        $user->last_login = new \DateTime();
+        $this->em->beginTransaction();
+        $this->em->flush($user);
+        $this->em->commit();
+    }
+
+    /**
      * Save it
      * @param admUser $user
      */

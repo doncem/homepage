@@ -28,7 +28,17 @@ abstract class Base {
      */
     protected $request = array();
 
-    public function __construct(DIC $dic, $action) {
+    /**
+     * Initiate helper. Check if user is present
+     * @param DIC $dic
+     * @param string $action
+     * @param array $user
+     */
+    public function __construct(DIC $dic, $action, array $user = null) {
+        if (is_null($user) && get_called_class() != "admin\\helpers\\Auth") {
+            header("location:/admin");
+        }
+
         $this->dic = $dic;
         $this->action = $action;
     }

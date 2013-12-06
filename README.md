@@ -15,7 +15,7 @@ Tools
 -----
 
 * [backbone](https://github.com/documentcloud/backbone)
-* [flot](https://github.com/flot/flot) [legacy. moved to Raphaël. Although - flot is a lot easier ;)]
+* [flot](https://github.com/flot/flot)
 * [jQuery](http://jquery.com/)
 * [jQuery Color Plugin](https://github.com/jquery/jquery-color)
 * [Memcached](http://www.memcached.org/)

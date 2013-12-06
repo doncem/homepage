@@ -15,7 +15,7 @@ class Auth extends Base {
 
     public function getTemplateName() {
         if ($this->do_redirect) {
-            throw new Exception("You should not render anything directed to Auth helper", 0, null);
+            throw new \Exception("You should not render anything directed to Auth helper", 0, null);
         } else {
             return "index";
         }
@@ -30,6 +30,7 @@ class Auth extends Base {
 
         if ($this->do_redirect) {
             header("location:/admin");
+            exit();
         }
 
         return array("error" => $this->error);
@@ -42,8 +43,8 @@ class Auth extends Base {
 
             if ($user instanceof \admin\models\admUser) {
                 if ($user->getActive()) {
-                    $session_id = date("ymd") . md5(mt_rand(100)) . date("His");
-                    setcookie("session_id", $session_id, time() + self::COOKIE_LIFETIME, "/", null, true, true);
+                    $session_id = date("ymd") . md5(mt_rand(100, 999)) . date("His");
+                    self::updateCookie($session_id);
                     $user->last_session = $session_id;
                     $user->last_login = new \DateTime();
                     $model->save($user);
@@ -59,7 +60,7 @@ class Auth extends Base {
     }
 
     private function logout() {
-        setcookie("session_id", "", time() - (60 * 60 * 24), "/", null, true, true);
+        self::destroyCookie();
     }
 
     /**
@@ -69,5 +70,20 @@ class Auth extends Base {
      */
     public static function isLoggedIn($user_session) {
         return filter_input(INPUT_COOKIE, "session_id") === $user_session && strlen($user_session) == 44;
+    }
+
+    /**
+     * Updating for self::COOKIE_LIFETIME starting from now
+     * @param string $session_id
+     */
+    public static function updateCookie($session_id) {
+        setcookie("session_id", $session_id, time() + self::COOKIE_LIFETIME, "/", null, false, true);
+    }
+
+    /**
+     * DESTROY!
+     */
+    public static function destroyCookie() {
+        setcookie("session_id", "", time() - (60 * 60 * 24), "/", null, false, true);
     }
 }
