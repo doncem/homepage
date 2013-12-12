@@ -29,7 +29,12 @@
 {% endblock %}
 
 {% block contents %}
-<div class="well">{% block page_contents %}{% endblock %}</div>
+<div class="well">
+    {% if is_admin and errorMessage is defined %}
+    <p class="alert alert-danger">{{ errorMessage }}</p>
+    {% endif %}
+    {% block page_contents %}{% endblock %}
+</div>
 {% endblock %}
 
 {% block footer %}

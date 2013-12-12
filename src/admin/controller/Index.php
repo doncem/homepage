@@ -76,6 +76,9 @@ class Index extends \ControllerInit {
                 $helper = "Auth";
                 $this->expireCache(\CacheVars::NAMESPACE_ADMIN, \CacheVars::KEY_ADMIN_USER);
                 break;
+            case "html":
+                $helper = "Html";
+                break;
             case "my-profile":
                 $helper = "Profile";
                 break;

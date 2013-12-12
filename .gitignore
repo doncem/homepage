@@ -2,6 +2,7 @@ nbproject
 /.sass-cache/
 
 config/*.ini
+config/*.json
 lib
 vendor
 www/sitemap.xml

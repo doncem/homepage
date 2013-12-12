@@ -58,10 +58,10 @@ class ControllerInit extends xframe\request\Controller {
         $this->view->title = (strlen($this->page_title) > 0 ? $this->page_title . " - " : "")
             . ucwords(implode(" - ", array_reverse($arr)));
 
-        $html = new \HtmlInit($this->dic->registry);
+        $html = $this->dic->plugin->htmlContent;
         $plugin = $this->dic->plugin->staticPreload;
 
-        $this->view->html = $html->getDefaults();
+        $this->view->html = $html->getPackage($this->dic->registry->get("HTML_PACKAGE"), $this->module);
         $this->view->css = $plugin->getCSS($this->module, $this->controller, $this->view->isLive);
         $this->view->js = $plugin->getJS($this->module, $this->controller, $this->view->isLive);
         $this->view->requestedPage = $this->request->getRequestedResource();

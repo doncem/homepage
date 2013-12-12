@@ -3,10 +3,8 @@ DEFAULT_VIEW=\xframe\view\TwigView
 AUTO_REBUILD_REQUEST_MAP=true #live - false
 
 [html]
-HTML_DOCTYPE=html5
-HTML_LANG=en
-HTML_TITLE=Donatas Martinkus
-HTML_PUBLIC=www # used for site updates via ftp with phing
+HTML_PACKAGE=donatasmart # used for html elements
+HTML_PUBLIC=www # used for site updates via ftp with phing and for static content
 
 [database]
 DATABASE_USERNAME=username
@@ -23,6 +21,7 @@ FTP_PASS=pass
 FTP_PUBLIC=public
 
 [plugins]
+PLUGIN[htmlContent]=\HtmlContent
 PLUGIN[staticPreload]=\SetStatics
 
 [exceptions]
