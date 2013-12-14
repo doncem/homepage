@@ -12,7 +12,7 @@ class Html extends Base {
         return "html";
     }
 
-    public function process() {
+    protected function processRegular() {
         $params = $this->request->getMappedParameters();
 
         if (count($params) > 1) {
@@ -30,9 +30,20 @@ class Html extends Base {
         return array("data" => $data);
     }
 
+    protected function processAJAX() {
+        $data = $this->getContents();
+        // need a user level here. need to pass it through helper constructor
+        die(var_dump($this->request->{"google-site-verification"}));
+    }
+
     private function getContents() {
         $plugin = $this->dic->plugin->htmlContent;
 
         return $plugin->getPackage($this->dic->registry->get("HTML_PACKAGE"));
+    }
+
+    private function setContents($data) {
+        $plugin = $this->dic->plugin->htmlContent;
+        $plugin->setPackage($this->dic->registry->get("HTML_PACKAGE"), $data);
     }
 }

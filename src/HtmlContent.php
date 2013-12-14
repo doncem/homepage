@@ -64,6 +64,15 @@ class HtmlContent extends Plugin {
     }
 
     /**
+     * Set it
+     * @param string $package
+     * @param string $data
+     */
+    public function setPackage($package, $data) {
+        $html = json_decode(file_get_contents($this->dic->root . "config" . DIRECTORY_SEPARATOR . $package . ".json"));
+    }
+
+    /**
      * Checks whether apis for jQuery is available or not
      * @return boolean
      */

@@ -12,7 +12,9 @@ class Profile extends Base {
         return "profile";
     }
 
-    public function process() {
+    protected function processRegular() {
         return array();
     }
+
+    protected function processAJAX() {}
 }

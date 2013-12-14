@@ -43,8 +43,16 @@ abstract class Base {
         $this->action = $action;
     }
 
-    public function setRequest(\xframe\request\Request $params) {
-        $this->request = $params;
+    public function setRequest(\xframe\request\Request $request) {
+        $this->request = $request;
+    }
+
+    public function process() {
+        if (strpos($this->request->getRequestedResource(), "ajax-") === 0) {
+            return $this->processAJAX();
+        } else {
+            return $this->processRegular();
+        }
     }
 
     abstract public function getTemplateName();
@@ -53,5 +61,10 @@ abstract class Base {
      * Contains 'error' key with message if something went wrong, and 'data' key if anything must be passed
      * @return array
      */
-    abstract public function process();
+    abstract protected function processRegular();
+
+    /**
+     * On any AJAX call prefixed with 'ajax-' - execute this method
+     */
+    abstract protected function processAJAX();
 }

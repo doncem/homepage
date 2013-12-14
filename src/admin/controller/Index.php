@@ -61,7 +61,7 @@ class Index extends \ControllerInit {
     }
 
     /**
-     * Homepage landing pagee
+     * Homepage landing page
      * @Request("admin")
      * @Parameter(name="action", validator="\xframe\validation\RegEx('/(\S+|^$)/')", required=false)
      * @Template("admin/index")

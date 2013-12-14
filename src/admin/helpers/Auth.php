@@ -21,7 +21,7 @@ class Auth extends Base {
         }
     }
 
-    public function process() {
+    protected function processRegular() {
         if ($this->action == "login") {
             $this->login();
         } else {
@@ -35,6 +35,8 @@ class Auth extends Base {
 
         return array("error" => $this->error);
     }
+
+    protected function processAJAX() {}
 
     private function login() {
         if (isset($this->request->username) && isset($this->request->password)) {

@@ -26,8 +26,8 @@
     {% endif %}
     <script type="text/javascript" src="{{ html.jquery }}"></script>
     <script type="text/javascript" src="/js/bootstrap{% if isLive == 1 %}.min{% endif %}.js"></script>
-    {% if js is defined and js is iterable %}
     {% block script %}{% endblock %}
+    {% if js is defined and js is iterable %}
     {% for j in js %}
     <script type="text/javascript" src="{{ j }}"></script>
     {% endfor %}
