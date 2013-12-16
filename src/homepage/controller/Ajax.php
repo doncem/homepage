@@ -34,11 +34,12 @@ class Ajax extends \ControllerInit {
      */
     public function moviesByYear() {
         $model = $this->model;
+        $request = $this->request;
         $movies = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_year_{$this->request->year}",
-            function() use($model) {
-                return $model->getMoviesByYear($this->request->year);
+            function() use($model, $request) {
+                return $model->getMoviesByYear($request->year);
             }
         );
         $this->view->addParameter("movies", $movies);
@@ -54,11 +55,12 @@ class Ajax extends \ControllerInit {
      */
     public function moviesAndSeriesByGenre() {
         $model = $this->model;
+        $request = $this->request;
         $genre = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_genre_{$this->request->genre}",
-            function() use($model) {
-                return $model->getByGenre($this->request->genre);
+            function() use($model, $request) {
+                return $model->getByGenre($request->genre);
             }
         );
 
@@ -79,11 +81,12 @@ class Ajax extends \ControllerInit {
      */
     public function moviesByDirectorCount() {
         $model = $this->model;
+        $request = $this->request;
         $movies = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_director_count_{$this->request->count}",
-            function() use($model) {
-                return $model->getMoviesByDirectorCount($this->request->count);
+            function() use($model, $request) {
+                return $model->getMoviesByDirectorCount($request->count);
             }
         );
         $this->view->addParameter("directors", $movies);
@@ -99,11 +102,12 @@ class Ajax extends \ControllerInit {
      */
     public function moviesAndSeriesByCountry() {
         $model = $this->model;
+        $request = $this->request;
         $country = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_country_{$this->request->country}",
-            function() use($model) {
-                return $model->getByCountry($this->request->country);
+            function() use($model, $request) {
+                return $model->getByCountry($request->country);
             }
         );
 
