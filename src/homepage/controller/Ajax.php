@@ -16,8 +16,6 @@ class Ajax extends \ControllerInit {
     private $model;
 
     protected function init() {
-        $this->checkPHP54();
-
         parent::init();
 
         $this->model = new \homepage\helpers\MoviesData($this->dic->database);
@@ -35,11 +33,12 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByYear() {
+        $model = $this->model;
         $movies = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_year_{$this->request->year}",
-            function() {
-                return $this->model->getMoviesByYear($this->request->year);
+            function() use($model) {
+                return $model->getMoviesByYear($this->request->year);
             }
         );
         $this->view->addParameter("movies", $movies);
@@ -54,11 +53,12 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByGenre() {
+        $model = $this->model;
         $genre = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_genre_{$this->request->genre}",
-            function() {
-                return $this->model->getByGenre($this->request->genre);
+            function() use($model) {
+                return $model->getByGenre($this->request->genre);
             }
         );
 
@@ -78,11 +78,12 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesByDirectorCount() {
+        $model = $this->model;
         $movies = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_director_count_{$this->request->count}",
-            function() {
-                return $this->model->getMoviesByDirectorCount($this->request->count);
+            function() use($model) {
+                return $model->getMoviesByDirectorCount($this->request->count);
             }
         );
         $this->view->addParameter("directors", $movies);
@@ -97,11 +98,12 @@ class Ajax extends \ControllerInit {
      * @View("xframe\view\JSONView")
      */
     public function moviesAndSeriesByCountry() {
+        $model = $this->model;
         $country = $this->getAndSetCache(
             \CacheVars::NAMESPACE_PAGE,
             \CacheVars::KEY_MOVIES_DATA . "_by_country_{$this->request->country}",
-            function() {
-                return $this->model->getByCountry($this->request->country);
+            function() use($model) {
+                return $model->getByCountry($this->request->country);
             }
         );
 
