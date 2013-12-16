@@ -19,5 +19,9 @@ class Ajax extends Index {
      */
     public function admin() {
         parent::admin();
+
+        if (isset($this->view->data)) {
+            $this->view->addParameter("answer", $this->view->data);
+        }
     }
 }

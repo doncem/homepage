@@ -61,10 +61,11 @@ class ControllerInit extends xframe\request\Controller {
         $html = $this->dic->plugin->htmlContent;
         $plugin = $this->dic->plugin->staticPreload;
 
-        $this->view->html = $html->getPackage($this->dic->registry->get("HTML_PACKAGE"), $this->module);
+        $this->view->html = $html->getPackage();
         $this->view->css = $plugin->getCSS($this->module, $this->controller, $this->view->isLive);
         $this->view->js = $plugin->getJS($this->module, $this->controller, $this->view->isLive);
         $this->view->requestedPage = $this->request->getRequestedResource();
+        $this->view->accessedModule = $this->module;
     }
 
     /**

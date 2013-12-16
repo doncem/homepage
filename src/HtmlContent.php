@@ -28,48 +28,25 @@ class HtmlContent extends Plugin {
      * @param string $module [optional] Which module descriptions to use. Default null - load them all
      * @return \stdClass
      */
-    public function getPackage($package, $module = null) {
+    public function getPackage() {
         if (self::doWeHaveGoogle()) {
             $js = "/js/jquery-" . self::JQUERY_VERSION . ".min.js";
         } else {
             $js = "//ajax.googleapis.com/ajax/libs/jquery/" . self::JQUERY_VERSION . "/jquery.min.js";
         }
 
-        $html = json_decode(file_get_contents($this->dic->root . "config" . DIRECTORY_SEPARATOR . $package . ".json"));
-        $descriptions = array();
-
-        foreach ($html->editor->descriptions as $list) {
-            $list = get_object_vars($list);
-
-            foreach ($list as $key => $description) {
-                $arr = explode("-", $key);
-                $group = array_shift($arr);
-
-                if ($group != $module && strlen($module) > 0) {
-                    continue;
-                }
-
-                if (!array_key_exists($group, $descriptions)) {
-                    $descriptions[$group] = array();
-                }
-
-                $descriptions[$group][implode("-", $arr)] = $description;
-            }
-        }
-
-        $html->editor->descriptions = $descriptions;
-        $html->jquery = $js;
+        $html = json_decode(file_get_contents($this->dic->root . "config" . DIRECTORY_SEPARATOR . $this->dic->registry->get("HTML_PACKAGE") . ".json"), true);
+        $html["jquery"] = $js;
 
         return $html;
     }
 
     /**
      * Set it
-     * @param string $package
      * @param string $data
      */
-    public function setPackage($package, $data) {
-        $html = json_decode(file_get_contents($this->dic->root . "config" . DIRECTORY_SEPARATOR . $package . ".json"));
+    public function setPackage($data) {
+        file_put_contents($this->dic->root . "config" . DIRECTORY_SEPARATOR . $this->dic->registry->get("HTML_PACKAGE") . ".json", json_encode($data));
     }
 
     /**

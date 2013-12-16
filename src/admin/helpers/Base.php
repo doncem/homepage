@@ -29,6 +29,12 @@ abstract class Base {
     protected $request = array();
 
     /**
+     * Current user
+     * @var array
+     */
+    protected $user = array();
+
+    /**
      * Initiate helper. Check if user is present
      * @param DIC $dic
      * @param string $action
@@ -41,6 +47,7 @@ abstract class Base {
 
         $this->dic = $dic;
         $this->action = $action;
+        $this->user = $user;
     }
 
     public function setRequest(\xframe\request\Request $request) {
@@ -53,6 +60,14 @@ abstract class Base {
         } else {
             return $this->processRegular();
         }
+    }
+
+    /**
+     * General redirector. Goes to current action and extra parameters if any defined
+     * @param string $parameter
+     */
+    protected function redirect($parameter = null) {
+        header("location:/admin/{$this->action}" . (strlen($parameter) > 0 ? "/{$parameter}" : ""));
     }
 
     abstract public function getTemplateName();

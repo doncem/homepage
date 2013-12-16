@@ -41,11 +41,12 @@ class ExHandling implements SplObserver {
         $plugin->init();
 
         $view->isLive = $config == "live" ? 1 : 0;
-        $view->html = $html->getPackage($registry->get("HTML_PACKAGE"), "error");
+        $view->html = $html->getPackage();
         $view->css = $plugin->getCSS("error", "", $view->isLive);
         $view->js = $plugin->getJS("error", "", $view->isLive);
         $view->title = "Oh Dear... Error";
         $view->requestedPage = "index";
+        $view->accessedModule = "error";
         $view->setTemplate("errors");
         $view->errorMessage = $subject->getLastException()->getMessage();
         $view->errorStack = $config == "live" ? "Sorry, trace is not available for public :p" : $subject->getLastException()->getTraceAsString();

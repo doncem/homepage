@@ -3,11 +3,19 @@
 {% block page_contents %}
 <form action="#save" class="form-horizontal" method="post" role="form">
     <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="/admin/html/scan-content" class="btn btn-default btn-info">Scan for new pages</a>
+            <span class="hide alert alert-warning">Form has some empty descriptions</span>
+        </div>
+    </div>
+    {% if user.level == "admin" %}
+    <div class="form-group">
         <label for="google-site-verification" class="col-sm-2 control-label">Google site verification code</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="google-site-verification" name="google-site-verification" placeholder="Code" value="{{ attribute(data.admin, "google-site-verification") }}">
         </div>
     </div>
+    {% endif %}
     <div class="form-group">
         <label for="jquery-in-use" class="col-sm-2 control-label">jQuery in use</label>
         <div class="col-sm-10">
@@ -32,7 +40,7 @@
         <fieldset>
             <legend>{{ module }}</legend>
             {% for resource,description in descriptions %}
-            <div class="form-group">
+            <div class="form-group{% if description|length == 0 %} has-warning{% endif %}">
                 <label for="{{ module }}-{{ resource }}" class="col-sm-2 control-label">{{ resource }}</label>
                 <div class="col-sm-10">
                     <textarea class="form-control" id="{{ module}}-{{ resource}}" name="descriptions[{{ module}}-{{ resource }}]" rows="3">{{ description|raw }}</textarea>
@@ -54,13 +62,25 @@
 <script type="text/javascript">
 //<!--
 (function($) {
+    if ($(".well > form .has-warning").length > 0) {
+        $(".well > form .hide.alert-warning").removeClass("hide");
+    }
+
     $(".well > form").submit(function(e) {
         e.preventDefault();
+        var b = $(this).find("button[type='submit']");
+        b.html("Saving..");
         $.post(
             "/ajax-admin/html/content",
             $(this).serialize(),
             function(response, textStatus, jqXHR) {
-                console.log(response);
+                if (response.answer === "success") {
+                    b.html("Saved").addClass("btn-success");
+                } else {
+                    b.html("Failed").addClass("btn-danger");
+                }
+
+                setTimeout(function() { b.html("Save").removeClass("btn-success btn-danger"); }, 3000);
             },
             "json"
         );
