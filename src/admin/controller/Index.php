@@ -13,6 +13,12 @@ class Index extends \ControllerInit {
     private $package;
 
     /**
+     * Active menu
+     * @var string
+     */
+    private $active_menu;
+
+    /**
      * Current user
      * @var array
      */
@@ -49,6 +55,7 @@ class Index extends \ControllerInit {
         parent::postDispatch();
 
         $this->view->is_admin = true;
+        $this->view->active_menu = $this->active_menu;
 
         if (is_array($this->user)) {
             $this->view->is_admin_logged_in = helpers\Auth::isLoggedIn(
@@ -67,7 +74,7 @@ class Index extends \ControllerInit {
      * @Template("admin/index")
      */
     public function admin() {
-        $action = $this->request->action;
+        $action = $this->active_menu = $this->request->action;
         $helper = "";
 
         switch ($action) {
@@ -100,7 +107,9 @@ class Index extends \ControllerInit {
             /* @var $helper helpers\Base */
             $helper = new $classname($this->dic, $action, $this->user);
             $helper->setRequest($this->request);
+            $helper->setActiveMenu($this->active_menu);
             $result = $helper->process();
+            $this->active_menu = $helper->getActiveMenu();
             $this->view->setTemplate($this->package . $helper->getTemplateName());
 
             if (array_key_exists("error", $result)) {

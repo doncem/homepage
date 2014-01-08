@@ -1,0 +1,30 @@
+{% extends "_layouts/components/panel.twig" %}
+
+{% block panel_title %}
+{% if data is not iterable %}
+<p class="alert alert-warning">Sitemap does not exist. Please <a href="/admin/html/sitemap" class="btn btn-warning">generate</a></p>
+{% else %}
+<a href="/admin/html/sitemap" class="btn btn-info">Re-generate</a>
+{% endif %}
+{% endblock %}
+
+{% block panel_body %}
+{% if data is iterable %}
+<table class="table table-condensed table-striped">
+    <tr>
+        <th>Location</th>
+        <th>Frequency</td>
+        <th>Priority</th>
+    </tr>
+    {% for url in data %}
+    <tr>
+        <td>{{ url.loc }}</td>
+        <td>{{ url.changefreq }}</td>
+        <td>{{ url.priority }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}
+
+{% block panel_footer %}{% endblock %}

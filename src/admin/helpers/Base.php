@@ -23,6 +23,12 @@ abstract class Base {
     protected $action;
 
     /**
+     * Current admin area
+     * @var string
+     */
+    protected $active_menu;
+
+    /**
      * Requested params
      * @var \xframe\request\Request
      */
@@ -33,6 +39,12 @@ abstract class Base {
      * @var array
      */
     protected $user = array();
+
+    /**
+     * Flag for type of process
+     * @var string
+     */
+    private $process_type;
 
     /**
      * Initiate helper. Check if user is present
@@ -50,14 +62,36 @@ abstract class Base {
         $this->user = $user;
     }
 
+    /**
+     * Get it
+     * @return string
+     */
+    public function getActiveMenu() {
+        return $this->active_menu;
+    }
+
+    /**
+     * Set it
+     * @param string $active_menu
+     */
+    public function setActiveMenu($active_menu) {
+        $this->active_menu = $active_menu;
+    }
+
+    /**
+     * Set it
+     * @param \xframe\request\Request $request
+     */
     public function setRequest(\xframe\request\Request $request) {
         $this->request = $request;
     }
 
     public function process() {
         if (strpos($this->request->getRequestedResource(), "ajax-") === 0) {
+            $this->process_type = "AJAX";
             return $this->processAJAX();
         } else {
+            $this->process_type = "regular";
             return $this->processRegular();
         }
     }
@@ -68,6 +102,14 @@ abstract class Base {
      */
     protected function redirect($parameter = null) {
         header("location:/admin/{$this->action}" . (strlen($parameter) > 0 ? "/{$parameter}" : ""));
+    }
+
+    /**
+     * Get type of process: AJAX || regular
+     * @return string
+     */
+    public function getProcessType() {
+        return $this->process_type;
     }
 
     abstract public function getTemplateName();

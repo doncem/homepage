@@ -5,6 +5,10 @@ body {
     }
 }
 
+.navbar-inverse .navbar-link.active {
+    font-weight: bold;
+}
+
 .navbar-form .form-group {
     margin-right: 10px;
 }

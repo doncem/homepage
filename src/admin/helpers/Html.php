@@ -25,12 +25,30 @@ class Html extends Base {
                     $this->checkForUpdates($data);
                     $this->redirect("content");
                     break;
+                case "sitemap":
+                    if (isset($params[2]) && $params[2] == "generate") {
+                        $this->generateSiteMap();
+                        $this->redirect("sitemap");
+                    }
+
+                    $file = $this->dic->root . $this->dic->registry->get("HTML_PUBLIC") . DIRECTORY_SEPARATOR . "sitemap.xml";
+
+                    if (file_exists($file)) {
+                        $xml = (array)simplexml_load_file($file);
+                        $data = $xml["url"];
+                    } else {
+                        $data = null;
+                    }
+
+                    break;
                 default:
                     return array("error" => "Functionality not found");
             }
         } else {
             return array("error" => "Wrong request");
         }
+
+        $this->active_menu = $params[1];
 
         return array("data" => $data);
     }
@@ -123,5 +141,9 @@ class Html extends Base {
         if (count($data) > 0) {
             $this->setContents($html);
         }
+    }
+
+    private function generateSiteMap() {
+        //
     }
 }
