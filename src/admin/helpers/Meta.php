@@ -3,13 +3,13 @@
 namespace admin\helpers;
 
 /**
- * Description of Html
+ * Description of Meta
  * @package admin_helpers
  */
-class Html extends Base {
+class Meta extends Base {
 
     public function getTemplateName() {
-        return "html";
+        return "meta";
     }
 
     protected function processRegular() {
@@ -17,38 +17,17 @@ class Html extends Base {
 
         if (count($params) > 1) {
             switch ($params[1]) {
-                case "content":
-                    $data = $this->getContents();
-                    break;
-                case "scan-content":
-                    $data = $this->scanContents();
+                case "scan":
+                    $data = $this->scan();
                     $this->checkForUpdates($data);
-                    $this->redirect("content");
-                    break;
-                case "sitemap":
-                    if (isset($params[2]) && $params[2] == "generate") {
-                        $this->generateSiteMap();
-                        $this->redirect("sitemap");
-                    }
-
-                    $file = $this->dic->root . $this->dic->registry->get("HTML_PUBLIC") . DIRECTORY_SEPARATOR . "sitemap.xml";
-
-                    if (file_exists($file)) {
-                        $xml = (array)simplexml_load_file($file);
-                        $data = $xml["url"];
-                    } else {
-                        $data = null;
-                    }
-
+                    $this->redirect();
                     break;
                 default:
                     return array("error" => "Functionality not found");
             }
-        } else {
-            return array("error" => "Wrong request");
         }
 
-        $this->active_menu = $params[1];
+        $data = $this->getContents();
 
         return array("data" => $data);
     }
@@ -93,7 +72,7 @@ class Html extends Base {
      * &nbsp;&nbsp;(string) resource => (string) module<br />
      * }
      */
-    private function scanContents() {
+    private function scan() {
         if (!is_dir($this->dic->tmp) || false === ($dh = opendir($this->dic->tmp))) {
             return array();
         }
@@ -141,9 +120,5 @@ class Html extends Base {
         if (count($data) > 0) {
             $this->setContents($html);
         }
-    }
-
-    private function generateSiteMap() {
-        //
     }
 }

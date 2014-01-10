@@ -2,9 +2,9 @@
 
 {% block panel_title %}
 {% if data is not iterable %}
-<p class="alert alert-warning">Sitemap does not exist. Please <a href="/admin/html/sitemap" class="btn btn-warning">generate</a></p>
+<p class="alert alert-warning">Sitemap does not exist. Please <a href="/admin/sitemap/generate" class="btn btn-warning">generate</a></p>
 {% else %}
-<a href="/admin/html/sitemap" class="btn btn-info">Re-generate</a>
+<a href="/admin/sitemap/generate" class="btn btn-info">Re-generate</a>
 {% endif %}
 {% endblock %}
 

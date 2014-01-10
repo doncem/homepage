@@ -157,7 +157,7 @@ class SetStatics extends Plugin {
             $array = array($this->getJSfilename(self::$js_underscore, $isLive));
             $array[] = $this->getJSfilename(self::$js_backbone, $isLive);
             $array[] = $this->getJSfilename(self::$js_jukebox, $isLive);
-            $array[] = \HtmlInit::doWeHaveGoogle() ? $this->dic->root . $this->html_public . "/js/jquery-ui." . self::JQUERY_UI_VERSION . ".min.js" : "//ajax.googleapis.com/ajax/libs/jqueryui/" . self::JQUERY_UI_VERSION . "/jquery-ui.min.js";
+            $array[] = \HtmlContent::doWeHaveGoogle() ? $this->dic->root . $this->html_public . "/js/jquery-ui." . self::JQUERY_UI_VERSION . ".min.js" : "//ajax.googleapis.com/ajax/libs/jqueryui/" . self::JQUERY_UI_VERSION . "/jquery-ui.min.js";
             $array[] = $this->getJSfilename(self::$js_jquery_colour, $isLive);
 
             return $array;

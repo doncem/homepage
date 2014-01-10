@@ -14,7 +14,7 @@ class JukeboxIndex extends \ControllerInit {
     /**
      * Main landing page
      * @Request("jukebox")
-     * @Parameter(name="source", validator="\xframe\validation\RegEx('/(\Aget-songs\z|^$)/')")
+     * @Parameter(name="source", validator="\xframe\validation\RegEx('/(\Aget-songs\z|^$)/')", required=false)
      * @Parameter(name="q", validator="\xframe\validation\RegEx('/(\S{3,}|^$)/')", required=false)
      * @Template("jukebox/index")
      */

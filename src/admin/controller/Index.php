@@ -83,11 +83,14 @@ class Index extends \ControllerInit {
                 $helper = "Auth";
                 $this->expireCache(\CacheVars::NAMESPACE_ADMIN, \CacheVars::KEY_ADMIN_USER);
                 break;
-            case "html":
-                $helper = "Html";
+            case "meta":
+                $helper = "Meta";
                 break;
             case "my-profile":
                 $helper = "Profile";
+                break;
+            case "sitemap":
+                $helper = "Sitemap";
                 break;
             default:
                 break;

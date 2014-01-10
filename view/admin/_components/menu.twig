@@ -6,13 +6,8 @@
 
 {% block navbar_main_menu %}
 {% if is_admin_logged_in %}
-<li class="dropdown{% if active_menu in ["content", "sitemap"] %} active{% endif %}">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Html<b class="caret"></b></a>
-    <ul class="dropdown-menu">
-        <li{% if active_menu == "content" %} class="active"{% endif %}><a href="/admin/html/content">Content</a></li>
-        <li{% if active_menu == "sitemap" %} class="active"{% endif %}><a href="/admin/html/sitemap">Sitemap</a></li>
-    </ul>
-</li>
+<li{% if active_menu == "meta" %} class="active"{% endif %}><a href="/admin/meta">Meta</a></li>
+<li{% if active_menu == "sitemap" %} class="active"{% endif %}><a href="/admin/sitemap">Sitemap</a></li>
 {% endif %}
 {% endblock %}
 
