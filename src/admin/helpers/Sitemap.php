@@ -23,7 +23,8 @@ class Sitemap extends Base {
         if (count($params) > 1) {
             switch ($params[1]) {
                 case "generate":
-                    $this->generateSiteMap();
+                    $links = $this->generateSiteMap();
+                    $this->saveSiteMap($links);
                     $this->redirect();
                     break;
                 default:
@@ -88,10 +89,10 @@ class Sitemap extends Base {
         }
         // normalise coefs
         foreach ($links as $link => $info) {
-            print_r($link . " => " . ($info["new_coef"] / $max) . "\n");
+            $links[$link]["normalised"] = $info["new_coef"] / $max;
         }
 
-        //die(print_r($links));
+        return $links;
     }
 
     public function getPageHrefs() {
@@ -154,5 +155,35 @@ class Sitemap extends Base {
         }
 
         return $links;
+    }
+
+    private function saveSiteMap(array $links) {
+        $host = filter_input(INPUT_SERVER, "HTTP_HOST");
+        $sitemap = $this->dic->root . $this->dic->registry->get("HTML_PUBLIC") . DIRECTORY_SEPARATOR . "sitemap.xml";
+        touch($sitemap);
+
+        $writer = new \XMLWriter();
+        $writer->openUri($sitemap);
+        $writer->setIndent(true);
+        $writer->setIndentString("    ");
+        $writer->startDocument("1.0", "UTF-8");
+        $writer->startElement("urlset");
+        $writer->writeAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+        $writer->writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        $writer->writeAttribute("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
+        $writer->writeComment("created using tool originated in www.donatasmart.lt");
+        $writer->writeComment("generated at " . date("Y-m-d H:i:s"));
+
+        foreach ($links as $link => $info) {
+            $writer->startElement("url");
+            $writer->writeElement("loc", "http://{$host}{$link}");
+            $writer->writeElement("changefreq", "monthly");
+            $writer->writeElement("priority", $info["normalised"]);
+            $writer->endElement();
+        }
+
+        $writer->endElement();
+        $writer->endDocument();
+        $writer->flush();
     }
 }
