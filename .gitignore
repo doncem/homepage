@@ -1,8 +1,9 @@
+.idea
 nbproject
 /.sass-cache/
-
 config/*.ini
 config/*.json
 lib
+phing-latest.phar
 vendor
 www/sitemap.xml

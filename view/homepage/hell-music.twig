@@ -12,14 +12,14 @@
 <p>All &lt;name&gt; elements are group names</p>
 <div class="row">
 {% for key, news in links.news %}
-    {% if loop.index0 is divisibleby(amount) %}
+    {% if loop.index0 is divisible by(amount) %}
     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
         <ol start="{{ loop.index }}">
     {% endif %}
 
             <li><a href="//docs.donatasmart.{{ domain }}{{ news[0] }}{{ key }}">{{ news[1] }}</a></li>
 
-    {% if loop.index is divisibleby(amount) or loop.last %}
+    {% if loop.index is divisible by(amount) or loop.last %}
         </ol>
     </div>
     {% endif %}
