@@ -1,7 +1,13 @@
 {% extends "_layouts/donatasmart.twig" %}
 
 {% block page_contents %}
+{% if isLive == 1 %}
+    {% set domain = "lt" %}
+{% else %}
+    {% set domain = "local" %}
+{% endif %}
 <p>I like to waste some time with various sessions of movies/tv shows. Some basic statistics from my list of watched movies and TV shows. List is made out of memory and free will</p>
+<p>Download full listing: <a href="//docs.donatasmart.{{ domain }}/movies/movies.csv">movies</a> / <a href="//docs.donatasmart.{{ domain }}/movies/series.csv">tv shows</a></p>
 {% if sums is defined %}
 <table class="table table-condensed table-responsive">
     <thead>
