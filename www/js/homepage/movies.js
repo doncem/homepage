@@ -1,5 +1,5 @@
 function formatStringForID(str) {
-    return str.replace(/[^a-zA-Z 0-9]+/g, '');
+    return str.replace(/[^a-zA-Z0-9]+/g, '');
 };
 
 var colours = {
@@ -86,14 +86,16 @@ var wrongParamsInRouter = function(error) {
                             }
                             var contents = $("<ul />").attr("id", "p-year-" + formatted).addClass("ajax-movies-data");
                             $.each(json.movies, function(i, e) {
-                                contents.append(
-                                    $("<li />").append(
-                                        $("<a />").attr({
-                                            "href": e[0].link,
-                                            "target": "_blank"
-                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year + "]")
-                                    )
-                                );
+                                $.each(e, function(j, ee) {
+                                    contents.append(
+                                        $("<li />").append(
+                                            $("<a />").attr({
+                                                "href": ee.link,
+                                                "target": "_blank"
+                                            }).html(ee.title + (ee.title_en !== null ? " (" + ee.title_en + ")" : "") + " [" + ee.year + "]")
+                                        )
+                                    );
+                                });
                             });
                             container.append(contents);
                         }
@@ -118,25 +120,29 @@ var wrongParamsInRouter = function(error) {
                             var contents = $("<ul />").attr("id", "p-genre-" + formatted).addClass("ajax-movies-data")
                                 .append($("<li />").html("<strong>MOVIES:</strong>"));
                             $.each(json.movies, function(i, e) {
-                                contents.append(
-                                    $("<li />").append(
-                                        $("<a />").attr({
-                                            "href": e[0].link,
-                                            "target": "_blank"
-                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year + "]")
-                                    )
-                                );
+                                $.each(e, function(j, ee) {
+                                    contents.append(
+                                        $("<li />").append(
+                                            $("<a />").attr({
+                                                "href": ee.link,
+                                                "target": "_blank"
+                                            }).html(ee.title + (ee.title_en !== null ? " (" + ee.title_en + ")" : "") + " [" + ee.year + "]")
+                                        )
+                                    );
+                                });
                             });
                             contents.append($("<li />").html("<strong>SERIES:</strong>"));
                             $.each(json.series, function(i, e) {
-                                contents.append(
-                                    $("<li />").append(
-                                        $("<a />").attr({
-                                            "href": e[0].link,
-                                            "target": "_blank"
-                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year_from + " - " + e[0].year_until + "]")
-                                    )
-                                );
+                                $.each(e, function(j, ee) {
+                                    contents.append(
+                                        $("<li />").append(
+                                            $("<a />").attr({
+                                                "href": ee.link,
+                                                "target": "_blank"
+                                            }).html(ee.title + (ee.title_en !== null ? " (" + ee.title_en + ")" : "") + " [" + ee.year_from + " - " + ee.year_until + "]")
+                                        )
+                                    );
+                                });
                             });
                             container.append(contents);
                         }
@@ -197,26 +203,30 @@ var wrongParamsInRouter = function(error) {
                             }
                             var contents = $("<ul />").attr("id", "p-movies-" + formatted).addClass("ajax-movies-data");
                             $.each(json.movies, function(i, e) {
-                                contents.append(
-                                    $("<li />").append(
-                                        $("<a />").attr({
-                                            "href": e[0].link,
-                                            "target": "_blank"
-                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year + "]")
-                                    )
-                                );
+                                $.each(e, function(j, ee) {
+                                    contents.append(
+                                        $("<li />").append(
+                                            $("<a />").attr({
+                                                "href": ee.link,
+                                                "target": "_blank"
+                                            }).html(ee.title + (ee.title_en !== null ? " (" + ee.title_en + ")" : "") + " [" + ee.year + "]")
+                                        )
+                                    );
+                                });
                             });
                             container.append(contents);
                             contents = $("<ul />").attr("id", "p-series-" + formatted).addClass("ajax-movies-data");
                             $.each(json.series, function(i, e) {
-                                contents.append(
-                                    $("<li />").append(
-                                        $("<a />").attr({
-                                            "href": e[0].link,
-                                            "target": "_blank"
-                                        }).html(e[0].title + (e[0].title_en !== null ? " (" + e[0].title_en + ")" : "") + " [" + e[0].year_from + " - " + e[0].year_until + "]")
-                                    )
-                                );
+                                $.each(e, function(j, ee) {
+                                    contents.append(
+                                        $("<li />").append(
+                                            $("<a />").attr({
+                                                "href": ee.link,
+                                                "target": "_blank"
+                                            }).html(ee.title + (ee.title_en !== null ? " (" + ee.title_en + ")" : "") + " [" + ee.year_from + " - " + ee.year_until + "]")
+                                        )
+                                    );
+                                });
                             });
                             container.append(contents);
                         }

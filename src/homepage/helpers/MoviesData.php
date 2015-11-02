@@ -148,7 +148,7 @@ class MoviesData extends \DbPdoHelper {
 
     public function getMoviesByYear($year) {
         $this->pdo->beginTransaction();
-        $query = $this->pdo->prepare("SELECT * FROM h_movies m WHERE m.year = :y");
+        $query = $this->pdo->prepare("SELECT 1, m.* FROM h_movies m WHERE m.year = :y ORDER BY m.title ASC");
         $query->bindParam(":y", $year);
         $results = $this->gatherResults($query);
         $this->pdo->commit();
@@ -162,10 +162,11 @@ class MoviesData extends \DbPdoHelper {
 
         foreach (array("movie", "serie") as $type) {
             $query = $this->pdo->prepare("
-                SELECT t.* FROM h_{$type}s t
+                SELECT 1, t.* FROM h_{$type}s t
                 INNER JOIN h_{$type}s_genres tg ON tg.{$type} = t.id
                 INNER JOIN h_genres g ON g.id = tg.genre
-                WHERE g.genre = :g"
+                WHERE g.genre = :g
+                ORDER BY t.title ASC"
             );
             $query->bindParam(":g", $genre);
             $results[$type] = $this->gatherResults($query);
@@ -194,7 +195,7 @@ class MoviesData extends \DbPdoHelper {
                 INNER JOIN h_movies_directors md ON md.movie = m.id
                 INNER JOIN h_directors d ON d.id = md.director
                 WHERE md.director IN (" . implode(",", $directors) . ")
-                ORDER BY d.director,m.year,m.title"
+                ORDER BY d.director,m.title,m.year"
             );
             $results = $this->gatherResults($query);
             $this->pdo->commit();
@@ -211,12 +212,13 @@ class MoviesData extends \DbPdoHelper {
 
         foreach (array("movie", "serie") as $type) {
             $query = $this->pdo->prepare("
-                SELECT t.* FROM h_{$type}s t
+                SELECT 1, t.* FROM h_{$type}s t
                 INNER JOIN h_{$type}s_countries tc ON tc.{$type} = t.id
                 INNER JOIN h_countries c ON c.id = tc.country
-                WHERE c.country = :c"
+                WHERE c.country = :c
+                ORDER BY t.title"
             );
-            $query->bindParam(":c", $country);
+            $query->bindParam(":c", str_replace(array("%20", "+"), " ", $country));
             $results[$type] = $this->gatherResults($query);
         }
 
